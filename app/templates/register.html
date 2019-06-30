@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load settings %}
 
 {% block content %}
 <div class="container mt-5">
@@ -13,7 +14,7 @@
                     <div class="form-group floating-label-form-group controls mb-0 pb-2">
                         {{ form.as_p }}
                         <p style="font-size:1.5em;color:#6c757d;margin-top:2em">Institución (busque en el mapa)</p>
-                        <div id="map"></div>
+                        <div id="map-registration"></div>
                     </div>
                 </div>
                 <div class="mt-4 form-group">
@@ -104,6 +105,6 @@
         });
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAOCUR6S2M45IiSZzu35nW8mOCEN6nO-k&libraries=places&callback=initAutocomplete"
+    <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&libraries=places&callback=initAutocomplete"
         async defer></script>
 {% endblock %}
