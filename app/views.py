@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from app.forms import ScientistForm, RegistrationForm
+from app.forms import RegistrationForm
 
 
 def index(request):
