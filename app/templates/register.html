@@ -1,13 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="POST" onkeydown="return event.key != 'Enter';"> {% csrf_token %}
-    {{ form.as_p }}
-    <p>Institución (busque en el mapa)</p>
-    <div id="map"></div>
-    <input type="submit" value="Registrarme" />
-</form>
-<input id="pac-input" class="map-search-box" type="text" placeholder="Buscar institución">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mt-5 mx-auto">
+            <h2 class="text-center text-uppercase text-secondary mt-5">Registro</h2>
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+            </div>
+            <form method="POST" onkeydown="return event.key != 'Enter';"> {% csrf_token %}
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                        {{ form.as_p }}
+                        <p style="font-size:1.5em;color:#6c757d;margin-top:2em">Institución (busque en el mapa)</p>
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <div class="mt-4 form-group">
+                    <button type="submit" class="btn btn-primary btn-xl" id="submitButton">Registrarse</button>
+                </div>
+            </form>
+            <input id="pac-input" class="map-search-box" type="text" placeholder="Buscar institución">
+        </div>
+    </div>
+</div>
 <script>
     // This example adds a search box to a map, using the Google Place Autocomplete
     // feature. People can enter geographical searches. The search box will return a
