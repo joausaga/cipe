@@ -16,7 +16,7 @@ class Scientist(models.Model):
     institutional_website = models.URLField(null=True, blank=True)
     orcid = models.CharField(max_length=100, null=True, blank=True)
     has_becal_scholarship = models.BooleanField(default=False)
-    aproved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
 
     def __unicode__(self):
         return f"{self.first_name} {self.last_name}"
