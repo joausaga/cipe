@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="map"></div>
+<script>
+    // Initialize and add the map
+    function initMap() {
+        // The map, centered at BSC
+        var map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 2, center: {lat: {{ lat }}, lng: {{ lon }}} });
+        // The marker, positioned at BSC
+        var infowindow = new google.maps.InfoWindow({
+            content: "Barcelona Supercomputing Center"
+        });
+        var marker = new google.maps.Marker({position: {lat: {{ lat }}, lng: {{ lon }}}, map: map});
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+</script>
+<!--Load the API from the specified URL
+* The async attribute allows the browser to render the page while the API loads
+* The key parameter will contain your own API key (which is not needed for this tutorial)
+* The callback parameter executes the initMap() function
+-->
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAOCUR6S2M45IiSZzu35nW8mOCEN6nO-k&callback=initMap">
+</script>
+{% endblock %}
