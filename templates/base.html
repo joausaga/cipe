@@ -1,11 +1,122 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <title>Comunidad de Investigadores Paraguayos en el Extranjero</title>
+    <!-- Custom fonts for this theme -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="{% static 'css/freelancer.min.css' %}" rel="stylesheet">
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+       }
+       .map-search-box {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+      .pac-container {
+        font-family: Roboto;
+      }
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+    </style>
 </head>
-<body>
+<body id="page-top">
+    {% include 'navbar.html' %}
     {% block content %}
     {% endblock %}
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <div class="row">
+            <!-- Footer Location -->
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">Location</h4>
+                    <p class="lead mb-0">2215 John Daniel Drive
+                        <br>Clark, MO 65243</p>
+                </div>
+                <!-- Footer Social Icons -->
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">Around the Web</h4>
+                    <a class="btn btn-outline-light btn-social mx-1" href="#">
+                        <i class="fab fa-fw fa-facebook-f"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-social mx-1" href="#">
+                        <i class="fab fa-fw fa-twitter"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-social mx-1" href="#">
+                        <i class="fab fa-fw fa-linkedin-in"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-social mx-1" href="#">
+                        <i class="fab fa-fw fa-dribbble"></i>
+                    </a>
+                </div>
+                <!-- Footer About Text -->
+                <div class="col-lg-4">
+                    <h4 class="text-uppercase mb-4">About Freelancer</h4>
+                    <p class="lead mb-0">Freelance is a free to use, MIT licensed Bootstrap theme created by
+                        <a href="http://startbootstrap.com">Start Bootstrap</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Copyright Section -->
+    <section class="copyright py-4 text-center text-white">
+        <div class="container">
+            <small>Copyright &copy; Your Website 2019</small>
+        </div>
+    </section>
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-to-top d-lg-none position-fixed ">
+        <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Plugin JavaScript -->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Contact Form JavaScript -->
+    <script src="{% static 'js/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'js/contact_me.min.js' %}"></script>
+    <!-- Custom scripts for this template -->
+    <script src="{% static 'js/freelancer.min.js' %}"></script>
 </body>
 </html>
