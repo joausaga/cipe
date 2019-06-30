@@ -4,10 +4,14 @@ from app.forms import RegistrationForm
 
 
 def index(request):
-    return render(request, 'index.html', {})
+    context = {
+        'lat': 41.389633,
+        'lon': 2.116217
+    }
+    return render(request, 'index.html', context)
 
 
-def create_scientist(request):
+def registration(request):
     form = RegistrationForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
