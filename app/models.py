@@ -5,7 +5,7 @@ from app.constants import SEX, SCIENTIFIC_AREA, POSITION
 class Scientist(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     scientific_area = models.CharField(max_length=100, choices=SCIENTIFIC_AREA, default='')
     position = models.CharField(max_length=100, choices=POSITION, default='')
     birth_date = models.DateField(null=True, blank=True)
@@ -32,6 +32,8 @@ class Institution(models.Model):
     city = models.CharField(max_length=100, null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    postal_code = models.CharField(max_length=50, null=True, blank=True)
+    address = models.CharField(max_length=300, null=True, blank=True)
     web_page = models.URLField(blank=True, null=True)
 
     def __unicode__(self):
