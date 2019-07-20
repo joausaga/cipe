@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load settings %}
 
 {% block content %}
 <div class="container mt-5">
@@ -35,11 +34,13 @@
     // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
     function initAutocomplete() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 41.389633, lng: 2.116217},
+        var map = new google.maps.Map(document.getElementById('map-registration'), {
+          center: {lat: 41.389633, lng: 40.116217},
           zoom: 2,
           mapTypeId: 'roadmap'
         });
+
+        console.log('hello!');
 
         // Create the search box and link it to the UI element.
         var input = document.getElementById('pac-input');
@@ -105,6 +106,6 @@
         });
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&libraries=places&callback=initAutocomplete"
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete"
         async defer></script>
 {% endblock %}
