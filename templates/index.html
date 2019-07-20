@@ -4,8 +4,10 @@
 {% block content %}
 <!-- Masthead -->
 <header class="text-white text-center">
-    <div class="container-fluid px-0">
-        <div id="map"></div>
+    <div class="container-fluid px-0" >
+        <div id="map">
+        </div>
+        <a href="#" style="position:absolute;margin-top: -5.75rem" class="btn btn-primary btn-xl rounded-pill">Saber Más</a>
         <script>
             // Initialize and add the map
             function initMap() {
@@ -22,7 +24,6 @@
                 });
             }
         </script>
-        <button>Hola</button>
     </div>
 </header>
 <!-- Portfolio Section -->
@@ -198,6 +199,6 @@
     </div>
 </section>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
 </script>
 {% endblock %}

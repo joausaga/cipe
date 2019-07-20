@@ -41,7 +41,7 @@ class RegistrationForm(forms.Form):
             'class':'form-control'
         }
     ))
-    positions = forms.ChoiceField(label='Nivel Académico', choices=POSITION_EMPTY, widget=forms.Select(
+    position = forms.ChoiceField(label='Nivel Académico', choices=POSITION_EMPTY, widget=forms.Select(
         attrs={
             'class':'form-control'
         }
