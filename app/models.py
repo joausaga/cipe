@@ -50,10 +50,10 @@ class Affiliation(models.Model):
     departure_date = models.DateField(null=True, blank=True)
 
     def __unicode__(self):
-        return f"{self.scientist.first_name} {self.scientist.last_name}, {self.institution.name}"
+        return f"{self.scientist}, {self.institution}"
 
     def __str__(self):
-        return f"{self.scientist.first_name} {self.scientist.last_name}, {self.institution.name}"
+        return f"{self.scientist}, {self.institution}"
 
     class Meta:
         unique_together = ('scientist', 'institution')
