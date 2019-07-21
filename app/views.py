@@ -1,4 +1,5 @@
 import googlemaps
+import logging
 
 from app.forms import RegistrationForm
 from app.models import Institution, Scientist, Affiliation
@@ -8,12 +9,23 @@ from django.conf import settings
 
 
 gmaps = googlemaps.Client(key=f"{settings.GOOGLE_MAPS_API_KEY}")
+logger = logging.getLogger(__name__)
 
 
 def index(request):
+    scientist_objs = Scientist.objects.all()
+    scientists = []
+    for scientist_obj in scientist_objs:
+        scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj).institution
+        scientists.append(
+            {'name': str(scientist_obj),
+             'institution_name': scientist_institution.name,
+             'institution_latitude': scientist_institution.latitude,
+             'institution_longitude': scientist_institution.longitude
+             },
+        )
     context = {
-        'lat': 41.389633,
-        'lon': 40.116217
+        'scientists': scientists
     }
     return render(request, 'index.html', context)
 
@@ -27,11 +39,13 @@ def __get_institution_extra_information(inst_dict):
         inst_dict['country'] = reverse_geocode_result[0]['address_components'][5]['long_name']
         inst_dict['postal_code'] = reverse_geocode_result[0]['address_components'][6]['long_name']
         return True, inst_dict
-    except:
+    except Exception as e:
+        logger.error(f"Error when doing reverse geo-coding {e}")
         return False, inst_dict
 
 
 def registration(request):
+    msg = ''
     form = RegistrationForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
@@ -55,6 +69,7 @@ def registration(request):
                 _, inst_dict = __get_institution_extra_information(inst_dict)
                 inst_obj = Institution(**inst_dict)
                 inst_obj.save()
+                logger.info(f"Institution {inst_dict} created!")
             # Remove institution data from form object
             del form.cleaned_data['location_lat']
             del form.cleaned_data['location_lng']
@@ -63,18 +78,23 @@ def registration(request):
             scientist_obj, created = Scientist.objects.get_or_create(email=form.cleaned_data['email'],
                                                                      defaults=form.cleaned_data)
             if created:
-                # log
-                pass
+                logger.info(f"Scientist {scientist_obj} created!")
+                msg = f"El registro se completó exitosamente!"
+            else:
+                msg = f"El registro no se pudo completar debido a que email {form.cleaned_data['email']} ya se " \
+                      f"encuentra registrado"
             affiliation_obj, created = Affiliation.objects.get_or_create(scientist=scientist_obj,
                                                                          institution=inst_obj,
                                                                          defaults={'scientist':scientist_obj,
                                                                                    'institution': inst_obj})
             if created:
-                # log
-                pass
+                logger.info(f"Affiliation {affiliation_obj} created!")
             return HttpResponseRedirect('/')
+        else:
+            logger.info(f"Registration Error: The form is not valid. Form details {form}")
     context = {
-        'form': form
+        'form': form,
+        'message': msg
     }
     return render(request, 'register.html', context)
 
