@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 def index(request):
     scientist_objs = Scientist.objects.all()
     scientists = []
+    num_scientists = len(scientist_objs)
+    num_institutions = Institution.objects.all().count()
+    num_countries = Institution.objects.all().values('country').distinct().count()
     for scientist_obj in scientist_objs:
         scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj).institution
         scientists.append(
@@ -25,7 +28,10 @@ def index(request):
              },
         )
     context = {
-        'scientists': scientists
+        'scientists': scientists,
+        'num_scientists': num_scientists,
+        'num_institutions': num_institutions,
+        'num_countries': num_countries
     }
     return render(request, 'index.html', context)
 
