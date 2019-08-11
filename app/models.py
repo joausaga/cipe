@@ -1,5 +1,5 @@
 from django.db import models
-from app.constants import SEX, SCIENTIFIC_AREA, POSITION
+from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS
 
 
 class Scientist(models.Model):
@@ -16,6 +16,7 @@ class Scientist(models.Model):
     institutional_website = models.URLField(null=True, blank=True)
     orcid = models.CharField(max_length=100, null=True, blank=True)
     has_becal_scholarship = models.BooleanField(default=False)
+    communication_channel = models.CharField(max_length=100, choices=COMMUNICATION_CHANNELS, default='')
     approved = models.BooleanField(default=False)
 
     def __unicode__(self):
