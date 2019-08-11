@@ -3,19 +3,24 @@
 {% block content %}
 <div id="map"></div>
 <script>
-    // Initialize and add the map
-    function initMap() {
-        // The map, centered at BSC
-        var map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 2, center: {lat: {{ lat }}, lng: {{ lon }}} });
-        // The marker, positioned at BSC
-        var infowindow = new google.maps.InfoWindow({
-            content: "Barcelona Supercomputing Center"
-        });
-        var marker = new google.maps.Marker({position: {lat: {{ lat }}, lng: {{ lon }}}, map: map});
-        marker.addListener('click', function() {
-            infowindow.open(map, marker);
-        });
+    function addMarkers() {
+        // Create markers
+        var scientists = {{ scientists|safe }};
+        var inst_lat, inst_lng, str_info_window;
+        for (i=0; i < scientists.length; i++) {
+            inst_lat = scientists[i].institution_latitude;
+            inst_lng = scientists[i].institution_longitude;
+            const marker = new google.maps.Marker({position: {lat: inst_lat, lng: inst_lng}, map: map});
+            infoWindowContent = "<div class='text-body text-left'><b>" + scientists[i].name + "</b><br>" + scientists[i].institution_name + "</div>";
+            const infowindow = new google.maps.InfoWindow({
+                content: infoWindowContent
+            });
+            marker.addListener('click', function () {
+                closeInfoWindow();
+                infowindow.open(marker.get('map'), marker);
+                InforObj[0] = infowindow;
+            });
+        }
     }
 </script>
 <!--Load the API from the specified URL
