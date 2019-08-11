@@ -50,3 +50,11 @@ POSITION = (
     ('profesor', 'Profesor'),
     ('otro', 'Otro'),
 )
+
+COMMUNICATION_CHANNELS = (
+    ('whatsapp', 'Grupo de Whatsapp'),
+    ('slack', 'Espacio de Trabajo en Slack'),
+    ('telegram', 'Grupo de Telegram'),
+    ('lista_correo', 'Lista de Correo'),
+    ('facebook', 'Grupo de Facebook')
+)
