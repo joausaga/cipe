@@ -5,7 +5,7 @@
 <!-- Masthead -->
 <header class="text-center">
     <div class="container-fluid px-0" >
-        <div id="map_header">
+        <div id="map">
         </div>
         <div class="container-fluid pl-5 pr-5" style="position:absolute;margin-top: -18rem">
             <div class="jumbotron transparentBackground">
@@ -14,25 +14,11 @@
                     <i class="fas fa-user-plus mr-2"></i>
                     Registrate
                 </a>
-                <!--<h4>
-                    <span class="badge badge-success">{{ num_scientists }}</span> Investigadores en
-                    <span class="badge badge-warning">{{ num_institutions }}</span>centros de Investigación de
-                    <span class="badge badge-danger">{{ num_countries }}</span>países
-                </h4>-->
             </div>
         </div>
         <!-- <a href="#" style="position:absolute;margin-top: -5.75rem" class="btn btn-primary btn-xl rounded-pill">{{ map_footer }}</a>
         <p style="position:absolute;margin-top: -5.75rem" class="p-3 mb-2 bg-info text-white" align="center">{{ map_footer }}</p>-->
         <script>
-            // Initialize and add the map
-            var InforObj = [];
-            var centerCords = {
-                lat: 41.389633,
-                lng: 2.116217
-            };
-            window.onload = function () {
-                initMapHeader();
-            };
             function addMarkers() {
                 // Create markers
                 var scientists = {{ scientists|safe }};
@@ -51,23 +37,6 @@
                         InforObj[0] = infowindow;
                     });
                 }
-            }
-            function closeInfoWindow() {
-                if (InforObj.length > 0) {
-                    /* detach the info-window from the marker */
-                    InforObj[0].set("marker", null);
-                    /* and close it */
-                    InforObj[0].close();
-                    /* blank the array */
-                    InforObj.length = 0;
-                }
-            }
-            function initMapHeader() {
-                map = new google.maps.Map(document.getElementById('map_header'), {
-                    zoom: 2,
-                    center: centerCords
-                });
-                addMarkers();
             }
         </script>
     </div>
