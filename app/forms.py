@@ -1,9 +1,10 @@
 from django import forms
-from app.constants import SEX, SCIENTIFIC_AREA, POSITION
+from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS
 
 SEX_EMPTY = [('','Indique su sexo')] + list(SEX)
 SCI_AREA_EMPTY = [('','Indique su área de actuación')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Indique su nivel académico')] + list(POSITION)
+CHANNEL_EMPTY = [('','Indique un canal de comunicación')] + list(COMMUNICATION_CHANNELS)
 BECAL = [(False, 'Es becario BECAL?'), (False, 'No'), (True, 'Si')]
 
 
@@ -44,6 +45,13 @@ class RegistrationForm(forms.Form):
     position = forms.ChoiceField(label='Nivel Académico', choices=POSITION_EMPTY, widget=forms.Select(
         attrs={
             'class':'form-control'
+        }
+    ))
+    communications_channel = forms.ChoiceField(label='Canal Comunicación', choices=CHANNEL_EMPTY,
+                                               help_text='Si desea mantener contacto con los investigadores registrados aquí (se utilizará el que elija la mayoría)',
+                                               widget=forms.Select(
+        attrs={
+            'class': 'form-control'
         }
     ))
     twitter_handler = forms.CharField(label='Usuario de Twitter', help_text='sin @', required=False, widget=forms.TextInput(
