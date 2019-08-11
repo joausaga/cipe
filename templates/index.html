@@ -5,16 +5,20 @@
 <!-- Masthead -->
 <header class="text-center">
     <div class="container-fluid px-0" >
-        <div id="map">
+        <div id="map_header">
         </div>
         <div class="container-fluid pl-5 pr-5" style="position:absolute;margin-top: -18rem">
             <div class="jumbotron transparentBackground">
                 <h1 class="page-section-heading text-center text-uppercase text-secondary mb-0">Investigadores Paraguayos por el Mundo</h1><br>
-                <h4>
+                <a class="btn btn-xl btn-primary" href="{% url 'registration' %}">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    Registrate
+                </a>
+                <!--<h4>
                     <span class="badge badge-success">{{ num_scientists }}</span> Investigadores en
                     <span class="badge badge-warning">{{ num_institutions }}</span>centros de Investigación de
                     <span class="badge badge-danger">{{ num_countries }}</span>países
-                </h4>
+                </h4>-->
             </div>
         </div>
         <!-- <a href="#" style="position:absolute;margin-top: -5.75rem" class="btn btn-primary btn-xl rounded-pill">{{ map_footer }}</a>
@@ -27,7 +31,7 @@
                 lng: 2.116217
             };
             window.onload = function () {
-                initMap();
+                initMapHeader();
             };
             function addMarkers() {
                 // Create markers
@@ -58,8 +62,8 @@
                     InforObj.length = 0;
                 }
             }
-            function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
+            function initMapHeader() {
+                map = new google.maps.Map(document.getElementById('map_header'), {
                     zoom: 2,
                     center: centerCords
                 });
@@ -77,7 +81,7 @@
         <div class="divider-custom">
             <div class="divider-custom-line"></div>
             <div class="divider-custom-icon">
-                <i class="flag flag-py"></i>
+                <i class="flag-icon flag-icon-py"></i>
             </div>
             <div class="divider-custom-line"></div>
       </div>
@@ -91,17 +95,18 @@
         </div>
       </div>
     </div>
+    <br>
 </section>
 <!-- El porque Section -->
 <section class="page-section bg-primary text-white mb-0" id="elporque">
     <div class="container">
         <!-- About Section Heading -->
-        <h2 class="page-section-heading text-center text-uppercase text-white">El Porqué del sitio</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-white">Porqué del sitio</h2>
         <!-- Icon Divider -->
         <div class="divider-custom divider-light">
             <div class="divider-custom-line"></div>
             <div class="divider-custom-icon">
-                <i class="fas fa-star"></i>
+                <i class="fas fa-question"></i>
             </div>
             <div class="divider-custom-line"></div>
         </div>
@@ -135,20 +140,106 @@
         </div>-->
     </div>
 </section>
-<!-- Contact Section -->
-<section class="page-section" id="contact">
+<!-- Stats Section -->
+<section class="page-section mb-0" id="stats">
     <div class="container">
-        <!-- Contact Section Heading -->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contacto</h2>
+        <!-- Stats Section Heading -->
+        <h2 class="page-section-heading text-center text-uppercase">Datos Registrados</h2>
         <!-- Icon Divider -->
         <div class="divider-custom">
             <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon">
+                <i class="fas fa-stream"></i>
+            </div>
+            <div class="divider-custom-line"></div>
         </div>
-        <!-- Contact Section Form -->
+      <!-- About Section Content -->
+        <br><br>
+        <div class="row">
+            <div class="col-lg-4 ml-auto">
+                <div class="card bg-primary text-white" style="width: 18rem;">
+                  <div class="card-body">
+                    <h1 class="page-section-heading text-center">{{ num_scientists }}</h1>
+                    <p class="card-text text-center">Investigadores</p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mr-auto">
+                <div class="card bg-primary text-white" style="width: 18rem;">
+                  <div class="card-body">
+                    <h1 class="page-section-heading text-center">{{ num_institutions }}</h1>
+                    <p class="card-text text-center">Centros de Investigación</p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mr-auto">
+                <div class="card bg-primary text-white" style="width: 18rem;">
+                    <div class="card-body">
+                        <h1 class="page-section-heading text-center">{{ num_countries }}</h1>
+                        <p class="card-text text-center">Países</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-lg-12 ml-auto">
+                <p class="font-weight-normal text-center">Datos agregados sobre lo registrado hasta el momento</p>
+            </div>
+        </div>
+        <!-- About Section Button
+        <div class="text-center mt-4">
+            <a class="btn btn-xl btn-outline-light" href="https://startbootstrap.com/themes/freelancer/">
+                <i class="fas fa-download mr-2"></i>
+                Free Download!
+            </a>
+        </div>-->
+    </div>
+</section>
+<!-- Registration Section
+<section class="page-section" id="registration">
+    <div class="container">
+        <!-- Register Section Heading
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Registro</h2>
+        <!-- Icon Divider
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mt-5 mx-auto">
+                <form method="POST" onkeydown="return event.key != 'Enter';"> {% csrf_token %}
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                            {{ form.as_p }}
+                            <p style="font-size:1.5em;color:#6c757d;margin-top:2em">Institución (busque en el mapa)</p>
+                            <div id="map-registration"></div>
+                        </div>
+                    </div>
+                    <div class="mt-4 form-group">
+                        <button type="submit" class="btn btn-primary btn-xl" id="submitButton">Registrarse</button>
+                    </div>
+                </form>
+                <input id="pac-input" class="map-search-box" type="text" placeholder="Buscar institución">
+            </div>
+        </div>
+    </div>
+</section> -->
+<!-- Map Section -->
+<!-- <section class="page-section" id="map"> -->
+    <!-- <div class="container-fluid px-0" id="map"> -->
+        <!-- Map Section Heading
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Mapa</h2>
+        <!-- Icon Divider
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+        </div>-->
+        <!--<div id="map_full">
+        </div>-->
+        <!-- Contact Section Form
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <!-- To configure the contact form email address, go to mail/contact_me.php and update the email
-                address in the PHP file on line 19. -->
+                address in the PHP file on line 19.
                 <form name="sentMessage" id="contactForm" novalidate="novalidate">
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls mb-0 pb-2">
@@ -183,9 +274,9 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-</section>
+        </div>-->
+    <!--</div>-->
+<!--</section>-->
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
 </script>
