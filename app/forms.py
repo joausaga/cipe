@@ -21,15 +21,21 @@ class RegistrationForm(forms.Form):
             'placeholder':'Apellido'
         }
     ))
+    sex = forms.ChoiceField(label='Sexo', choices=SEX_EMPTY, required=False, widget=forms.Select(
+        attrs={
+            'class': 'form-control'
+        }
+    ))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(
         attrs={
             'class':'form-control',
             'placeholder':'Email'
         }
     ))
-    sex = forms.ChoiceField(label='Sexo', choices=SEX_EMPTY, required=False, widget=forms.Select(
+    phone_number = forms.CharField(label='Teléfono Móvil', widget=forms.TextInput(
         attrs={
-            'class':'form-control'
+            'class':'form-control',
+            'placeholder':'Teléfono Móvil'
         }
     ))
     has_becal_scholarship = forms.ChoiceField(label='Es becario de BECAL?', choices=BECAL, required=False, widget=forms.Select(
@@ -48,7 +54,8 @@ class RegistrationForm(forms.Form):
         }
     ))
     communications_channel = forms.ChoiceField(label='Canal Comunicación', choices=CHANNEL_EMPTY,
-                                               help_text='Si desea mantener contacto con los investigadores registrados aquí (se utilizará el que elija la mayoría)',
+                                               help_text='Si desea mantener contacto con los investigadores registrados '
+                                                         'en este sitio (se utilizará el que elija la mayoría)',
                                                widget=forms.Select(
         attrs={
             'class': 'form-control'
@@ -58,6 +65,12 @@ class RegistrationForm(forms.Form):
         attrs={
             'class':'form-control',
             'placeholder':'Usuario de Twitter'
+        }
+    ))
+    facebook_profile = forms.URLField(label='Enlace a Perfil en Facebook', required=False, widget=forms.URLInput(
+        attrs={
+            'class':'form-control',
+            'placeholder':'Perfil de Facebook'
         }
     ))
     gscholar_profile = forms.URLField(label='Perfil de Google Scholar', required=False, widget=forms.URLInput(
