@@ -4,9 +4,9 @@ var centerCords = {
     lat: 41.389633,
     lng: 2.116217
 };
-window.onload = function () {
-    initMapHeader();
-};
+//window.onload = function () {
+//    initMap();
+//};
 function closeInfoWindow() {
     if (InforObj.length > 0) {
         /* detach the info-window from the marker */
@@ -17,7 +17,7 @@ function closeInfoWindow() {
         InforObj.length = 0;
     }
 }
-function initMapHeader() {
+function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 2,
         center: centerCords
