@@ -1,5 +1,34 @@
 {% extends 'base.html' %}
 
+<script>
+{% block javascript %}
+    var regResult = parseInt("{{ registration_result }}");
+    var msg = "{{ msg }}";
+    console.log(regResult);
+    console.log(msg);
+    if (regResult >= 0) {
+        document.getElementById("msgReg").innerHTML = msg;
+        if (regResult==1) {
+            alertClassName = "alert-danger";
+        }
+        if (regResult==0) {
+            alertClassName = "alert-success";
+        }
+        element = document.getElementById("myAlert");
+        arr = element.className.split(" ");
+        if (arr.indexOf(alertClassName) == -1) {
+            element.className += " " + alertClassName;
+        }
+        $("#myAlert").show();
+        window.setTimeout(function() {
+            $("#myAlert").fadeTo(300, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 4000);
+    }
+{% endblock %}
+</script>
+
 {% block content %}
 <div class="container mt-5">
     <div class="row">
