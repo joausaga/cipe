@@ -79,6 +79,13 @@
 </head>
 <body id="page-top">
     {% include 'navbar.html' %}
+    <div id="myAlert" class="alert text-center collapse" role="alert">
+        <div id="msgReg"></div>
+        <button type="button" class="close alert-dismissible" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <script src="{% static 'js/cipe.js' %}"></script>
     {% block content %}
     {% endblock %}
     <!-- Footer -->
@@ -110,8 +117,8 @@
                 <!-- Footer About Text -->
                 <div class="col-lg-4">
                     <h4 class="text-uppercase mb-4"></h4>
-                    <p class="lead mb-0">Este proyecto es de código abierto, para más detalles ver
-                        <a href="https://github.com/joausaga/cipe" target="_blank">aquí</a>
+                    <p class="lead mb-0">Proyecto inspirado en <a href="">Redes Uruguay</a>. El código del sitio es
+                        abierto, para más detalles ver <a href="https://github.com/joausaga/cipe" target="_blank">aquí</a>
                     </p>
                 </div>
             </div>
@@ -136,8 +143,12 @@
     <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
     <!-- Contact Form JavaScript -->
     <script src="{% static 'js/jqBootstrapValidation.js' %}"></script>
-    <script src="{% static 'js/cipe.js' %}"></script>
     <!-- Custom scripts for this template -->
     <script src="{% static 'js/freelancer.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            {% block javascript %}{% endblock %}
+        })
+    </script>
 </body>
 </html>

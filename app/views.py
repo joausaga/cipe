@@ -4,7 +4,6 @@ import logging
 from app.forms import RegistrationForm
 from app.models import Institution, Scientist, Affiliation
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.conf import settings
 
 
@@ -24,21 +23,20 @@ def __get_data_map():
              'institution_longitude': scientist_institution.longitude
              },
         )
-    return scientists
-
-
-def index(request):
-    scientists = __get_data_map()
     num_scientists = len(scientists)
     num_institutions = Institution.objects.all().count()
     num_countries = Institution.objects.all().values('country').distinct().count()
-    msg = ''
+    return scientists, num_scientists, num_institutions, num_countries
+
+
+def index(request, *args, **kwargs):
+    scientists, num_scientists, num_institutions, num_countries = __get_data_map()
     context = {
         'scientists': scientists,
         'num_scientists': num_scientists,
         'num_institutions': num_institutions,
         'num_countries': num_countries,
-        'message': msg
+        'message': kwargs['msg'] if 'msg' in kwargs else ''
     }
     return render(request, 'index.html', context)
 
@@ -59,6 +57,8 @@ def __get_institution_extra_information(inst_dict):
 
 def registration(request):
     msg = ''
+    registration_error = -1
+    created = False
     form = RegistrationForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
@@ -92,7 +92,8 @@ def registration(request):
                                                                      defaults=form.cleaned_data)
             if created:
                 logger.info(f"Scientist {scientist_obj} created!")
-                msg = f"El registro se completó exitosamente!"
+                msg = f"El registro se completó exitosamente! Luego de su aprobación el mismo podrá ser visualizado en " \
+                      f"el map del sitio."
             else:
                 msg = f"El registro no se pudo completar debido a que email {form.cleaned_data['email']} ya se " \
                       f"encuentra registrado"
@@ -100,16 +101,22 @@ def registration(request):
                                                                          institution=inst_obj,
                                                                          defaults={'scientist':scientist_obj,
                                                                                    'institution': inst_obj})
-            if created:
-                logger.info(f"Affiliation {affiliation_obj} created!")
-            return HttpResponseRedirect('/')
+            form = RegistrationForm()
+            registration_error = 0
         else:
+            msg = f"Datos inválidos, favor compruebe los errores"
             logger.info(f"Registration Error: The form is not valid. Form details {form}")
+            registration_error = 1
     context = {
         'form': form,
-        'message': msg
+        'msg': msg,
+        'registration_result': registration_error
     }
-    return render(request, 'register.html', context)
+    if created:
+        logger.info(f"Affiliation {affiliation_obj} created!")
+        return render(request, 'register.html', context)
+    else:
+        return render(request, 'register.html', context)
 
 
 def success_registration(request):
@@ -117,7 +124,7 @@ def success_registration(request):
 
 
 def map_scientists(request):
-    scientists = __get_data_map()
+    scientists, _, _, _ = __get_data_map()
     context = {
         'scientists': scientists,
     }

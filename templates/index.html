@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block content %}
+<div id="loginAlert" class="alert alert-success text-center collapse" role="alert">
+
+  <button type="button" class="close alert-dismissible" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <!-- Masthead -->
 <header class="text-center">
     <div class="container-fluid px-0" >
@@ -246,7 +252,5 @@
         </div>-->
     <!--</div>-->
 <!--</section>-->
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
-</script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap"></script>
 {% endblock %}

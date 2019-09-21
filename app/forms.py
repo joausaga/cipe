@@ -32,11 +32,12 @@ class RegistrationForm(forms.Form):
             'placeholder':'Email'
         }
     ))
-    phone_number = forms.CharField(label='Teléfono Móvil', widget=forms.TextInput(
-        attrs={
-            'class':'form-control',
-            'placeholder':'Teléfono Móvil'
-        }
+    phone_number = forms.CharField(label='Teléfono Móvil', required=False, help_text='No olvide el código de país',
+                                   widget=forms.TextInput(
+                                       attrs={
+                                           'class':'form-control',
+                                           'placeholder':'Teléfono Móvil'
+                                       }
     ))
     has_becal_scholarship = forms.ChoiceField(label='Es becario de BECAL?', choices=BECAL, required=False, widget=forms.Select(
         attrs={
@@ -53,10 +54,10 @@ class RegistrationForm(forms.Form):
             'class':'form-control'
         }
     ))
-    communications_channel = forms.ChoiceField(label='Canal Comunicación', choices=CHANNEL_EMPTY,
-                                               help_text='Si desea mantener contacto con los investigadores registrados '
-                                                         'en este sitio (se utilizará el que elija la mayoría)',
-                                               widget=forms.Select(
+    communication_channel = forms.ChoiceField(label='Canal Comunicación', required=False, choices=CHANNEL_EMPTY,
+                                              help_text='Si desea mantener contacto con los investigadores registrados '
+                                                        'en este sitio (se utilizará el que elija la mayoría)',
+                                              widget=forms.Select(
         attrs={
             'class': 'form-control'
         }
