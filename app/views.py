@@ -12,12 +12,17 @@ logger = logging.getLogger(__name__)
 
 
 def __get_data_map():
-    scientist_objs = Scientist.objects.all()
+    scientist_objs = Scientist.objects.filter(approved=True)
     scientists = []
     for scientist_obj in scientist_objs:
         scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj).institution
         scientists.append(
             {'name': str(scientist_obj),
+             'scientific_area': scientist_obj.scientific_area,
+             'position':  scientist_obj.position,
+             'twitter_handler': scientist_obj.twitter_handler,
+             'gscholar_profile': scientist_obj.gscholar_profile,
+             'becal_fellow': scientist_obj.has_becal_scholarship,
              'institution_name': scientist_institution.name,
              'institution_latitude': scientist_institution.latitude,
              'institution_longitude': scientist_institution.longitude
