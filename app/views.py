@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 def __get_data_map():
     scientist_objs = Scientist.objects.filter(approved=True)
     scientists = []
+    institutions = []
+    countries = []
     for scientist_obj in scientist_objs:
         scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj).institution
         scientists.append(
@@ -36,16 +38,18 @@ def __get_data_map():
              'institution_city': scientist_institution.city,
              },
         )
+        institutions.append(scientist_institution.name)
+        countries.append(scientist_institution.country)
     num_scientists = len(scientists)
-    num_institutions = Institution.objects.all().count()
-    num_countries = Institution.objects.all().values('country').distinct().count()
+    num_institutions = len(set(institutions))
+    num_countries = len(set(countries))
     return scientists, num_scientists, num_institutions, num_countries
 
 
 def index(request, *args, **kwargs):
     scientists, num_scientists, num_institutions, num_countries = __get_data_map()
     context = {
-        'scientists': scientists,
+        'scientists': json.dumps(scientists),
         'num_scientists': num_scientists,
         'num_institutions': num_institutions,
         'num_countries': num_countries,
