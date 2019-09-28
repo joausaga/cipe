@@ -1,5 +1,6 @@
 import googlemaps
 import logging
+import json
 
 from app.forms import RegistrationForm
 from app.models import Institution, Scientist, Affiliation
@@ -18,14 +19,21 @@ def __get_data_map():
         scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj).institution
         scientists.append(
             {'name': str(scientist_obj),
-             'scientific_area': scientist_obj.scientific_area,
-             'position':  scientist_obj.position,
+             'scientific_area': scientist_obj.get_scientific_area_display(),
+             'position':  scientist_obj.get_position_display(),
              'twitter_handler': scientist_obj.twitter_handler,
+             'facebook_profile': scientist_obj.facebook_profile,
              'gscholar_profile': scientist_obj.gscholar_profile,
+             'scopus_profile': scientist_obj.scopus_profile,
+             'institutional_website': scientist_obj.institutional_website,
+             'personal_website': scientist_obj.personal_website,
+             'orcid_profile': scientist_obj.orcid_profile,
              'becal_fellow': scientist_obj.has_becal_scholarship,
              'institution_name': scientist_institution.name,
              'institution_latitude': scientist_institution.latitude,
-             'institution_longitude': scientist_institution.longitude
+             'institution_longitude': scientist_institution.longitude,
+             'institution_country': scientist_institution.country,
+             'institution_city': scientist_institution.city,
              },
         )
     num_scientists = len(scientists)
@@ -131,6 +139,6 @@ def success_registration(request):
 def map_scientists(request):
     scientists, _, _, _ = __get_data_map()
     context = {
-        'scientists': scientists,
+        'scientists': json.dumps(scientists),
     }
     return render(request, 'map.html', context)

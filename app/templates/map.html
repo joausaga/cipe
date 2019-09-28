@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
-{% load static %}
 
 <script>
 {% block javascript %}
-    var scientists = "{{ scientists|safe }}";
-    console.log(scientists);
-    addMarkers(scientists);
+    addMarkers({{ scientists|safe }});
 {% endblock %}
 </script>
 

@@ -86,16 +86,22 @@ class RegistrationForm(forms.Form):
             'placeholder':'Perfil Scopus'
         }
     ))
+    personal_website = forms.URLField(label='Página web personal', required=False, widget=forms.URLInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Página web personal'
+        }
+    ))
     institutional_website = forms.URLField(label='Perfil en web institucional', required=False, widget=forms.URLInput(
         attrs={
             'class': 'form-control',
             'placeholder': 'Perfil en web institucional'
         }
     ))
-    orcid = forms.CharField(label='Identificador Orcid', required=False, widget=forms.TextInput(
+    orcid = forms.CharField(label='Perfile Orcid', required=False, widget=forms.URLInput(
         attrs={
             'class':'form-control',
-            'placeholder':'Identificador Orcid'
+            'placeholder':'Perfil Orcid'
         }
     ))
     location_name = forms.CharField(widget=forms.HiddenInput(), required=False)
