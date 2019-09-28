@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
+<script>
+{% block javascript %}
+    addMarkers({{ scientists|safe }}, true);
+{% endblock %}
+</script>
+
 {% block content %}
 <div id="loginAlert" class="alert alert-success text-center collapse" role="alert">
 
@@ -23,28 +29,10 @@
             </div>
         </div>
         <!-- <a href="#" style="position:absolute;margin-top: -5.75rem" class="btn btn-primary btn-xl rounded-pill">{{ map_footer }}</a>
-        <p style="position:absolute;margin-top: -5.75rem" class="p-3 mb-2 bg-info text-white" align="center">{{ map_footer }}</p>-->
+        <p style="position:absolute;margin-top: -5.75rem" class="p-3 mb-2 bg-info text-white" align="center">{{ map_footer }}</p>
         <script>
-            function addMarkers() {
-                // Create markers
-                var scientists = {{ scientists|safe }};
-                var inst_lat, inst_lng, str_info_window;
-                for (i=0; i < scientists.length; i++) {
-                    inst_lat = scientists[i].institution_latitude;
-                    inst_lng = scientists[i].institution_longitude;
-                    const marker = new google.maps.Marker({position: {lat: inst_lat, lng: inst_lng}, map: map});
-                    infoWindowContent = "<div class='text-body text-left'><b>" + scientists[i].name + "</b><br>" + scientists[i].institution_name + "</div>";
-                    const infowindow = new google.maps.InfoWindow({
-                        content: infoWindowContent
-                    });
-                    marker.addListener('click', function () {
-                        closeInfoWindow();
-                        infowindow.open(marker.get('map'), marker);
-                        InforObj[0] = infowindow;
-                    });
-                }
-            }
-        </script>
+            addMarkers({{ scientists|safe }}, true);
+        </script>-->
     </div>
 </header>
 <!-- Seccion Sobre el Sitio -->
