@@ -4,8 +4,6 @@
 {% block javascript %}
     var regResult = parseInt("{{ registration_result }}");
     var msg = "{{ msg }}";
-    console.log(regResult);
-    console.log(msg);
     if (regResult >= 0) {
         document.getElementById("msgReg").innerHTML = msg;
         if (regResult==1) {
