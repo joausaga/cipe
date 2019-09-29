@@ -32,13 +32,6 @@ class RegistrationForm(forms.Form):
             'placeholder':'Email'
         }
     ))
-    phone_number = forms.CharField(label='Teléfono Móvil', required=False, help_text='No olvide el código de país',
-                                   widget=forms.TextInput(
-                                       attrs={
-                                           'class':'form-control',
-                                           'placeholder':'Teléfono Móvil'
-                                       }
-    ))
     has_becal_scholarship = forms.ChoiceField(label='Es becario de BECAL?', choices=BECAL, required=False, widget=forms.Select(
         attrs={
             'class': 'form-control',
@@ -59,19 +52,29 @@ class RegistrationForm(forms.Form):
                                                         'en este sitio (se utilizará el que elija la mayoría)',
                                               widget=forms.Select(
         attrs={
-            'class': 'form-control'
+            'class': 'form-control',
+            'onchange': "showPhoneField();"
+        }
+    ))
+    phone_number = forms.CharField(label='', required=False, help_text='',
+                                   widget=forms.TextInput(
+                                       attrs={
+                                           'class': 'form-control',
+                                           'placeholder': 'Indique su número de teléfono (con código de país)',
+                                           'style': 'display:none;'
+                                       }
+                                   ))
+    facebook_profile = forms.URLField(label='', required=False, widget=forms.URLInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Indique su perfil de Facebook',
+            'style': 'display:none;'
         }
     ))
     twitter_handler = forms.CharField(label='Usuario de Twitter', help_text='sin @', required=False, widget=forms.TextInput(
         attrs={
             'class':'form-control',
             'placeholder':'Usuario de Twitter'
-        }
-    ))
-    facebook_profile = forms.URLField(label='Enlace a Perfil en Facebook', required=False, widget=forms.URLInput(
-        attrs={
-            'class':'form-control',
-            'placeholder':'Perfil de Facebook'
         }
     ))
     gscholar_profile = forms.URLField(label='Perfil de Google Scholar', required=False, widget=forms.URLInput(

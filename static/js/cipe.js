@@ -103,3 +103,26 @@ function initMap() {
         center: centerCords
     });
 }
+
+function showPhoneField() {
+    if(document.getElementById('id_communication_channel').options[document.getElementById('id_communication_channel').selectedIndex].value == "telegram") {
+        document.getElementById('id_phone_number').style.display = '';
+        document.getElementById('id_facebook_profile').style.display = 'none';
+    }
+    if(document.getElementById('id_communication_channel').options[document.getElementById('id_communication_channel').selectedIndex].value == "whatsapp") {
+        document.getElementById('id_phone_number').style.display = '';
+        document.getElementById('id_facebook_profile').style.display = 'none';
+    }
+    if(document.getElementById('id_communication_channel').options[document.getElementById('id_communication_channel').selectedIndex].value == "slack") {
+        document.getElementById('id_phone_number').style.display = 'none';
+        document.getElementById('id_facebook_profile').style.display = 'none';
+    }
+    if(document.getElementById('id_communication_channel').options[document.getElementById('id_communication_channel').selectedIndex].value == "lista_correo") {
+        document.getElementById('id_phone_number').style.display = 'none';
+        document.getElementById('id_facebook_profile').style.display = 'none';
+    }
+    if(document.getElementById('id_communication_channel').options[document.getElementById('id_communication_channel').selectedIndex].value == "facebook") {
+        document.getElementById('id_phone_number').style.display = 'none';
+        document.getElementById('id_facebook_profile').style.display = '';
+    }
+}
