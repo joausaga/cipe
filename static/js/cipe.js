@@ -32,7 +32,7 @@ function generateInfoWindowContent(scientist_info) {
     content = content + "<br>" + scientist_info.institution_name;
     content = content + "<br>" + scientist_info.institution_city + ", " + scientist_info.institution_country;
     content = content + "<br><br>" + scientist_info.position;
-    content = content + "<br>Área: " + scientist_info.scientific_area;
+    content = content + "<br>Área de Actuación: " + scientist_info.scientific_area;
     if (scientist_info.becal_fellow == true) {
         content = content + "<br>Becario Becal";
     }
