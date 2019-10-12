@@ -4,6 +4,7 @@ var centerCords = {
     lat: 41.389633,
     lng: 2.116217
 };
+var markers = [];
 var twitter_icon = 'https://cdn4.iconfinder.com/data/icons/bettericons/354/twitter-circle-512.png';
 var gscholar_icon = 'https://www.pngfind.com/pngs/m/507-5077250_icon-google-scholar-logo-hd-png-download.png';
 var facebook_icon = 'https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-512.png';
@@ -12,9 +13,7 @@ var instws_icon = 'https://images.vexels.com/media/users/3/141505/isolated/previ
 var persws_icon = 'https://www.sccpre.cat/mypng/full/223-2234989_circle-icons-browser-web-page-icon-png.png';
 var orcid_icon = 'http://www.batmacro.com/images/sampledata/avatar_nine/content/ORCID-icon.png';
 
-//window.onload = function () {
-//    initMap();
-//};
+
 function closeInfoWindow() {
     if (InforObj.length > 0) {
         /* detach the info-window from the marker */
@@ -82,7 +81,8 @@ function addMarkers(scientists, isIndex) {
     for (i=0; i < scientists.length; i++) {
         inst_lat = scientists[i].institution_latitude;
         inst_lng = scientists[i].institution_longitude;
-        const marker = new google.maps.Marker({position: {lat: inst_lat, lng: inst_lng}, map: map});
+        var marker = new google.maps.Marker({position: {lat: inst_lat, lng: inst_lng}, map: map});
+        markers.push(marker);
         if (!isIndex) {
             infoWindowContent = generateInfoWindowContent(scientists[i])
             const infowindow = new google.maps.InfoWindow({
@@ -95,6 +95,13 @@ function addMarkers(scientists, isIndex) {
             });
         }
     }
+}
+
+function removeMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
 }
 
 function initMap() {

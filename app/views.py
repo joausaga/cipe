@@ -2,18 +2,25 @@ import googlemaps
 import logging
 import json
 
+from app.constants import SCIENTIFIC_AREA, POSITION
 from app.forms import RegistrationForm
 from app.models import Institution, Scientist, Affiliation
 from django.shortcuts import render
 from django.conf import settings
+from django.http import HttpResponse
 
 
 gmaps = googlemaps.Client(key=f"{settings.GOOGLE_MAPS_API_KEY}")
 logger = logging.getLogger(__name__)
 
 
-def __get_data_map():
-    scientist_objs = Scientist.objects.filter(approved=True)
+def __get_data_map(scientific_area='', position='', becal=False):
+    query = {'has_becal_scholarship': becal, 'approved': True}
+    if scientific_area != '':
+        query['scientific_area'] = scientific_area
+    if position != '':
+        query['position'] = position
+    scientist_objs = Scientist.objects.filter(**query)
     scientists = []
     institutions = []
     countries = []
@@ -79,7 +86,6 @@ def registration(request):
     form = RegistrationForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
-            print(form.cleaned_data)
             # Get institution data
             inst_dict = {
                 'latitude': form.cleaned_data['location_lat'],
@@ -142,7 +148,53 @@ def success_registration(request):
 
 def map_scientists(request):
     scientists, _, _, _ = __get_data_map()
+    value_scientific_areas = []
+    value_positions = []
+    exists_becal_scholar = False
+    for scientist in scientists:
+        if scientist['scientific_area'] not in value_scientific_areas:
+            value_scientific_areas.append(scientist['scientific_area'])
+        if scientist['position'] not in value_positions:
+            value_positions.append(scientist['position'])
+        if not exists_becal_scholar and scientist['becal_fellow']:
+            exists_becal_scholar = True
+    scientific_areas = []
+    for value_scientific_area in value_scientific_areas:
+        for scientific_area in SCIENTIFIC_AREA:
+            if scientific_area[1] == value_scientific_area:
+                scientific_areas.append(scientific_area)
+                break
+    positions = []
+    for value_position in value_positions:
+        for position in POSITION:
+            if position[1] == value_position:
+                positions.append(position)
     context = {
         'scientists': json.dumps(scientists),
+        'scientific_areas': scientific_areas,
+        'positions': positions,
+        'exists_becal_scholar': exists_becal_scholar
     }
     return render(request, 'map.html', context)
+
+
+def filter_map(request):
+    if request.method == 'POST':
+        position = request.POST.get('position')
+        scientific_area = request.POST.get('scientific_area')
+        becal = request.POST.get('becal')
+        print(becal)
+        print(f"Selection:\n\tScientific Area: {scientific_area}\n\tPosition: {position}\n\tBecal: {becal}")
+        scientists, _, _, _ = __get_data_map(scientific_area, position, becal == 'true')
+        response_data = {
+            'scientists': scientists,
+        }
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"msg": "Cannot recognize the method type"}),
+            content_type="application/json"
+        )

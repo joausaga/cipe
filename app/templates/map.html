@@ -3,13 +3,86 @@
 <script>
 {% block javascript %}
     addMarkers({{ scientists|safe }}, false);
+    var exists_becal_scholar = { exists_becal_scholar };
+    var becal_cb = document.getElementById("becal");
+    if (exists_becal_scholar == true) {
+        becal_cb.style.display = "block";
+    }
+    $('#filter').on('submit', function(event){
+        event.preventDefault();
+        $.ajax({
+            url : "filter_map/",
+            type : "POST",
+            data : { scientific_area : $('#scientific_area').val(),
+                     position: $('#position').val(),
+                     becal: $('#becal').is(':checked'),
+                     csrfmiddlewaretoken: '{{ csrf_token }}' },
+            // handle a successful response
+            success : function(json) {
+                if (json["scientists"].length > 0) {
+                    addMarkers(json["scientists"], false);
+                }
+                else {
+                    removeMarkers();
+                    $('.toast').toast({delay: 3000});
+                    $('.toast').toast('show');
+                }
+            },
+            // handle a non-successful response
+            error : function(xhr, errmsg, err) {
+                //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                //    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+
 {% endblock %}
 </script>
 
 {% block content %}
-<br>
-<div id="map"></div>
-<br>
+<div class="toast" style="position: fixed; top: 20px; right: 20px;">
+  <div class="toast-header">
+      <strong class="mr-auto text-primary">Aviso</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+  </div>
+  <div class="toast-body">
+    No existen registros que correspondan con los filtros seleccionados
+  </div>
+</div>
+<div class="container">
+    <div class="row align-items-center mb-3 mt-3 justify-content-center">
+        <form class="form-inline" method="POST" id="filter">
+            {% csrf_token %}
+            <label class="my-1 mr-2" for="scientific_area">Área de Actuación</label>
+            <select class="custom-select my-1 mr-sm-2" id="scientific_area">
+                <option selected value="">Todas</option>
+                {% for area_key, area_value in scientific_areas %}
+                    <option value="{{ area_key }}">{{ area_value }}</option>
+                {% endfor %}
+            </select>
+            <label class="my-1 mr-2" for="position">Posición</label>
+            <select class="custom-select my-1 mr-sm-2" id="position">
+                <option value="" selected>Todas</option>
+                {% for position_key, position_value in positions %}
+                    <option value="{{ position_key }}">{{ position_value }}</option>
+                {% endfor %}
+            </select>
+            <div class="custom-control custom-checkbox" style="display: none;">
+                <input type="checkbox" class="custom-control-input" id="becal">
+                <label class="custom-control-label mr-3" for="becal">Becal</label>
+            </div>
+            <button type="submit" class="btn btn-primary my-1">Filtrar</button>
+        </form>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
 <!--Load the API from the specified URL
 * The async attribute allows the browser to render the page while the API loads
 * The key parameter will contain your own API key (which is not needed for this tutorial)
