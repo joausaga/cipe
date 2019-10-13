@@ -2,10 +2,10 @@ from django import forms
 from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS
 
 SEX_EMPTY = [('','Indique su sexo')] + list(SEX)
-SCI_AREA_EMPTY = [('','Indique su área de actuación')] + list(SCIENTIFIC_AREA)
-POSITION_EMPTY = [('','Indique su nivel académico')] + list(POSITION)
+SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
+POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
 CHANNEL_EMPTY = [('','Indique un canal de comunicación')] + list(COMMUNICATION_CHANNELS)
-BECAL = [(False, 'Es becario BECAL?'), (False, 'No'), (True, 'Si')]
+BECAL = [(False, 'Indique si es becario de BECAL'), (False, 'No'), (True, 'Si')]
 
 
 class RegistrationForm(forms.Form):
@@ -32,11 +32,22 @@ class RegistrationForm(forms.Form):
             'placeholder':'Ingrese su correo electrónico'
         }
     ))
-    has_becal_scholarship = forms.ChoiceField(label='Es becario de BECAL?', choices=BECAL, required=False, widget=forms.Select(
-        attrs={
-            'class': 'form-control',
-        }
-    ))
+    has_becal_scholarship = forms.ChoiceField(label='Es becario de BECAL?', choices=BECAL, required=False,
+                                              widget=forms.Select(
+                                                attrs={
+                                                    'class': 'form-control',
+                                                    'onchange': "showBecalEndDate();"
+                                                })
+                                              )
+    end_becal_scholarship = forms.DateField(label='Fecha estimada de retorno', required=False, help_text='',
+                                            input_formats=['%d/%m/%Y'],
+                                            widget=forms.TextInput(
+                                                attrs={
+                                                    'class': 'datepicker',
+                                                    'placeholder': '',
+                                                    'style': 'display:none;'
+                                                }
+                                            ))
     scientific_area = forms.ChoiceField(label='Area de Actuación', choices=SCI_AREA_EMPTY, widget=forms.Select(
         attrs={
             'class':'form-control'
@@ -53,7 +64,7 @@ class RegistrationForm(forms.Form):
                                               widget=forms.Select(
         attrs={
             'class': 'form-control',
-            'onchange': "showPhoneField();"
+            'onchange': "showCommunicationField();"
         }
     ))
     phone_number = forms.CharField(label='', required=False, help_text='',

@@ -112,7 +112,7 @@ function initMap() {
     });
 }
 
-function showPhoneField() {
+function showCommunicationField() {
     if(document.getElementById('id_communication_channel').options[document.getElementById('id_communication_channel').selectedIndex].value == "telegram") {
         document.getElementById('id_phone_number').style.display = '';
         document.getElementById('id_facebook_profile').style.display = 'none';
@@ -133,4 +133,15 @@ function showPhoneField() {
         document.getElementById('id_phone_number').style.display = 'none';
         document.getElementById('id_facebook_profile').style.display = '';
     }
+}
+
+function showBecalEndDate() {
+    if(document.getElementById('id_has_becal_scholarship').options[document.getElementById('id_has_becal_scholarship').selectedIndex].value == "True") {
+        document.getElementById('id_end_becal_scholarship').style.display = '';
+        document.querySelector('label[for=id_end_becal_scholarship]').style.display = '';
+    } else {
+        document.getElementById('id_end_becal_scholarship').style.display = 'none';
+        document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
+    }
+
 }
