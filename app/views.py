@@ -85,7 +85,10 @@ def registration(request):
     created = False
     form = RegistrationForm(request.POST or None)
     if request.method == "POST":
-        if form.is_valid():
+        print(form.cleaned_data)
+        if form.is_valid() and form.cleaned_data['location_lat'] != '' and form.cleaned_data['location_lng'] != '' and \
+           form.cleaned_data['location_name'] != '':
+            print(form.cleaned_data)
             # Get institution data
             inst_dict = {
                 'latitude': form.cleaned_data['location_lat'],
@@ -127,8 +130,13 @@ def registration(request):
             form = RegistrationForm()
             registration_error = 0
         else:
-            msg = f"Datos inválidos, favor compruebe los errores"
-            logger.info(f"Registration Error: The form is not valid. Form details {form}")
+            if form.cleaned_data['location_name'] == '' or form.cleaned_data['location_lat'] == '' or \
+               form.cleaned_data['location_lng'] == '':
+                msg = f"Datos de registro incompletos, favor indique una institución"
+                logger.info(f"Registration Error: Missing institution. Form details {form}")
+            else:
+                msg = "Datos inválidos, favor compruebe los errores"
+                logger.info(f"Registration Error: The form is not valid. Form details {form}")
             registration_error = 1
     context = {
         'form': form,
