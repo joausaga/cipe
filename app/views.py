@@ -25,7 +25,7 @@ def __get_data_map(scientific_area='', position='', becal=False):
     institutions = []
     countries = []
     for scientist_obj in scientist_objs:
-        scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj).institution
+        scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj, current=True).institution
         scientists.append(
             {'name': str(scientist_obj),
              'scientific_area': scientist_obj.get_scientific_area_display(),
@@ -183,8 +183,6 @@ def filter_map(request):
         position = request.POST.get('position')
         scientific_area = request.POST.get('scientific_area')
         becal = request.POST.get('becal')
-        print(becal)
-        print(f"Selection:\n\tScientific Area: {scientific_area}\n\tPosition: {position}\n\tBecal: {becal}")
         scientists, _, _, _ = __get_data_map(scientific_area, position, becal == 'true')
         response_data = {
             'scientists': scientists,
