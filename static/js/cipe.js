@@ -78,6 +78,7 @@ function generateInfoWindowContent(scientist_info) {
 function addMarkers(scientists, isIndex) {
     // Create markers
     var inst_lat, inst_lng, str_info_window;
+    markers = [];
     for (i=0; i < scientists.length; i++) {
         inst_lat = scientists[i].institution_latitude;
         inst_lng = scientists[i].institution_longitude;
