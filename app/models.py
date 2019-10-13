@@ -50,6 +50,7 @@ class Institution(models.Model):
 class Affiliation(models.Model):
     scientist = models.ForeignKey(Scientist, on_delete=models.CASCADE)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
+    current = models.BooleanField(default=True)
     joined_date = models.DateField(null=True, blank=True)
     departure_date = models.DateField(null=True, blank=True)
 
