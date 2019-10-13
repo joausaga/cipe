@@ -95,7 +95,7 @@ class RegistrationForm(forms.Form):
             'placeholder': 'Ingrese el enlace a su perfil en la web institucional'
         }
     ))
-    facebook_profile = forms.URLField(label='', required=False, widget=forms.URLInput(
+    facebook_profile = forms.URLField(label='Perfil de Facebook', required=False, widget=forms.URLInput(
         attrs={
             'class': 'form-control',
             'placeholder': 'Ingrese el enlace a su perfil de Facebook',
