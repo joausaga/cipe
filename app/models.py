@@ -19,6 +19,7 @@ class Scientist(models.Model):
     personal_website = models.URLField(null=True, blank=True)
     orcid_profile = models.URLField(null=True, blank=True)
     has_becal_scholarship = models.BooleanField(default=False)
+    end_becal_scholarship = models.DateField(blank=True, null=True)
     communication_channel = models.CharField(max_length=100, choices=COMMUNICATION_CHANNELS, default='')
     approved = models.BooleanField(default=False)
 
