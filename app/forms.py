@@ -9,24 +9,24 @@ BECAL = [(False, 'Indique si es becario de BECAL'), (False, 'No'), (True, 'Si')]
 
 
 class RegistrationForm(forms.Form):
-    first_name = forms.CharField(label='Nombre', widget=forms.TextInput(
+    first_name = forms.CharField(label='Nombre *', widget=forms.TextInput(
         attrs={
             'class':'form-control',
             'placeholder':'Ingrese su nombre'
         }
     ))
-    last_name = forms.CharField(label='Apellido', widget=forms.TextInput(
+    last_name = forms.CharField(label='Apellido *', widget=forms.TextInput(
         attrs={
             'class':'form-control',
             'placeholder':'Ingrese su apellido'
         }
     ))
-    sex = forms.ChoiceField(label='Sexo', choices=SEX_EMPTY, required=False, widget=forms.Select(
+    sex = forms.ChoiceField(label='Sexo *', choices=SEX_EMPTY, required=False, widget=forms.Select(
         attrs={
             'class': 'form-control'
         }
     ))
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(
+    email = forms.EmailField(label='Email *', widget=forms.EmailInput(
         attrs={
             'class':'form-control',
             'placeholder':'Ingrese su correo electrónico'
@@ -48,44 +48,14 @@ class RegistrationForm(forms.Form):
                                                     'style': 'display:none;'
                                                 }
                                             ))
-    scientific_area = forms.ChoiceField(label='Area de Actuación', choices=SCI_AREA_EMPTY, widget=forms.Select(
+    scientific_area = forms.ChoiceField(label='Area de Actuación *', choices=SCI_AREA_EMPTY, widget=forms.Select(
         attrs={
             'class':'form-control'
         }
     ))
-    position = forms.ChoiceField(label='Nivel Académico', choices=POSITION_EMPTY, widget=forms.Select(
+    position = forms.ChoiceField(label='Nivel Académico *', choices=POSITION_EMPTY, widget=forms.Select(
         attrs={
             'class':'form-control'
-        }
-    ))
-    communication_channel = forms.ChoiceField(label='Canal Comunicación', required=False, choices=CHANNEL_EMPTY,
-                                              help_text='Si desea mantener contacto con los investigadores registrados '
-                                                        'en este sitio (se utilizará el que elija la mayoría)',
-                                              widget=forms.Select(
-        attrs={
-            'class': 'form-control',
-            'onchange': "showCommunicationField();"
-        }
-    ))
-    phone_number = forms.CharField(label='', required=False, help_text='',
-                                   widget=forms.TextInput(
-                                       attrs={
-                                           'class': 'form-control',
-                                           'placeholder': 'Indique su número de teléfono (con código de país)',
-                                           'style': 'display:none;'
-                                       }
-                                   ))
-    facebook_profile = forms.URLField(label='', required=False, widget=forms.URLInput(
-        attrs={
-            'class': 'form-control',
-            'placeholder': 'Ingrese el enlace a su perfil de Facebook',
-            'style': 'display:none;'
-        }
-    ))
-    twitter_handler = forms.CharField(label='Usuario de Twitter', help_text='sin @', required=False, widget=forms.TextInput(
-        attrs={
-            'class':'form-control',
-            'placeholder':'Ingrese su usuario de Twitter'
         }
     ))
     gscholar_profile = forms.URLField(label='Perfil de Google Scholar', required=False, widget=forms.URLInput(
@@ -100,6 +70,19 @@ class RegistrationForm(forms.Form):
             'placeholder':'Ingrese el enlacen a su perfil de Scopus'
         }
     ))
+    orcid = forms.CharField(label='Perfile Orcid', required=False, widget=forms.URLInput(
+        attrs={
+            'class':'form-control',
+            'placeholder':'Ingrese el enlace a su perfil Orcid'
+        }
+    ))
+    twitter_handler = forms.CharField(label='Usuario de Twitter', help_text='sin @', required=False,
+                                      widget=forms.TextInput(
+                                          attrs={
+                                              'class': 'form-control',
+                                              'placeholder': 'Ingrese su usuario de Twitter'
+                                          }
+                                      ))
     personal_website = forms.URLField(label='Página web personal', required=False, widget=forms.URLInput(
         attrs={
             'class': 'form-control',
@@ -112,10 +95,10 @@ class RegistrationForm(forms.Form):
             'placeholder': 'Ingrese el enlace a su perfil en la web institucional'
         }
     ))
-    orcid = forms.CharField(label='Perfile Orcid', required=False, widget=forms.URLInput(
+    facebook_profile = forms.URLField(label='', required=False, widget=forms.URLInput(
         attrs={
-            'class':'form-control',
-            'placeholder':'Ingrese el enlace a su perfil Orcid'
+            'class': 'form-control',
+            'placeholder': 'Ingrese el enlace a su perfil de Facebook',
         }
     ))
     location_name = forms.CharField(widget=forms.HiddenInput(), required=False)
