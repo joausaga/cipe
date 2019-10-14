@@ -85,50 +85,49 @@ def registration(request):
     created = False
     form = RegistrationForm(request.POST or None)
     if request.method == "POST":
-        print(form.cleaned_data)
         if form.is_valid() and form.cleaned_data['location_lat'] != '' and form.cleaned_data['location_lng'] != '' and \
            form.cleaned_data['location_name'] != '':
-            print(form.cleaned_data)
-            # Get institution data
-            inst_dict = {
-                'latitude': form.cleaned_data['location_lat'],
-                'longitude': form.cleaned_data['location_lng'],
-                'name': form.cleaned_data['location_name']
-            }
-            # Get institution country and city
             try:
-                inst_obj = Institution.objects.get(latitude=inst_dict['latitude'], longitude=inst_dict['longitude'])
-                if inst_obj.country == '':
-                    success, inst_dict = __get_institution_extra_information(inst_dict)
-                    if success:
-                        inst_obj, updated = Institution.objects.update_or_create(latitude=inst_dict['latitude'],
-                                                                                longitude=inst_dict['longitude'],
-                                                                                defaults=inst_dict)
-            except Institution.DoesNotExist:
-                _, inst_dict = __get_institution_extra_information(inst_dict)
-                inst_obj = Institution(**inst_dict)
-                inst_obj.save()
-                logger.info(f"Institution {inst_dict} created!")
-            # Remove institution data from form object
-            del form.cleaned_data['location_lat']
-            del form.cleaned_data['location_lng']
-            del form.cleaned_data['location_name']
-            # Get/Create Scientist
-            scientist_obj, created = Scientist.objects.get_or_create(email=form.cleaned_data['email'],
-                                                                     defaults=form.cleaned_data)
-            if created:
+                Scientist.objects.get(email=form.cleaned_data['email'])
+                msg = f"El registro no se pudo completar. Email {form.cleaned_data['email']} ya registrado"
+                registration_error = 1
+            except Scientist.DoesNotExist:
+                # Get institution data
+                inst_dict = {
+                    'latitude': form.cleaned_data['location_lat'],
+                    'longitude': form.cleaned_data['location_lng'],
+                    'name': form.cleaned_data['location_name']
+                }
+                # Get institution country and city
+                try:
+                    inst_obj = Institution.objects.get(latitude=inst_dict['latitude'], longitude=inst_dict['longitude'])
+                    if inst_obj.country == '':
+                        success, inst_dict = __get_institution_extra_information(inst_dict)
+                        if success:
+                            inst_obj, updated = Institution.objects.update_or_create(latitude=inst_dict['latitude'],
+                                                                                    longitude=inst_dict['longitude'],
+                                                                                    defaults=inst_dict)
+                except Institution.DoesNotExist:
+                    _, inst_dict = __get_institution_extra_information(inst_dict)
+                    inst_obj = Institution(**inst_dict)
+                    inst_obj.save()
+                    logger.info(f"Institution {inst_dict} created!")
+                # Remove institution data from form object
+                del form.cleaned_data['location_lat']
+                del form.cleaned_data['location_lng']
+                del form.cleaned_data['location_name']
+                # Get/Create Scientist
+                scientist_obj = Scientist.objects.create(**form.cleaned_data)
+                scientist_obj.save()
                 logger.info(f"Scientist {scientist_obj} created!")
-                msg = f"El registro se completó exitosamente! Luego de su aprobación el mismo podrá ser visualizado en " \
-                      f"el map del sitio."
-            else:
-                msg = f"El registro no se pudo completar debido a que email {form.cleaned_data['email']} ya se " \
-                      f"encuentra registrado"
-            affiliation_obj, created = Affiliation.objects.get_or_create(scientist=scientist_obj,
-                                                                         institution=inst_obj,
-                                                                         defaults={'scientist':scientist_obj,
-                                                                                   'institution': inst_obj})
-            form = RegistrationForm()
-            registration_error = 0
+                affiliation_obj, created = Affiliation.objects.get_or_create(scientist=scientist_obj,
+                                                                             institution=inst_obj,
+                                                                             defaults={'scientist': scientist_obj,
+                                                                                       'institution': inst_obj})
+                msg = f"Registro exitoso!\nLuego de su aprobación los datos del mismo podrá ser " \
+                      f"visualizado en el map de investigadores."
+                form = RegistrationForm()
+                registration_error = 0
         else:
             if form.cleaned_data['location_name'] == '' or form.cleaned_data['location_lat'] == '' or \
                form.cleaned_data['location_lng'] == '':
