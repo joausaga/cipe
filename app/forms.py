@@ -61,28 +61,39 @@ class RegistrationForm(forms.Form):
     gscholar_profile = forms.URLField(label='Perfil de Google Scholar', required=False, widget=forms.URLInput(
         attrs={
             'class':'form-control',
-            'placeholder':'Ingrese el enlance su perfil de Google Scholar'
+            'placeholder':'Ingrese el enlace a su perfil de Google Scholar'
         }
     ))
     scopus_profile = forms.URLField(label='Perfil de Scopus', required=False, widget=forms.URLInput(
         attrs={
             'class':'form-control',
-            'placeholder':'Ingrese el enlacen a su perfil de Scopus'
+            'placeholder':'Ingrese el enlace a su perfil de Scopus'
         }
     ))
-    orcid = forms.CharField(label='Perfile Orcid', required=False, widget=forms.URLInput(
+    researchgate_profile = forms.URLField(label='Perfil en Research Gate', required=False, widget=forms.URLInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el enlace a su perfil de Research Gate'
+        }
+    ))
+    academia_profile = forms.URLField(label='Perfil en Academia', required=False, widget=forms.URLInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el enlace a su perfil en Academia'
+        }
+    ))
+    orcid = forms.CharField(label='Perfil Orcid', required=False, widget=forms.URLInput(
         attrs={
             'class':'form-control',
             'placeholder':'Ingrese el enlace a su perfil Orcid'
         }
     ))
-    twitter_handler = forms.CharField(label='Usuario de Twitter', help_text='sin @', required=False,
-                                      widget=forms.TextInput(
-                                          attrs={
-                                              'class': 'form-control',
-                                              'placeholder': 'Ingrese su usuario de Twitter'
-                                          }
-                                      ))
+    linkedin_profile = forms.URLField(label='Perfil en Linkedin', required=False, widget=forms.URLInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese el enlace a su perfil en Linkedin'
+        }
+    ))
     personal_website = forms.URLField(label='Página web personal', required=False, widget=forms.URLInput(
         attrs={
             'class': 'form-control',
@@ -95,6 +106,13 @@ class RegistrationForm(forms.Form):
             'placeholder': 'Ingrese el enlace a su perfil en la web institucional'
         }
     ))
+    twitter_handler = forms.CharField(label='Usuario de Twitter', help_text='sin @', required=False,
+                                      widget=forms.TextInput(
+                                          attrs={
+                                              'class': 'form-control',
+                                              'placeholder': 'Ingrese su usuario de Twitter'
+                                          }
+                                      ))
     facebook_profile = forms.URLField(label='Perfil de Facebook', required=False, widget=forms.URLInput(
         attrs={
             'class': 'form-control',

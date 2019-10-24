@@ -12,6 +12,9 @@ var scopus_icon = 'https://manila.lpu.edu.ph/images/scopus.png';
 var instws_icon = 'https://images.vexels.com/media/users/3/141505/isolated/preview/6900ccb692f7bbf429da34292e591604-world-round-icon-1-by-vexels.png';
 var persws_icon = 'https://www.sccpre.cat/mypng/full/223-2234989_circle-icons-browser-web-page-icon-png.png';
 var orcid_icon = 'http://www.batmacro.com/images/sampledata/avatar_nine/content/ORCID-icon.png';
+var linkedin_icon = 'https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-linkedin-circle-512.png';
+var researchgate_icon = 'https://www.ilseoosterlaken.nl/wp-content/uploads/2017/02/Researchgate.png';
+var academia_icon = 'https://a.academia-assets.com/images/academia-logo-redesign-2015-A.svg';
 
 
 function closeInfoWindow() {
@@ -38,16 +41,13 @@ function generateInfoWindowContent(scientist_info) {
     if (scientist_info.twitter_handler != null || scientist_info.gscholar_profile != null ||
         scientist_info.facebook_profile != null || scientist_info.scopus_profile != null ||
         scientist_info.institutional_website != null || scientist_info.personal_website != null ||
-        scientist_info.orcid_profile)
+        scientist_info.orcid_profile != null || scientist_info.linkedin_profile != null ||
+        scientist_info.researchgate_profile != null || scientist_info.academia_profile != null)
     {
         content = content + "</br><br>";
-        if (scientist_info.facebook_profile != null) {
-            content = content + "<a href='" + scientist_info.facebook_profile +
-                               "' target='_blank'><img src='" + facebook_icon +"' width='31' height='31' title='Perfil Facebook' alt='Facebook Logo'></a>";
-        }
-        if (scientist_info.twitter_handler != null) {
-            content = content + "<a href='https://twitter.com/" + scientist_info.twitter_handler +
-                                "' target='_blank'><img src='" + twitter_icon +"' width='32' height='32' title='Perfil Twitter' alt='Twitter Logo'></a>";
+        if (scientist_info.linkedin_profile != null) {
+            content = content + "<a href='" + scientist_info.linkedin_profile +
+                               "' target='_blank'><img src='" + linkedin_icon +"' width='32' height='32' title='Perfil Linkedin' alt='Linkedin Logo'></a>";
         }
         if (scientist_info.gscholar_profile != null) {
             content = content + "<a href='" + scientist_info.gscholar_profile +
@@ -56,6 +56,14 @@ function generateInfoWindowContent(scientist_info) {
         if (scientist_info.scopus_profile != null) {
             content = content + "<a href='" + scientist_info.scopus_profile +
                                "' target='_blank'><img src='" + scopus_icon +"' width='32' height='32' title='Perfil Scopus' alt='Scopus Logo'></a>";
+        }
+        if (scientist_info.researchgate_profile != null) {
+            content = content + "<a href='" + scientist_info.researchgate_profile +
+                               "' target='_blank'><img src='" + researchgate_icon +"' width='32' height='32' title='Perfil Research Gate' alt='Research Gate Logo'></a>";
+        }
+        if (scientist_info.academia_profile != null) {
+            content = content + "<a href='" + scientist_info.academia_profile +
+                               "' target='_blank'><img src='" + academia_icon +"' width='30' height='30' title='Perfil Academia' alt='Academia Logo'></a>";
         }
         if (scientist_info.orcid_profile != null) {
             content = content + "<a href='" + scientist_info.orcid_profile +
@@ -68,6 +76,14 @@ function generateInfoWindowContent(scientist_info) {
         if (scientist_info.personal_website != null) {
             content = content + "<a href='" + scientist_info.personal_website +
                                "' target='_blank'><img src='" + persws_icon +"' width='32' height='32' title='Página Web Personal' alt='Scopus Logo'></a>";
+        }
+        if (scientist_info.twitter_handler != null) {
+            content = content + "<a href='https://twitter.com/" + scientist_info.twitter_handler +
+                                "' target='_blank'><img src='" + twitter_icon +"' width='32' height='32' title='Perfil Twitter' alt='Twitter Logo'></a>";
+        }
+        if (scientist_info.facebook_profile != null) {
+            content = content + "<a href='" + scientist_info.facebook_profile +
+                               "' target='_blank'><img src='" + facebook_icon +"' width='31' height='31' title='Perfil Facebook' alt='Facebook Logo'></a>";
         }
     }
 
