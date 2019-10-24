@@ -14,7 +14,7 @@ def compute_slug():
 
 
 class Scientist(models.Model):
-    slug = models.SlugField(max_length=40, unique=True)
+    slug = models.SlugField(max_length=40, null=True, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     ci = models.CharField(max_length=100, unique=True)
@@ -47,7 +47,8 @@ class Scientist(models.Model):
         if not self.id:
             self.created_at = timezone.now()
         self.edited_at = timezone.now()
-        self.slug = compute_slug()
+        if not self.slug:
+            self.slug = compute_slug()
         return super(Scientist, self).save(*args, **kwargs)
 
     def __unicode__(self):
