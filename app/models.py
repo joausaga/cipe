@@ -52,10 +52,10 @@ class Scientist(models.Model):
         return super(Scientist, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name.title()} {self.last_name.title()}"
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name.title()} {self.last_name.title()}"
 
 
 class Institution(models.Model):
