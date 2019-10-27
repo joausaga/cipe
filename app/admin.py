@@ -4,7 +4,7 @@ from app.models import Scientist, Affiliation, Institution
 
 @admin.register(Scientist)
 class ScientistAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email', 'scientific_area', 'affiliation', 'position')
+    list_display = ('first_name', 'last_name', 'email', 'scientific_area', 'affiliation', 'position', 'approved')
     ordering = ('last_name',)
 
     def affiliation(self, obj):
