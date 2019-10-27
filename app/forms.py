@@ -21,6 +21,12 @@ class RegistrationForm(forms.Form):
             'placeholder':'Ingrese su apellido'
         }
     ))
+    ci = forms.CharField(label='Cédula de Identidad *', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese su cédula de identidad'
+        }
+    ))
     sex = forms.ChoiceField(label='Sexo *', choices=SEX_EMPTY, required=False, widget=forms.Select(
         attrs={
             'class': 'form-control'
@@ -82,7 +88,7 @@ class RegistrationForm(forms.Form):
             'placeholder': 'Ingrese el enlace a su perfil en Academia'
         }
     ))
-    orcid = forms.CharField(label='Perfil Orcid', required=False, widget=forms.URLInput(
+    orcid_profile = forms.CharField(label='Perfil Orcid', required=False, widget=forms.URLInput(
         attrs={
             'class':'form-control',
             'placeholder':'Ingrese el enlace a su perfil Orcid'
