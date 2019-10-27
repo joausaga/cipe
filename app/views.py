@@ -91,8 +91,9 @@ def registration(request):
         if form.is_valid() and form.cleaned_data['location_lat'] != '' and form.cleaned_data['location_lng'] != '' and \
            form.cleaned_data['location_name'] != '':
             try:
-                Scientist.objects.get(email=form.cleaned_data['email'])
-                msg = f"El registro no se pudo completar. Email {form.cleaned_data['email']} ya registrado"
+                Scientist.objects.get(email=form.cleaned_data['email'], ci=form.cleaned_data['ci'])
+                msg = f"Investigador con email {form.cleaned_data['email']} y cédula de identidad " \
+                      f"{form.cleaned_data['ci']} ya existente"
                 registration_error = 1
             except Scientist.DoesNotExist:
                 # Get institution data
