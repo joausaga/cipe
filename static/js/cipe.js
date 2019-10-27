@@ -94,23 +94,26 @@ function generateInfoWindowContent(scientist_info) {
 function addMarkers(scientists, isIndex) {
     // Create markers
     var inst_lat, inst_lng, str_info_window;
+    var infowindow = new google.maps.InfoWindow();
+    var marker;
     markers = [];
     for (i=0; i < scientists.length; i++) {
         inst_lat = scientists[i].institution_latitude;
         inst_lng = scientists[i].institution_longitude;
-        var marker = new google.maps.Marker({position: {lat: inst_lat, lng: inst_lng}, map: map});
-        markers.push(marker);
+        marker = new google.maps.Marker({
+            position: {lat: inst_lat, lng: inst_lng},
+            map: map
+        });
         if (!isIndex) {
-            infoWindowContent = generateInfoWindowContent(scientists[i])
-            const infowindow = new google.maps.InfoWindow({
-                content: infoWindowContent
-            });
-            marker.addListener('click', function () {
-                closeInfoWindow();
-                infowindow.open(marker.get('map'), marker);
-                InforObj[0] = infowindow;
-            });
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    //closeInfoWindow();
+                    infowindow.setContent(generateInfoWindowContent(scientists[i]));
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
         }
+        markers.push(marker);
     }
 }
 
