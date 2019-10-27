@@ -19,11 +19,11 @@
                      csrfmiddlewaretoken: '{{ csrf_token }}' },
             // handle a successful response
             success : function(json) {
+                removeMarkers();
                 if (json["scientists"].length > 0) {
                     addMarkers(json["scientists"], false);
                 }
                 else {
-                    removeMarkers();
                     $('.toast').toast({delay: 3000});
                     $('.toast').toast('show');
                 }
