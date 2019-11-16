@@ -2,10 +2,12 @@
 
 <script>
 {% block javascript %}
+    map = initAutocomplete();
     // hide label of data picker
     document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
     var regResult = parseInt("{{ registration_result }}");
     var msg = "{{ msg }}";
+    var is_edit_form = parseInt("{{ edit }}");
     if (regResult >= 0) {
         document.getElementById("msgReg").innerHTML = msg;
         if (regResult==1) {
@@ -29,117 +31,44 @@
     $("#id_end_becal_scholarship").datepicker({
       format:'dd/mm/yyyy',
     });
+    if (is_edit_form == 1) {
+        document.getElementById("form_title").innerHTML = 'Editar Registro de Investigador';
+        var institution = {{ institution|safe }};
+        if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
+            addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
+        }
+    }
 {% endblock %}
 </script>
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-lg-8 mt-5 mx-auto">
-            <h2 class="text-center text-uppercase text-secondary mt-5">Registro de Investigador</h2>
-            <div class="divider-custom">
-                <div class="divider-custom-line"></div>
-            </div>
-            <form method="POST" onkeydown="return event.key != 'Enter';"> {% csrf_token %}
-                <div class="control-group">
-                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                        {{ form.as_p }}
-                        <p style="font-size:1.5em;color:#6c757d;margin-top:2em">Institución * (busque en el mapa)</p>
-                        <div id="map-registration"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mt-5 mx-auto">
+                <h2 id='form_title' class="text-center text-uppercase text-secondary mt-5">Registro de Investigador</h2>
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                </div>
+                <form method="POST" onkeydown="return event.key != 'Enter';"> {% csrf_token %}
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                            {{ form.as_p }}
+                            <p style="font-size:1.5em;color:#6c757d;margin-top:2em">Institución * (busque en el mapa)</p>
+                            <div id="map-registration"></div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <br>
-                    <span class="badge badge-warning">* Campo Requerido</span>
-                </div>
-                <div class="mt-4 form-group">
-                    <button type="submit" class="btn btn-primary btn-xl" id="submitButton">Registrarse</button>
-                </div>
-            </form>
-            <input id="pac-input" class="map-search-box" type="text" placeholder="Buscar institución">
+                    <div>
+                        <br>
+                        <span class="badge badge-warning">* Campo Requerido</span>
+                    </div>
+                    <div class="mt-4 form-group">
+                        <button type="submit" class="btn btn-primary btn-xl" id="submitButton">Registrarse</button>
+                    </div>
+                </form>
+                <input id="pac-input" class="map-search-box" type="text" placeholder="Buscar institución">
+            </div>
         </div>
     </div>
-</div>
-<script>
-    // This example adds a search box to a map, using the Google Place Autocomplete
-    // feature. People can enter geographical searches. The search box will return a
-    // pick list containing a mix of places and predicted search terms.
-
-    // This example requires the Places library. Include the libraries=places
-    // parameter when you first load the API. For example:
-    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-    function initAutocomplete() {
-        var map = new google.maps.Map(document.getElementById('map-registration'), {
-          center: {lat: 41.389633, lng: 40.116217},
-          zoom: 2,
-          mapTypeId: 'roadmap'
-        });
-
-        // Create the search box and link it to the UI element.
-        var input = document.getElementById('pac-input');
-        var searchBox = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function() {
-          searchBox.setBounds(map.getBounds());
-        });
-
-        var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
-
-          if (places.length == 0) {
-            return;
-          }
-
-          // Clear out the old markers.
-          markers.forEach(function(marker) {
-            marker.setMap(null);
-          });
-        markers = [];
-
-          // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
-
-            // Set the value of the hidden fields
-            document.getElementById("id_location_name").value = place.name;
-            document.getElementById("id_location_lat").value = place.geometry.location.lat();
-            document.getElementById("id_location_lng").value = place.geometry.location.lng();
-
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-              map: map,
-              title: place.name,
-              position: place.geometry.location
-            }));
-
-            if (place.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-        });
-        map.fitBounds(bounds);
-        });
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete"
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places"
         async defer></script>
 {% endblock %}
