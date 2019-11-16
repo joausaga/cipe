@@ -3,8 +3,9 @@ import logging
 import json
 
 from app.constants import SCIENTIFIC_AREA, POSITION
-from app.forms import RegistrationForm
+from app.forms import RegistrationForm, RegistrationEditForm
 from app.models import Institution, Scientist, Affiliation
+from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse
@@ -82,6 +83,24 @@ def __get_institution_extra_information(inst_dict):
         return False, inst_dict
 
 
+def __create_update_institution(inst_dict):
+    # Get institution country and city
+    try:
+        inst_obj = Institution.objects.get(latitude=inst_dict['latitude'], longitude=inst_dict['longitude'])
+        if inst_obj.country == '':
+            success, inst_dict = __get_institution_extra_information(inst_dict)
+            if success:
+                inst_obj, updated = Institution.objects.update_or_create(latitude=inst_dict['latitude'],
+                                                                         longitude=inst_dict['longitude'],
+                                                                         defaults=inst_dict)
+    except Institution.DoesNotExist:
+        _, inst_dict = __get_institution_extra_information(inst_dict)
+        inst_obj = Institution(**inst_dict)
+        inst_obj.save()
+        logger.info(f"Institution {inst_dict} created!")
+    return inst_obj
+
+
 def registration(request):
     msg = ''
     registration_error = -1
@@ -96,26 +115,13 @@ def registration(request):
                       f"{form.cleaned_data['ci']} ya existente"
                 registration_error = 1
             except Scientist.DoesNotExist:
-                # Get institution data
+                # Save institution data
                 inst_dict = {
                     'latitude': form.cleaned_data['location_lat'],
                     'longitude': form.cleaned_data['location_lng'],
                     'name': form.cleaned_data['location_name']
                 }
-                # Get institution country and city
-                try:
-                    inst_obj = Institution.objects.get(latitude=inst_dict['latitude'], longitude=inst_dict['longitude'])
-                    if inst_obj.country == '':
-                        success, inst_dict = __get_institution_extra_information(inst_dict)
-                        if success:
-                            inst_obj, updated = Institution.objects.update_or_create(latitude=inst_dict['latitude'],
-                                                                                    longitude=inst_dict['longitude'],
-                                                                                    defaults=inst_dict)
-                except Institution.DoesNotExist:
-                    _, inst_dict = __get_institution_extra_information(inst_dict)
-                    inst_obj = Institution(**inst_dict)
-                    inst_obj.save()
-                    logger.info(f"Institution {inst_dict} created!")
+                inst_obj = __create_update_institution(inst_dict)
                 # Remove institution data from form object
                 del form.cleaned_data['location_lat']
                 del form.cleaned_data['location_lng']
@@ -128,8 +134,8 @@ def registration(request):
                                                                              institution=inst_obj,
                                                                              defaults={'scientist': scientist_obj,
                                                                                        'institution': inst_obj})
-                msg = f"Registro exitoso!\nLuego de su aprobación los datos del mismo podrá ser " \
-                      f"visualizado en el map de investigadores."
+                msg = f"Registro exitoso!\nLuego de su aprobación, los datos podrán ser " \
+                      f"visualizados en el map de investigadores."
                 form = RegistrationForm()
                 registration_error = 0
         else:
@@ -148,9 +154,7 @@ def registration(request):
     }
     if created:
         logger.info(f"Affiliation {affiliation_obj} created!")
-        return render(request, 'register.html', context)
-    else:
-        return render(request, 'register.html', context)
+    return render(request, 'register.html', context)
 
 
 def success_registration(request):
@@ -207,3 +211,85 @@ def filter_map(request):
             json.dumps({"msg": "Cannot recognize the method type"}),
             content_type="application/json"
         )
+
+
+def edit_scientist(request, **kwargs):
+    scientist_slug = kwargs.get('scientist_slug')
+    scientist_obj = Scientist.objects.get(slug=scientist_slug)
+    registration_error = -1
+    msg = ''
+    institution = None
+    if request.method == "POST":
+        form = RegistrationEditForm(request.POST or None)
+        if form.is_valid():
+            data = form.cleaned_data.copy()
+            if data['location_lat'] != '' and data['location_lng'] != '' and data['location_name'] != '':
+                institution = {
+                    'latitude': data['location_lat'],
+                    'longitude': data['location_lng'],
+                    'name': data['location_name']
+                }
+                # update scientist affiliation
+                affiliation = Affiliation.objects.get(scientist=scientist_obj, current=True)
+                if affiliation.institution.name != data['location_name'] or \
+                   affiliation.institution.longitude != data['location_lng'] or \
+                   affiliation.institution.latitude != data['location_lat']:
+                    # Save institution data
+                    inst_obj = __create_update_institution(institution)
+                    # Create/Update affiliation
+                    affiliation_obj, created = Affiliation.objects.get_or_create(scientist=scientist_obj,
+                                                                                 institution=inst_obj,
+                                                                                 defaults={'scientist': scientist_obj,
+                                                                                           'institution': inst_obj})
+                    if created:
+                        logger.info(f"Affiliation {affiliation_obj} was created!")
+                # Remove institution data from form object
+                del data['location_lat']
+                del data['location_lng']
+                del data['location_name']
+                data['approved'] = False
+                # Update scientist
+                Scientist.objects.filter(ci=form.cleaned_data['ci'], email=form.cleaned_data['email']).\
+                    update(**data)
+                msg = f"Actualización de datos exitosa! Luego de su aprobación, los nuevos datos podrán ser " \
+                      f"visualizados en el map de investigadores."
+                registration_error = 0
+                institution = {
+                    'latitude': form.cleaned_data['location_lat'],
+                    'longitude': form.cleaned_data['location_lng'],
+                    'name': form.cleaned_data['location_name']
+                }
+            else:
+                msg = f"Datos de registro incompletos, favor indique una institución"
+                logger.info(f"Scientist update error: Missing institution. Form details {form}")
+                registration_error = 1
+        else:
+            msg = "Datos inválidos, favor compruebe los errores"
+            logger.info(f"Scientist update error: The form is not valid. Form details {form}")
+            registration_error = 1
+        form = RegistrationEditForm(initial=form.cleaned_data)
+    else:
+        existing_data = model_to_dict(scientist_obj)
+        keys_to_remove = ['phone_number', 'birth_date', 'communication_channel',
+                          'approved', 'slug']
+        for key_to_remove in keys_to_remove:
+            del existing_data[key_to_remove]
+        # add location data
+        scientist_affiliation = Affiliation.objects.get(scientist=scientist_obj, current=True)
+        institution = {
+            'latitude': scientist_affiliation.institution.latitude,
+            'longitude': scientist_affiliation.institution.longitude,
+            'name': scientist_affiliation.institution.name
+        }
+        existing_data['location_name'] = institution['name']
+        existing_data['location_lat'] = institution['latitude']
+        existing_data['location_lng'] = institution['longitude']
+        form = RegistrationEditForm(initial=existing_data)
+    context = {
+        'form': form,
+        'institution': json.dumps(institution),
+        'edit': 1,
+        'msg': msg,
+        'registration_result': registration_error
+    }
+    return render(request, 'register.html', context)
