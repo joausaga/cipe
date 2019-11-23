@@ -1,22 +1,20 @@
-import googlemaps
 import logging
 import json
 
 from app.constants import SCIENTIFIC_AREA, POSITION
 from app.forms import RegistrationForm, RegistrationEditForm
 from app.models import Institution, Scientist, Affiliation
+from app.utils import get_location_info_from_coordinates
 from django.forms.models import model_to_dict
 from django.shortcuts import render
-from django.conf import settings
 from django.http import HttpResponse
 
 
-gmaps = googlemaps.Client(key=f"{settings.GOOGLE_MAPS_API_KEY}")
 logger = logging.getLogger(__name__)
 
 
-def __get_data_map(scientific_area='', position='', becal=False):
-    query = {'has_becal_scholarship': becal, 'approved': True}
+def __get_data_map(scientific_area='', position=''):
+    query = {'approved': True}
     if scientific_area != '':
         query['scientific_area'] = scientific_area
     if position != '':
@@ -70,17 +68,14 @@ def index(request, *args, **kwargs):
 
 
 def __get_institution_extra_information(inst_dict):
-    try:
-        reverse_geocode_result = gmaps.reverse_geocode((inst_dict['latitude'], inst_dict['longitude']))
-        inst_dict['address'] = reverse_geocode_result[0]['formatted_address']
-        inst_dict['city'] = reverse_geocode_result[0]['address_components'][3]['long_name']
-        inst_dict['region'] = reverse_geocode_result[0]['address_components'][4]['long_name']
-        inst_dict['country'] = reverse_geocode_result[0]['address_components'][5]['long_name']
-        inst_dict['postal_code'] = reverse_geocode_result[0]['address_components'][6]['long_name']
-        return True, inst_dict
-    except Exception as e:
-        logger.error(f"Error when doing reverse geo-coding {e}")
-        return False, inst_dict
+    geocode_result, address, postal_code, city, region, country = get_location_info_from_coordinates(inst_dict['latitude'],
+                                                                                                     inst_dict['longitude'])
+    inst_dict['address'] = address
+    inst_dict['city'] = city
+    inst_dict['region'] = region
+    inst_dict['country'] = country
+    inst_dict['postal_code'] = postal_code
+    return geocode_result, inst_dict
 
 
 def __create_update_institution(inst_dict):
@@ -93,6 +88,8 @@ def __create_update_institution(inst_dict):
                 inst_obj, updated = Institution.objects.update_or_create(latitude=inst_dict['latitude'],
                                                                          longitude=inst_dict['longitude'],
                                                                          defaults=inst_dict)
+            else:
+                raise Exception(f"Could not information of institution")
     except Institution.DoesNotExist:
         _, inst_dict = __get_institution_extra_information(inst_dict)
         inst_obj = Institution(**inst_dict)
@@ -198,7 +195,7 @@ def filter_map(request):
         position = request.POST.get('position')
         scientific_area = request.POST.get('scientific_area')
         becal = request.POST.get('becal')
-        scientists, _, _, _ = __get_data_map(scientific_area, position, becal == 'true')
+        scientists, _, _, _ = __get_data_map(scientific_area, position)
         response_data = {
             'scientists': scientists,
         }
