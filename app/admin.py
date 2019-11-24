@@ -55,13 +55,19 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
         return new_dict
 
     def __get_date(self, str_end_date):
-        try:
-            return datetime.datetime.strptime(str_end_date, '%m/%d/%Y')
-        except ValueError:
+        if str_end_date:
             try:
-                return datetime.datetime.strptime(str_end_date, '%d/%m/%Y')
+                return datetime.datetime.strptime(str_end_date, '%m/%d/%Y')
             except ValueError:
-                return datetime.datetime.strptime(str_end_date, '%d/%m/%y')
+                try:
+                    return datetime.datetime.strptime(str_end_date, '%d/%m/%Y')
+                except ValueError:
+                    try:
+                        return datetime.datetime.strptime(str_end_date, '%d/%m/%y')
+                    except:
+                        return None
+        else:
+            return None
 
     def __process_becal_csv(self, csv_reader):
         current_year = datetime.datetime.now().year
@@ -75,6 +81,10 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
                 Scientist.objects.get(ci=ci)
                 logger.info(f"Scientist already in the database")
             except Scientist.DoesNotExist:
+                if not row['universidad']:
+                    logger.info(f"Person {row['nombres']+ ' ' + row['apellidos']} cannot be created because she "
+                                f"doesn't have associated a university")
+                    continue
                 with transaction.atomic():
                     year_of_birth = current_year - int(row['edad'])
                     tentative_birth_date = datetime.datetime(year_of_birth, 1, 1)
@@ -116,18 +126,22 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
                         'position': position,
                         'scientific_area': row['area_estudio_agregado'].strip(),
                         'has_becal_scholarship': True,
-                        'end_becal_scholarship': scholarship_end_date,
                         'approved': True
                     }
+                    if scholarship_end_date:
+                        scientist_dict['end_becal_scholarship'] = scholarship_end_date
                     scientist_obj = Scientist(**scientist_dict)
                     scientist_obj.save()
                     logger.info(f"Scientist {scientist_obj} created!")
+                    defaults_dict = {'scientist': scientist_obj,
+                                     'institution': inst_obj}
+                    if institution_join_date:
+                        defaults_dict['joined_date'] = institution_join_date
                     affiliation_obj, created = Affiliation.objects.get_or_create(scientist=scientist_obj,
                                                                                  institution=inst_obj,
-                                                                                 defaults={'scientist': scientist_obj,
-                                                                                           'institution': inst_obj,
-                                                                                           'joined_date': institution_join_date})
-
+                                                                                 defaults=defaults_dict)
+                    if created:
+                        logger.info(f"Affiliation {affiliation_obj} created!")
     def __decode_utf8(self, input_iter):
         for l in input_iter:
             yield l.decode('utf-8')
