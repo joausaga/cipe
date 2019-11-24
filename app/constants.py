@@ -7,8 +7,8 @@ SEX = (
 SCIENTIFIC_AREA = (
     ('administracion', 'Administración'),
     ('agricultura', 'Agricultura'),
-    ('antropoligia', 'Antropoligía'),
-    ('artes', 'Artes'),
+    ('antropologia', 'Antropología'),
+    ('arte', 'Arte'),
     ('arquitectura', 'Arquitectura'),
     ('astronomia', 'Astronomía'),
     ('biologia', 'Biología'),
