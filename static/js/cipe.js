@@ -115,6 +115,9 @@ function addMarkers(scientists, isIndex) {
         }
         markers.push(marker);
     }
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        {imagePath: '/static/img/markercluster/m'});
 }
 
 function removeMarkers() {
