@@ -147,6 +147,8 @@ def registration(request):
     context = {
         'form': form,
         'msg': msg,
+        'edit': 0,
+        'institution': json.dumps(None),
         'registration_result': registration_error
     }
     if created:
