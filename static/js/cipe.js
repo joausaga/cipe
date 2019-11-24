@@ -5,6 +5,7 @@ var centerCords = {
     lng: 2.116217
 };
 var markers = [];
+var markerCluster = null;
 var twitter_icon = 'https://cdn4.iconfinder.com/data/icons/bettericons/354/twitter-circle-512.png';
 var gscholar_icon = 'https://www.pngfind.com/pngs/m/507-5077250_icon-google-scholar-logo-hd-png-download.png';
 var facebook_icon = 'https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-512.png';
@@ -34,7 +35,7 @@ function generateInfoWindowContent(scientist_info) {
     content = content + "<br>" + scientist_info.institution_name;
     content = content + "<br>" + scientist_info.institution_city + ", " + scientist_info.institution_country;
     content = content + "<br><br>" + scientist_info.position;
-    content = content + "<br>Área de Actuación: " + scientist_info.scientific_area;
+    content = content + "<br>Disciplina: " + scientist_info.scientific_area;
     if (scientist_info.becal_fellow == true) {
         content = content + "<br>Becario Becal";
     }
@@ -116,8 +117,7 @@ function addMarkers(scientists, isIndex) {
         markers.push(marker);
     }
     // Add a marker clusterer to manage the markers.
-    var markerCluster = new MarkerClusterer(map, markers,
-        {imagePath: '/static/img/markercluster/m'});
+    markerCluster = new MarkerClusterer(map, markers, {imagePath: '/static/img/markercluster/m'});
 }
 
 function removeMarkers() {
@@ -125,6 +125,7 @@ function removeMarkers() {
         markers[i].setMap(null);
     }
     markers = [];
+    markerCluster.clearMarkers();
 }
 
 function initMap() {
