@@ -8,6 +8,13 @@
     var regResult = parseInt("{{ registration_result }}");
     var msg = "{{ msg }}";
     var is_edit_form = parseInt("{{ edit }}");
+    if (is_edit_form == 1) {
+        document.getElementById("form_title").innerHTML = 'Editar Registro de Investigador';
+        var institution = {{ institution|safe }};
+        if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
+            addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
+        }
+    }
     if (regResult >= 0) {
         document.getElementById("msgReg").innerHTML = msg;
         if (regResult==1) {
@@ -31,13 +38,6 @@
     $("#id_end_becal_scholarship").datepicker({
       format:'dd/mm/yyyy',
     });
-    if (is_edit_form == 1) {
-        document.getElementById("form_title").innerHTML = 'Editar Registro de Investigador';
-        var institution = {{ institution|safe }};
-        if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
-            addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
-        }
-    }
 {% endblock %}
 </script>
 
@@ -45,10 +45,15 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8 mt-5 mx-auto">
-                <h2 id='form_title' class="text-center text-uppercase text-secondary mt-5">Registro de Investigador</h2>
+                <h2 id='form_title' class="text-center text-uppercase text-secondary mt-5">Registro de investigador</h2>
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                 </div>
+                <p>
+                    Recuerde que el objetivo del sitio es visualizar los datos de investigadores paraguayos residiendo en el
+                    extranjero y trabajando/estudiando en universidades o centros de investigación fuera de Paraguay.<br><br>
+                    Los datos registrados son aprobados por el administrador antes de ser visualizados en el sitio.
+                </p>
                 <form method="POST" onkeydown="return event.key != 'Enter';"> {% csrf_token %}
                     <div class="control-group">
                         <div class="form-group floating-label-form-group controls mb-0 pb-2">
