@@ -54,7 +54,7 @@
     <div class="row align-items-center mb-3 mt-3 justify-content-center">
         <form class="form-inline" method="POST" id="filter">
             {% csrf_token %}
-            <label class="my-1 mr-2" for="scientific_area">Área de Actuación</label>
+            <label class="my-1 mr-2" for="scientific_area">Disciplina</label>
             <select class="custom-select my-1 mr-sm-2" id="scientific_area">
                 <option selected value="">Todas</option>
                 {% for area_key, area_value in scientific_areas %}
