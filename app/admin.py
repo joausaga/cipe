@@ -43,6 +43,7 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
     ordering = ('last_name',)
     change_list_template = "admin/scientist_changelist.html"
     list_filter = ('has_becal_scholarship',)
+    search_fields = ('first_name', 'last_name', 'scientific_area')
 
     def affiliation(self, obj):
         return Affiliation.objects.filter(scientist=obj)[0].institution
