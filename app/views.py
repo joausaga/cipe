@@ -1,10 +1,11 @@
 import logging
 import json
 
-from app.constants import SCIENTIFIC_AREA, POSITION
+from app.constants import SCIENTIFIC_AREA, POSITION, MAIN_SCIENTIFIC_AREA, FIRST_CAT_SCIENTIFIC_AREA
 from app.forms import RegistrationForm, RegistrationEditForm
 from app.models import Institution, Scientist, Affiliation
 from app.utils import get_location_info_from_coordinates
+from django.db.models import Count
 from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -22,7 +23,10 @@ def __get_data_map(scientific_area='', position=''):
     scientist_objs = Scientist.objects.filter(**query)
     scientists = []
     institutions = []
-    countries = []
+    countries = set()
+    cities = set()
+    num_male_scientists, num_female_scientists = 0, 0
+    min_age_male, max_age_male, min_age_female, max_age_female = 100, -1, 100, -1
     for scientist_obj in scientist_objs:
         scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj, current=True).institution
         scientists.append(
@@ -48,21 +52,58 @@ def __get_data_map(scientific_area='', position=''):
              },
         )
         institutions.append(scientist_institution.name)
-        countries.append(scientist_institution.country)
+        countries.add(scientist_institution.country)
+        cities.add(scientist_institution.city)
+        if scientist_obj.sex == 'femenino':
+            num_female_scientists += 1
+            if scientist_obj.rough_age > max_age_female:
+                max_age_female = scientist_obj.rough_age
+            if scientist_obj.rough_age < min_age_female:
+                min_age_female = scientist_obj.rough_age
+        elif scientist_obj.sex == 'masculino':
+            num_male_scientists += 1
+            if scientist_obj.rough_age > max_age_male:
+                max_age_male = scientist_obj.rough_age
+            if scientist_obj.rough_age < min_age_male:
+                min_age_male = scientist_obj.rough_age
     num_scientists = len(scientists)
     num_institutions = len(set(institutions))
-    num_countries = len(set(countries))
-    return scientists, num_scientists, num_institutions, num_countries
+    num_countries = len(countries)
+    num_cities = len(cities)
+    return scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
+        max_age_male, max_age_female, min_age_male, min_age_female, num_cities
+
+
+def __get_top_scientific_areas(k=1):
+    tops = Scientist.objects.values('first_category_scientific_area').annotate(total=Count('first_category_scientific_area')).order_by('-total')[:k]
+    top_areas, total_top_areas = [], []
+    dict_rel_areas = dict(FIRST_CAT_SCIENTIFIC_AREA)
+    for top in tops:
+        fc_scientific_area = top['first_category_scientific_area']
+        top_areas.append(dict_rel_areas[fc_scientific_area])
+        total_top_areas.append(top['total'])
+    return ', '.join(top_areas), total_top_areas
 
 
 def index(request, *args, **kwargs):
-    scientists, num_scientists, num_institutions, num_countries = __get_data_map()
+    scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
+        max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
+    top_area, total_top_area = __get_top_scientific_areas()
     context = {
         'scientists': json.dumps(scientists),
         'num_scientists': num_scientists,
+        'num_male_scientists': num_male_scientists,
+        'num_female_scientists': num_female_scientists,
         'num_institutions': num_institutions,
         'num_countries': num_countries,
-        'message': kwargs['msg'] if 'msg' in kwargs else ''
+        'num_cities': num_cities,
+        'top_area': top_area,
+        'per_top_area': int(round((total_top_area[0]/num_scientists)*100,0)),
+        'message': kwargs['msg'] if 'msg' in kwargs else '',
+        'max_age_male': max_age_male,
+        'max_age_female': max_age_female,
+        'min_age_male': min_age_male,
+        'min_age_female': min_age_female
     }
     return render(request, 'index.html', context)
 
@@ -161,7 +202,7 @@ def success_registration(request):
 
 
 def map_scientists(request):
-    scientists, _, _, _ = __get_data_map()
+    scientists, _, _, _, _, _, _, _, _, _, _ = __get_data_map()
     value_scientific_areas = []
     value_positions = []
     exists_becal_scholar = False
@@ -197,7 +238,7 @@ def filter_map(request):
         position = request.POST.get('position')
         scientific_area = request.POST.get('scientific_area')
         becal = request.POST.get('becal')
-        scientists, _, _, _ = __get_data_map(scientific_area, position)
+        scientists, _, _, _, _, _, _, _, _, _, _ = __get_data_map(scientific_area, position)
         response_data = {
             'scientists': scientists,
         }
