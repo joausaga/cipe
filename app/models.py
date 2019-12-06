@@ -1,7 +1,9 @@
-from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS
+from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS, FIRST_CAT_SCIENTIFIC_AREA, \
+    MAIN_SCIENTIFIC_AREA
 from django.db import models
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from datetime import date
 
 
 def compute_slug():
@@ -20,9 +22,12 @@ class Scientist(models.Model):
     ci = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=100, null=True, blank=True)
+    first_category_scientific_area = models.CharField(max_length=100, choices=FIRST_CAT_SCIENTIFIC_AREA, default='',
+                                                      editable=False)
     scientific_area = models.CharField(max_length=100, choices=SCIENTIFIC_AREA, default='')
     position = models.CharField(max_length=100, choices=POSITION, default='')
     birth_date = models.DateField(null=True, blank=True)
+    rough_age = models.IntegerField(null=True, editable=False)
     sex = models.CharField(max_length=50, null=True, blank=True, choices=SEX)
     twitter_handler = models.CharField(max_length=100, null=True, blank=True)
     facebook_profile = models.URLField(null=True, blank=True)
@@ -49,6 +54,14 @@ class Scientist(models.Model):
         self.edited_at = timezone.now()
         if not self.slug:
             self.slug = compute_slug()
+        # compute rough age
+        delta_date = date.today() - self.birth_date
+        self.rough_age = int(round(delta_date.days / 365, 0))
+        # assign first level scientific area
+        for first_level, second_levels in MAIN_SCIENTIFIC_AREA.items():
+            if self.scientific_area in second_levels:
+                self.first_category_scientific_area = first_level
+                break
         return super(Scientist, self).save(*args, **kwargs)
 
     def __unicode__(self):
