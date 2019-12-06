@@ -1,4 +1,5 @@
 from app.models import Scientist, Affiliation, Institution
+from app.constants import MAIN_SCIENTIFIC_AREA
 from django import forms
 from django.contrib import admin
 from django.db import transaction
@@ -39,15 +40,38 @@ class ExportCsvMixin:
 
 @admin.register(Scientist)
 class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
-    list_display = ('first_name', 'last_name', 'email', 'scientific_area', 'affiliation', 'position', 'approved')
+    list_display = ('first_name', 'last_name', 'email', 'first_category_scientific_area', 'scientific_area',
+                    'affiliation', 'position', 'approved')
     ordering = ('last_name',)
     change_list_template = "admin/scientist_changelist.html"
     list_filter = ('has_becal_scholarship',)
     search_fields = ('first_name', 'last_name', 'scientific_area')
+    actions = ['assign_first_category_scientific_area', 'compute_rough_age']
 
     def affiliation(self, obj):
-        return Affiliation.objects.filter(scientist=obj)[0].institution
+        try:
+            return Affiliation.objects.filter(scientist=obj)[0].institution
+        except:
+            return ''
     affiliation.short_description = 'Affiliation'
+
+    def assign_first_category_scientific_area(self, request, queryset):
+        for scientist in queryset:
+            scientific_area = scientist.scientific_area
+            for key, value in MAIN_SCIENTIFIC_AREA.items():
+                if scientific_area in value:
+                    scientist.first_category_scientific_area = key
+                    scientist.save()
+                    break
+    assign_first_category_scientific_area.short_description = 'Assign first category scientific area'
+
+    def compute_rough_age(self, request, queryset):
+        for scientist in queryset:
+            # compute rough age
+            delta_date = datetime.date.today() - scientist.birth_date
+            scientist.rough_age = int(round(delta_date.days / 365, 0))
+            scientist.save()
+    compute_rough_age.short_description = 'Compute rough age'
 
     def __adjust_dict_keys(self, row_dict):
         new_dict = {}
