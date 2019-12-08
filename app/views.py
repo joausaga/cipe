@@ -4,7 +4,7 @@ import json
 from app.constants import SCIENTIFIC_AREA, POSITION, MAIN_SCIENTIFIC_AREA, FIRST_CAT_SCIENTIFIC_AREA
 from app.forms import RegistrationForm, RegistrationEditForm
 from app.models import Institution, Scientist, Affiliation
-from app.utils import get_location_info_from_coordinates
+from app.utils import get_location_info_from_coordinates, load_countries_iso2
 from django.db.models import Count
 from django.forms.models import model_to_dict
 from django.shortcuts import render
@@ -12,6 +12,7 @@ from django.http import HttpResponse
 
 
 logger = logging.getLogger(__name__)
+countries_iso2 = load_countries_iso2()
 
 
 def __get_data_map(scientific_area='', position=''):
@@ -29,8 +30,16 @@ def __get_data_map(scientific_area='', position=''):
     min_age_male, max_age_male, min_age_female, max_age_female = 100, -1, 100, -1
     for scientist_obj in scientist_objs:
         scientist_institution = Affiliation.objects.select_related().get(scientist=scientist_obj, current=True).institution
+        institution_country_iso3166 = ''
+        if countries_iso2.get(scientist_institution.country.lower()):
+            institution_country_iso3166 = countries_iso2.get(scientist_institution.country.lower())
+        else:
+            print(f"could not find {scientist_institution.country.lower()}")
         scientists.append(
             {'name': str(scientist_obj),
+             'first_name': scientist_obj.first_name,
+             'last_name': scientist_obj.last_name,
+             'sex': scientist_obj.sex,
              'scientific_area': scientist_obj.get_scientific_area_display(),
              'position':  scientist_obj.get_position_display(),
              'twitter_handler': scientist_obj.twitter_handler,
@@ -48,7 +57,8 @@ def __get_data_map(scientific_area='', position=''):
              'institution_latitude': scientist_institution.latitude,
              'institution_longitude': scientist_institution.longitude,
              'institution_country': scientist_institution.country,
-             'institution_city': scientist_institution.city,
+             'institution_country_iso2': institution_country_iso3166,
+             'institution_city': scientist_institution.city
              },
         )
         institutions.append(scientist_institution.name)
@@ -211,7 +221,7 @@ def map_scientists(request):
             value_scientific_areas.append(scientist['scientific_area'])
         if scientist['position'] not in value_positions:
             value_positions.append(scientist['position'])
-        if not exists_becal_scholar and scientist['becal_fellow']:
+        if not exists_becal_scholar and scientist.get('becal_fellow'):
             exists_becal_scholar = True
     scientific_areas = []
     for value_scientific_area in value_scientific_areas:
