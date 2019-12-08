@@ -30,15 +30,53 @@ function closeInfoWindow() {
 }
 
 function generateInfoWindowContent(scientist_info) {
-    var content = '';
-    content = "<div class='text-body text-left'><b>" + scientist_info.name + "</b>";
-    content = content + "<br>" + scientist_info.institution_name;
-    content = content + "<br>" + scientist_info.institution_city + ", " + scientist_info.institution_country;
-    content = content + "<br><br>" + scientist_info.position;
-    content = content + "<br>Disciplina: " + scientist_info.scientific_area;
-    if (scientist_info.becal_fellow == true) {
-        content = content + "<br>Becario Becal";
+    let content = "";
+    let position_class = '';
+    if (scientist_info.position == 'Estudiante de Doctorado') {
+        position_class = 'badge-primary';
+    } else {
+        if (scientist_info.position == 'Estudiante de Máster Académico') {
+            position_class = 'badge-secondary';
+        } else {
+            if (scientist_info.position == 'Post-doc') {
+                position_class = 'badge-warning';
+            } else {
+                if (scientist_info.position == 'Profesor') {
+                    position_class = 'badge-danger';
+                } else {
+                    position_class = 'badge-info';
+                }
+            }
+        }
     }
+    //content += "<div class='text-right'><span class='badge " + position_class + "' float='right'>" + scientist_info.position + "</span></div>";
+    content += "<br>";
+    content += "<div>";
+    if (scientist_info.sex == 'masculino') {
+        content += "<img src='/static/img/man_avatar.svg' alt='avatar_masculino' height='60' width='60' style='display: inline-block; vertical-align: middle; margin-right: 8px;'>";
+    } else {
+        content += "<img src='/static/img/woman_avatar.svg' alt='avatar_femenino' height='60' width='60' style='display: inline-block; vertical-align: middle; margin-right: 8px;'>";
+    }
+    content += "<span style='display: inline-block; vertical-align: middle;'><b>" + scientist_info.name + "</b>";
+    content += "<br><span class='badge " + position_class + "' float='right'>" + scientist_info.position + "</span><br>";
+    content += scientist_info.institution_name + "<br>";
+    if (scientist_info.institution_country_iso2 != '') {
+        content += "<i class='flag-icon flag-icon-" + scientist_info.institution_country_iso2 + "'></i></span>";
+
+    } else {
+        content += scientist_info.institution_country + "</span>";
+    }
+    //content += "<span><b>" + scientist_info.last_name + "</b></span><br>";
+    //content += "<br>";
+    //content += scientist_info.institution_name;
+    //content += "<br>" + scientist_info.institution_city + ", " + scientist_info.institution_country;
+    //content += " <i class='flag-icon flag-icon-ca'></i>"
+    content += "</div>";
+    content += "<div class='text-left'>"
+    content += "<br>Área de investigación<br><b>" + scientist_info.scientific_area + "</b>";
+    /*if (scientist_info.becal_fellow == true) {
+        content = content + "<br>Becario Becal";
+    }*/
     if (scientist_info.twitter_handler != null || scientist_info.gscholar_profile != null ||
         scientist_info.facebook_profile != null || scientist_info.scopus_profile != null ||
         scientist_info.institutional_website != null || scientist_info.personal_website != null ||
