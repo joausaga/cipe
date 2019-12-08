@@ -6,16 +6,16 @@ var centerCords = {
 };
 var markers = [];
 var markerCluster = null;
-var twitter_icon = 'https://cdn4.iconfinder.com/data/icons/bettericons/354/twitter-circle-512.png';
-var gscholar_icon = 'https://www.pngfind.com/pngs/m/507-5077250_icon-google-scholar-logo-hd-png-download.png';
-var facebook_icon = 'https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-512.png';
-var scopus_icon = 'https://manila.lpu.edu.ph/images/scopus.png';
-var instws_icon = 'https://images.vexels.com/media/users/3/141505/isolated/preview/6900ccb692f7bbf429da34292e591604-world-round-icon-1-by-vexels.png';
-var persws_icon = 'https://www.sccpre.cat/mypng/full/223-2234989_circle-icons-browser-web-page-icon-png.png';
-var orcid_icon = 'http://www.batmacro.com/images/sampledata/avatar_nine/content/ORCID-icon.png';
-var linkedin_icon = 'https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-linkedin-circle-512.png';
-var researchgate_icon = 'https://www.ilseoosterlaken.nl/wp-content/uploads/2017/02/Researchgate.png';
-var academia_icon = 'https://a.academia-assets.com/images/academia-logo-redesign-2015-A.svg';
+var twitter_icon = '/static/img/icons/twitter.png';
+var gscholar_icon = '/static/img/icons/google-scholar.png';
+var facebook_icon = '/static/img/icons/facebook.png';
+var scopus_icon = '/static/img/icons/scopus.png';
+var instws_icon = '/static/img/icons/globe.png';
+var persws_icon = '/static/img/icons/home.png';
+var orcid_icon = '/static/img/icons/orcid.png';
+var linkedin_icon = '/static/img/icons/linkedin.png';
+var researchgate_icon = '/static/img/icons/researchgate.png';
+var academia_icon = '/static/img/icons/academia.svg';
 
 
 function closeInfoWindow() {
@@ -49,7 +49,6 @@ function generateInfoWindowContent(scientist_info) {
             }
         }
     }
-    //content += "<div class='text-right'><span class='badge " + position_class + "' float='right'>" + scientist_info.position + "</span></div>";
     content += "<br>";
     content += "<div>";
     if (scientist_info.sex == 'masculino') {
@@ -66,17 +65,9 @@ function generateInfoWindowContent(scientist_info) {
     } else {
         content += scientist_info.institution_country + "</span>";
     }
-    //content += "<span><b>" + scientist_info.last_name + "</b></span><br>";
-    //content += "<br>";
-    //content += scientist_info.institution_name;
-    //content += "<br>" + scientist_info.institution_city + ", " + scientist_info.institution_country;
-    //content += " <i class='flag-icon flag-icon-ca'></i>"
     content += "</div>";
     content += "<div class='text-left'>"
     content += "<br>Área de investigación<br><b>" + scientist_info.scientific_area + "</b>";
-    /*if (scientist_info.becal_fellow == true) {
-        content = content + "<br>Becario Becal";
-    }*/
     if (scientist_info.twitter_handler != null || scientist_info.gscholar_profile != null ||
         scientist_info.facebook_profile != null || scientist_info.scopus_profile != null ||
         scientist_info.institutional_website != null || scientist_info.personal_website != null ||
