@@ -98,12 +98,12 @@ SCIENTIFIC_AREA = (
     ('quimica', 'Quimica'),
     ('sociologia', 'Sociología'),
     ('veterinaria', 'Veterinaria'),
-    ('otras_agricola', 'Otras ciencias agricolas'),
-    ('otras_humanas', 'Otras ciencias humanas'),
-    ('otras_naturales', 'Otras ciencias naturales'),
-    ('otras_medica', 'Otras ciencias médicas'),
-    ('otras_ingenierias', 'Otras ingenierías y tecnologías'),
-    ('otras_sociales', 'Otras ciencias sociales'),
+    ('otras_agricola', 'Ciencias agricolas'),
+    ('otras_humanas', 'Ciencias humanas'),
+    ('otras_naturales', 'Ciencias naturales'),
+    ('otras_medica', 'Ciencias médicas'),
+    ('otras_ingenierias', 'Ingenierías y tecnologías'),
+    ('otras_sociales', 'Ciencias sociales'),
 )
 
 POSITION = (
