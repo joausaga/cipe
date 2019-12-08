@@ -1,3 +1,4 @@
+import csv
 import googlemaps
 import logging
 
@@ -6,6 +7,15 @@ from django.conf import settings
 
 gmaps = googlemaps.Client(key=f"{settings.GOOGLE_MAPS_API_KEY}")
 logger = logging.getLogger(__name__)
+
+
+def load_countries_iso2():
+    iso_data = {}
+    with open('data/iso3166-1.csv', 'r', encoding='utf-8-sig') as f:
+        iso_file = csv.DictReader(f)
+        for line in iso_file:
+            iso_data[line['nombre'].lower()] = line['iso2'].lower()
+    return iso_data
 
 
 def get_location_info_from_coordinates(latitude, longitude, language='es'):
