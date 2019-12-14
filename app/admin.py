@@ -197,6 +197,16 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
 class InstitutionAdmin(admin.ModelAdmin):
     list_display = ('name', 'country', 'city')
     ordering = ('name', 'country', 'city')
+    actions = ['fix_institution_city']
+
+    def fix_institution_city(self, request, queryset):
+        for institution in queryset:
+            process_ok, address, postal_code, city, region, country, \
+                latitude, longitude = get_location_info_from_name(institution.name)
+            institution.city = city
+            institution.address = address
+            institution.save()
+    fix_institution_city.short_description = 'Fix Institution City'
 
 
 @admin.register(Affiliation)
