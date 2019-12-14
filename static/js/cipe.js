@@ -123,17 +123,34 @@ function generateInfoWindowContent(scientist_info) {
 
 function addMarkers(scientists, isIndex) {
     // Create markers
-    var inst_lat, inst_lng, str_info_window;
-    var infowindow = new google.maps.InfoWindow();
-    var marker;
+    let inst_lat, inst_lng, str_info_window;
+    let infowindow = new google.maps.InfoWindow();
+    let marker;
+    let arr_pos = [];
+    let new_lat, new_lng;
     markers = [];
+
     for (i=0; i < scientists.length; i++) {
         inst_lat = scientists[i].institution_latitude;
         inst_lng = scientists[i].institution_longitude;
+        pos = {lat: inst_lat, lng: inst_lng};
+
+        // check if a marker with the position pos was already included in the map, if so,
+        // modify a bit the position
+        for (j = 0; j < arr_pos.length; j++) {
+            if (arr_pos[j].lat == pos.lat && arr_pos[j].lng == pos.lng) {
+                console.log('Found identifical position');
+                new_lat = pos.lat + (Math.random() -.5) / 1500;
+                new_lng = pos.lng + (Math.random() -.5) / 1500;
+                pos = {lat: new_lat, lng: new_lng};
+            }
+        }
+
         marker = new google.maps.Marker({
-            position: {lat: inst_lat, lng: inst_lng},
+            position: pos,
             map: map
         });
+
         if (!isIndex) {
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
@@ -144,6 +161,7 @@ function addMarkers(scientists, isIndex) {
             })(marker, i));
         }
         markers.push(marker);
+        arr_pos.push(pos);
     }
     // Add a marker clusterer to manage the markers.
     markerCluster = new MarkerClusterer(map, markers, {imagePath: '/static/img/markercluster/m'});
