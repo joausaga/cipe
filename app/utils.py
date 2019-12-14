@@ -55,10 +55,11 @@ def get_location_info_from_name(location_name, language='es'):
                 country = result['long_name']
             if result['types'][0] == 'administrative_area_level_1':
                 region = result['long_name']
-            if result['types'][0] == 'administrative_area_level_2' or result['types'][0] == 'locality':
+            if result['types'][0] == 'locality' or result['types'][0] == 'postal_town':
                 city = result['long_name']
-            if result['types'][0] == 'route':
-                address = result['long_name']
+        if not city:
+            city = region
+        address = geocode_result[0]['formatted_address']
         coordinates = geocode_result[0]['geometry']['location']
         latitude, longitude = coordinates['lat'], coordinates['lng']
         logger.info(f"Information about the location was collected correctly!")
