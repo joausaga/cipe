@@ -1,7 +1,7 @@
 import logging
 import json
 
-from app.constants import SCIENTIFIC_AREA, POSITION, MAIN_SCIENTIFIC_AREA, FIRST_CAT_SCIENTIFIC_AREA
+from app.constants import SCIENTIFIC_AREA, POSITION, FIRST_CAT_SCIENTIFIC_AREA
 from app.forms import RegistrationForm, RegistrationEditForm
 from app.models import Institution, Scientist, Affiliation
 from app.utils import get_location_info_from_coordinates, load_countries_iso2
@@ -84,8 +84,12 @@ def __get_data_map(scientific_area='', position=''):
         max_age_male, max_age_female, min_age_male, min_age_female, num_cities
 
 
-def __get_top_scientific_areas(k=1):
-    tops = Scientist.objects.values('first_category_scientific_area').annotate(total=Count('first_category_scientific_area')).order_by('-total')[:k]
+def __get_top_scientific_areas(query, k=1):
+    if query:
+        tops = Scientist.objects.filter(**query)
+    else:
+        tops = Scientist.objects.all()
+    tops = tops.values('first_category_scientific_area').annotate(total=Count('first_category_scientific_area')).order_by('-total')[:k]
     top_areas, total_top_areas = [], []
     dict_rel_areas = dict(FIRST_CAT_SCIENTIFIC_AREA)
     for top in tops:
@@ -95,10 +99,31 @@ def __get_top_scientific_areas(k=1):
     return ', '.join(top_areas), total_top_areas
 
 
+def __get_distribution_position():
+    dis_positions = Scientist.objects.all().values('position').annotate(total=Count('position')).order_by('-total')[:3]
+    position_list = []
+    dict_positions = dict(POSITION)
+    for position in dis_positions:
+        if position['position'] != 'otro':
+            dict_position = {
+                'total': position['total']
+            }
+            if position['total'] > 1:
+                # make plural noun
+                plural_noun = dict_positions[position['position']].split()[0] + 's'
+                dict_position['position'] = f"{plural_noun} {' '.join(dict_positions[position['position']].split()[1:])}"
+            else:
+                dict_position['position'] = dict_positions[position['position']]
+            position_list.append(dict_position)
+    return position_list
+
+
 def index(request, *args, **kwargs):
     scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
         max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
-    top_area, total_top_area = __get_top_scientific_areas()
+    top_area_m, total_top_area_m = __get_top_scientific_areas({'sex':'masculino'})
+    top_area_f, total_top_area_f = __get_top_scientific_areas({'sex': 'femenino'})
+    dis_positions = __get_distribution_position()
     context = {
         'scientists': json.dumps(scientists),
         'num_scientists': num_scientists,
@@ -107,13 +132,21 @@ def index(request, *args, **kwargs):
         'num_institutions': num_institutions,
         'num_countries': num_countries,
         'num_cities': num_cities,
-        'top_area': top_area,
-        'per_top_area': int(round((total_top_area[0]/num_scientists)*100,0)),
+        'top_area_m': top_area_m,
+        'top_area_f': top_area_f,
+        'per_top_area_m': int(round((total_top_area_m[0]/num_male_scientists)*100,0)),
+        'per_top_area_f': int(round((total_top_area_f[0] / num_female_scientists) * 100, 0)),
         'message': kwargs['msg'] if 'msg' in kwargs else '',
         'max_age_male': max_age_male,
         'max_age_female': max_age_female,
         'min_age_male': min_age_male,
-        'min_age_female': min_age_female
+        'min_age_female': min_age_female,
+        'total_most_common_position': dis_positions[0]['total'],
+        'name_most_common_position': dis_positions[0]['position'],
+        'total_second_common_position': dis_positions[1]['total'],
+        'name_second_most_common_position': dis_positions[1]['position'],
+        'total_third_most_common_position': dis_positions[2]['total'],
+        'name_third_most_common_position': dis_positions[2]['position'],
     }
     return render(request, 'index.html', context)
 
