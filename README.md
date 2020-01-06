@@ -3,6 +3,8 @@ Website of Paraguayan researchers living abroad and working in academia. The web
 field of expertise, position (i.e., PhD student, postdoc, professor), and location of Paraguayans 
 who are residing and doing academic research in universities, research centers, and companies abroad.
 
+## Screenshots
+
 ![Screenshot](screenshots/landing.png)
 
 ![Screenshot](screenshots/researcher_info.png)
