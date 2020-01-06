@@ -111,46 +111,75 @@
       <!-- Section Content -->
         <br><br>
         <div class="row">
-            <div class="col-lg-3 ml-auto">
+            <div class="col-lg-4 ml-auto">
                 <div class="card">
-                    <img src="{% static 'img/man_avatar.svg' %}" alt="Male Scientists" style="width:80%">
-                    <br>
-                    <div class="card_container bg-primary">
-                        <h1 class="page-section-heading text-center text-white">{{ num_male_scientists }}</h1>
-                        <p class="card-text text-center text-white">Investigadores de entre<br><b>{{ min_age_male }}</b> y <b>{{ max_age_male }}</b> años<br>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 mr-auto">
-                <div class="card bg-light">
                     <img src="{% static 'img/woman_avatar.svg' %}" alt="Female Scientists" style="width:80%">
                     <br>
                     <div class="card_container bg-primary">
                         <h1 class="page-section-heading text-center text-white">{{ num_female_scientists }}</h1>
-                        <p class="card-text text-center text-white">Investigadoras de entre<br><b>{{ min_age_female }}</b> y <b>{{ max_age_female }}</b> años<br>
+                        <p class="card-text text-center text-white">Investigadoras de entre<br><b>{{ min_age_female }}</b> y
+                            <b>{{ max_age_female }}</b> años<br>
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 mr-auto">
+            <div class="col-lg-4 mr-auto">
+                <div class="card bg-light">
+                    <img src="{% static 'img/man_avatar.svg' %}" alt="Male Scientists" style="width:80%">
+                    <br>
+                    <div class="card_container bg-primary">
+                        <h1 class="page-section-heading text-center text-white">{{ num_male_scientists }}</h1>
+                        <p class="card-text text-center text-white">Investigadores de entre<br><b>{{ min_age_male }}</b> y
+                            <b>{{ max_age_male }}</b> años<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mr-auto">
                 <div class="card bg-light">
                   <img src="{% static 'img/institution.svg' %}" alt="Institution" style="width:80%">
                   <br>
                   <div class="card_container bg-primary">
                       <h1 class="page-section-heading text-center text-white">{{ num_institutions }}</h1>
-                      <p class="card-text text-center text-white">Centros de Investigación en<br><b>{{ num_cities }}</b> ciudades de <b>{{ num_countries }}</b> paises
+                      <p class="card-text text-center text-white">Centros de Investigación en<br><b>{{ num_cities }}</b>
+                          ciudades de <b>{{ num_countries }}</b> paises
                       </p>
                   </div>
                 </div>
             </div>
-            <div class="col-lg-3 mr-auto">
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-4 mr-auto">
+                <div class="card bg-light">
+                    <img src="{% static 'img/mortarboard.svg' %}" alt="Posiciones" style="width:80%">
+                    <br>
+                    <div class="card_container bg-primary">
+                        <h1 class="text-center text-white">{{ total_most_common_position }}</h1>
+                        <p class="card-text text-center text-white">{{ name_most_common_position }},
+                            {{ total_second_common_position }} {{ name_second_most_common_position }},
+                            {{ total_third_most_common_position }} {{ name_third_most_common_position }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mr-auto">
                 <div class="card bg-light">
                     <img src="{% static 'img/areas.svg' %}" alt="Areas" style="width:80%">
                     <br>
                     <div class="card_container bg-primary">
-                        <h3 class="text-center text-white">{{ top_area }}</h3>
-                        <p class="card-text text-center text-white">Área con más investig. ({{ per_top_area }}%)</p>
+                        <h2 class="text-center text-white">{{ top_area_f }}</h2>
+                        <p class="card-text text-center text-white mb-2">Área más popular entre las <br>investigadoras ({{ per_top_area_f }}%)
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mr-auto">
+                <div class="card bg-light">
+                    <img src="{% static 'img/book.svg' %}" alt="Areas" style="width:80%">
+                    <br>
+                    <div class="card_container bg-primary">
+                        <h3 class="text-center text-white">{{ top_area_m }}</h3>
+                        <p class="card-text text-center text-white mb-1">Área con más investigadores ({{ per_top_area_m }}%)</p>
                     </div>
                 </div>
             </div>
