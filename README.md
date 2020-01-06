@@ -5,6 +5,8 @@ who are residing and doing academic research in universities, research centers, 
 
 ![Screenshot](screenshots/landing.png)
 
+![Screenshot](screenshots/researcher_info.png)
+
 ## Initial data
 
 The website was initially preloaded with data of BECAL fellows obtained through [this request](https://informacionpublica.paraguay.gov.py/portal/#!/ciudadano/solicitud/24586) 
