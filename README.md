@@ -1,5 +1,5 @@
 # CIPE
-CIPE is a website that does geolocation and visualizes information of Paraguayan researchers living 
+CIPE is a website that visualizes information of Paraguayan researchers living 
 abroad and working in academia. The website shows the name, field of expertise, position 
 (i.e., PhD student, postdoc, professor), and location of Paraguayans who are residing and doing 
 academic research in universities, research centers, and companies abroad.
