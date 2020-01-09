@@ -19,8 +19,8 @@ class Scientist(models.Model):
     slug = models.SlugField(max_length=40, null=True, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    ci = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(unique=True)
+    ci = models.CharField(max_length=100)
+    email = models.EmailField()
     phone_number = models.CharField(max_length=100, null=True, blank=True)
     first_category_scientific_area = models.CharField(max_length=100, choices=FIRST_CAT_SCIENTIFIC_AREA, default='',
                                                       editable=False)
@@ -55,8 +55,9 @@ class Scientist(models.Model):
         if not self.slug:
             self.slug = compute_slug()
         # compute rough age
-        delta_date = date.today() - self.birth_date
-        self.rough_age = int(round(delta_date.days / 365, 0))
+        if self.birth_date:
+            delta_date = date.today() - self.birth_date
+            self.rough_age = int(round(delta_date.days / 365, 0))
         # assign first level scientific area
         for first_level, second_levels in MAIN_SCIENTIFIC_AREA.items():
             if self.scientific_area in second_levels:
@@ -69,6 +70,9 @@ class Scientist(models.Model):
 
     def __str__(self):
         return f"{self.first_name.title()} {self.last_name.title()}"
+
+    class Meta:
+        unique_together = ('email', 'ci')
 
 
 class Institution(models.Model):
