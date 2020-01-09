@@ -27,7 +27,19 @@ class RegistrationForm(forms.Form):
             'placeholder': 'Ingrese su cédula de identidad'
         }
     ))
-    sex = forms.ChoiceField(label='Sexo *', choices=SEX_EMPTY, required=False, widget=forms.Select(
+    birth_date = forms.DateField(
+        label='Fecha de Nacimiento *',
+        required=True,
+        help_text='',
+        input_formats=['%d/%m/%Y'],
+        widget=forms.TextInput(
+            attrs={
+                'class': 'datepicker',
+                'placeholder': 'Ingrese su nacimiento'
+            }
+        )
+    )
+    sex = forms.ChoiceField(label='Sexo *', choices=SEX_EMPTY, required=True, widget=forms.Select(
         attrs={
             'class': 'form-control'
         }
@@ -45,15 +57,19 @@ class RegistrationForm(forms.Form):
                                                     'onchange': "showBecalEndDate();"
                                                 })
                                               )
-    end_becal_scholarship = forms.DateField(label='Fecha estimada de retorno', required=False, help_text='',
-                                            input_formats=['%d/%m/%Y'],
-                                            widget=forms.TextInput(
-                                                attrs={
-                                                    'class': 'datepicker',
-                                                    'placeholder': '',
-                                                    'style': 'display:none;'
-                                                }
-                                            ))
+    end_becal_scholarship = forms.DateField(
+        label='Fecha estimada de retorno',
+        required=False,
+        help_text='',
+        input_formats=['%d/%m/%Y'],
+        widget=forms.TextInput(
+            attrs={
+                'class': 'datepicker',
+                'placeholder': '',
+                'style': 'display:none;'
+            }
+        )
+    )
     scientific_area = forms.ChoiceField(label='Area de Actuación *', choices=SCI_AREA_EMPTY, widget=forms.Select(
         attrs={
             'class':'form-control'
@@ -143,7 +159,19 @@ class RegistrationEditForm(forms.Form):
             'placeholder': 'Ingrese su apellido'
         }
     ))
-    sex = forms.ChoiceField(label='Sexo *', choices=SEX_EMPTY, required=False, widget=forms.Select(
+    birth_date = forms.DateField(
+        label='Fecha de Nacimiento *',
+        required=True,
+        help_text='',
+        input_formats=['%d/%m/%Y'],
+        widget=forms.TextInput(
+            attrs={
+                'class': 'datepicker',
+                'placeholder': 'Ingrese su nacimiento'
+            }
+        )
+    )
+    sex = forms.ChoiceField(label='Sexo *', choices=SEX_EMPTY, required=True, widget=forms.Select(
         attrs={
             'class': 'form-control'
         }
