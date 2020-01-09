@@ -215,8 +215,8 @@ def registration(request):
                                                                              institution=inst_obj,
                                                                              defaults={'scientist': scientist_obj,
                                                                                        'institution': inst_obj})
-                msg = f"Registro exitoso!\nLuego de su aprobación, los datos podrán ser " \
-                      f"visualizados en el map de investigadores."
+                msg = f"Registro exitoso! Luego de su aprobación, los datos podrán ser " \
+                      f"visualizados en el mapa de investigadores."
                 form = RegistrationForm()
                 registration_error = 0
         else:
@@ -335,7 +335,7 @@ def edit_scientist(request, **kwargs):
                 Scientist.objects.filter(ci=form.cleaned_data['ci'], email=form.cleaned_data['email']).\
                     update(**data)
                 msg = f"Actualización de datos exitosa! Luego de su aprobación, los nuevos datos podrán ser " \
-                      f"visualizados en el map de investigadores."
+                      f"visualizados en el mapa de investigadores."
                 registration_error = 0
                 institution = {
                     'latitude': form.cleaned_data['location_lat'],
@@ -353,8 +353,7 @@ def edit_scientist(request, **kwargs):
         form = RegistrationEditForm(initial=form.cleaned_data)
     else:
         existing_data = model_to_dict(scientist_obj)
-        keys_to_remove = ['phone_number', 'birth_date', 'communication_channel',
-                          'approved', 'slug']
+        keys_to_remove = ['phone_number', 'communication_channel', 'approved', 'slug']
         for key_to_remove in keys_to_remove:
             del existing_data[key_to_remove]
         # add location data
