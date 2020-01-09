@@ -40,8 +40,8 @@ class ExportCsvMixin:
 
 @admin.register(Scientist)
 class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
-    list_display = ('first_name', 'last_name', 'email', 'first_category_scientific_area', 'scientific_area',
-                    'affiliation', 'position', 'approved')
+    list_display = ('first_name', 'last_name', 'email', 'rough_age', 'sex', 'first_category_scientific_area',
+                    'scientific_area', 'affiliation', 'position', 'approved')
     ordering = ('last_name',)
     change_list_template = "admin/scientist_changelist.html"
     list_filter = ('has_becal_scholarship',)
