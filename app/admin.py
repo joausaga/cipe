@@ -46,7 +46,7 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
     change_list_template = "admin/scientist_changelist.html"
     list_filter = ('has_becal_scholarship',)
     search_fields = ('first_name', 'last_name', 'scientific_area')
-    actions = ['assign_first_category_scientific_area', 'compute_rough_age']
+    actions = ['approve_scientists', 'assign_first_category_scientific_area', 'compute_rough_age']
 
     def affiliation(self, obj):
         try:
@@ -54,6 +54,12 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
         except:
             return ''
     affiliation.short_description = 'Affiliation'
+
+    def approve_scientists(self, request, queryset):
+        for scientist in queryset:
+            scientist.approved = True
+            scientist.save()
+    approve_scientists.short_description = 'Approve scientists'
 
     def assign_first_category_scientific_area(self, request, queryset):
         for scientist in queryset:
