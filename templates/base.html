@@ -9,23 +9,23 @@
     <meta property="og:title" content="Investig. Paraguayos en el Mundo" />
     <meta property="og:url" content="http://investigadoresparaguayosenelmundo.com/" />
     <meta property="og:description" content="Web con información sobre investigadores paraguayos en el mundo">
-    <meta property="og:image" content="//investigadoresparaguayosenelmundo.com/static/img/og_image.png">
+    <meta property="og:image" content="//investigadoresparaguayosenelmundo.com/static/app/img/og_image.png">
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_ES" />
     <meta name="twitter:card" content="summary">
     <meta name="twitter:creator" content="@jorgesaldivar" />
     <title>Investigadores Paraguayos en el Mundo</title>
     <!-- Custom fonts for this theme -->
-    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" crossorigin="anonymous">
+    <link href="{% static 'app/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css" rel="stylesheet" type="text/css" crossorigin="anonymous">
     <!-- Fengyuan Chen's Datepicker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
     <!-- Theme CSS -->
-    <link href="{% static 'css/freelancer.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/card.css' %}" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link href="{% static 'app/css/freelancer.min.css' %}" rel="stylesheet">
+    <link href="{% static 'app/css/card.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'app/favicon.ico' %}"/>
     <style>
        /* Set the size of the div element that contains the map */
       .map {
@@ -97,7 +97,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <script src="{% static 'js/cipe.js' %}"></script>
+    <script src="{% static 'app/js/cipe.js' %}"></script>
     {% block content %}
     {% endblock %}
     <!-- Footer -->
@@ -150,18 +150,18 @@
         </a>
     </div>
     <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'app/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'app/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <!-- Plugin JavaScript -->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'app/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
     <!-- Contact Form JavaScript -->
-    <script src="{% static 'js/jqBootstrapValidation.js' %}"></script>
+    <script src="{% static 'app/js/jqBootstrapValidation.js' %}"></script>
     <!-- Custom scripts for this template -->
-    <script src="{% static 'js/freelancer.min.js' %}"></script>
+    <script src="{% static 'app/js/freelancer.min.js' %}"></script>
     <!-- Date picker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
     <!-- Marker cluster library -->
-    <script src="{% static 'js/markerclusterer.js' %}"></script>
+    <script src="{% static 'app/js/markerclusterer.js' %}"></script>
     <script>
         $(document).ready(function(){
             {% block javascript %}{% endblock %}

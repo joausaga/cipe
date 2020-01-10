@@ -6,16 +6,16 @@ var centerCords = {
 };
 var markers = [];
 var markerCluster = null;
-var twitter_icon = '/static/img/icons/twitter.png';
-var gscholar_icon = '/static/img/icons/google-scholar.png';
-var facebook_icon = '/static/img/icons/facebook.png';
-var scopus_icon = '/static/img/icons/scopus.png';
-var instws_icon = '/static/img/icons/globe.png';
-var persws_icon = '/static/img/icons/home.png';
-var orcid_icon = '/static/img/icons/orcid.png';
-var linkedin_icon = '/static/img/icons/linkedin.png';
-var researchgate_icon = '/static/img/icons/researchgate.png';
-var academia_icon = '/static/img/icons/academia.svg';
+var twitter_icon = '/static/app/img/icons/twitter.png';
+var gscholar_icon = '/static/app/img/icons/google-scholar.png';
+var facebook_icon = '/static/app/img/icons/facebook.png';
+var scopus_icon = '/static/app/img/icons/scopus.png';
+var instws_icon = '/static/app/img/icons/globe.png';
+var persws_icon = '/static/app/img/icons/home.png';
+var orcid_icon = '/static/app/img/icons/orcid.png';
+var linkedin_icon = '/static/app/img/icons/linkedin.png';
+var researchgate_icon = '/static/app/img/icons/researchgate.png';
+var academia_icon = '/static/app/img/icons/academia.svg';
 
 
 function closeInfoWindow() {
@@ -52,9 +52,9 @@ function generateInfoWindowContent(scientist_info) {
     content += "<br>";
     content += "<div>";
     if (scientist_info.sex == 'masculino') {
-        content += "<img src='/static/img/man_avatar.svg' alt='avatar_masculino' height='60' width='60' style='display: inline-block; vertical-align: middle; margin-right: 8px;'>";
+        content += "<img src='/static/app/img/man_avatar.svg' alt='avatar_masculino' height='60' width='60' style='display: inline-block; vertical-align: middle; margin-right: 8px;'>";
     } else {
-        content += "<img src='/static/img/woman_avatar.svg' alt='avatar_femenino' height='60' width='60' style='display: inline-block; vertical-align: middle; margin-right: 8px;'>";
+        content += "<img src='/static/app/img/woman_avatar.svg' alt='avatar_femenino' height='60' width='60' style='display: inline-block; vertical-align: middle; margin-right: 8px;'>";
     }
     content += "<span style='display: inline-block; vertical-align: middle;'><b>" + scientist_info.name + "</b>";
     content += "<br><span class='badge " + position_class + "' float='right'>" + scientist_info.position + "</span><br>";
@@ -164,7 +164,7 @@ function addMarkers(scientists, isIndex) {
         arr_pos.push(pos);
     }
     // Add a marker clusterer to manage the markers.
-    markerCluster = new MarkerClusterer(map, markers, {imagePath: '/static/img/markercluster/m'});
+    markerCluster = new MarkerClusterer(map, markers, {imagePath: '/static/app/img/markercluster/m'});
 }
 
 function removeMarkers() {
