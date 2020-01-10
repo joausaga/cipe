@@ -42,16 +42,16 @@ def __get_data_map(scientific_area='', position=''):
              'sex': scientist_obj.sex,
              'scientific_area': scientist_obj.get_scientific_area_display(),
              'position':  scientist_obj.get_position_display(),
-             'twitter_handler': scientist_obj.twitter_handler,
-             'facebook_profile': scientist_obj.facebook_profile,
-             'gscholar_profile': scientist_obj.gscholar_profile,
-             'scopus_profile': scientist_obj.scopus_profile,
-             'linkedin_profile': scientist_obj.linkedin_profile,
-             'researchgate_profile': scientist_obj.researchgate_profile,
-             'academia_profile': scientist_obj.academia_profile,
-             'institutional_website': scientist_obj.institutional_website,
-             'personal_website': scientist_obj.personal_website,
-             'orcid_profile': scientist_obj.orcid_profile,
+             'twitter_handler': scientist_obj.twitter_handler if scientist_obj.twitter_handler != '' or None else None,
+             'facebook_profile': scientist_obj.facebook_profile if scientist_obj.facebook_profile != '' or None else None,
+             'gscholar_profile': scientist_obj.gscholar_profile if scientist_obj.gscholar_profile != '' or None else None,
+             'scopus_profile': scientist_obj.scopus_profile if scientist_obj.scopus_profile != '' or None else None,
+             'linkedin_profile': scientist_obj.linkedin_profile if scientist_obj.linkedin_profile != '' or None else None,
+             'researchgate_profile': scientist_obj.researchgate_profile if scientist_obj.researchgate_profile != '' or None else None,
+             'academia_profile': scientist_obj.academia_profile if scientist_obj.academia_profile != '' or None else None,
+             'institutional_website': scientist_obj.institutional_website if scientist_obj.institutional_website != '' or None else None,
+             'personal_website': scientist_obj.personal_website if scientist_obj.personal_website != '' or None else None,
+             'orcid_profile': scientist_obj.orcid_profile if scientist_obj.orcid_profile != '' or None else None,
              'becal_fellow': scientist_obj.has_becal_scholarship,
              'institution_name': scientist_institution.name,
              'institution_latitude': scientist_institution.latitude,
@@ -76,6 +76,8 @@ def __get_data_map(scientific_area='', position=''):
                 max_age_male = scientist_obj.rough_age
             if scientist_obj.rough_age < min_age_male:
                 min_age_male = scientist_obj.rough_age
+        if scientist_obj.first_name == 'prueba':
+            print(scientists[-1])
     num_scientists = len(scientists)
     num_institutions = len(set(institutions))
     num_countries = len(countries)
