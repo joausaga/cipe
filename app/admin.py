@@ -41,10 +41,10 @@ class ExportCsvMixin:
 @admin.register(Scientist)
 class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('first_name', 'last_name', 'email', 'rough_age', 'sex', 'first_category_scientific_area',
-                    'scientific_area', 'affiliation', 'position', 'approved')
-    ordering = ('last_name',)
+                    'scientific_area', 'affiliation', 'position', 'approved', 'created_at')
+    ordering = ('-created_at',)
     change_list_template = "admin/scientist_changelist.html"
-    list_filter = ('has_becal_scholarship',)
+    list_filter = ('has_becal_scholarship', 'approved')
     search_fields = ('first_name', 'last_name', 'scientific_area')
     actions = ['approve_scientists', 'assign_first_category_scientific_area', 'compute_rough_age']
 
