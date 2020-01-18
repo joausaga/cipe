@@ -10,7 +10,7 @@ academic research in universities, research centers, and companies abroad.
 
 ![Screenshot](screenshots/researcher_info.png)
 
-## Install
+## Installation
 
 1. Install docker and docker-compose in your local machine. Check the official installation [guidelines](https://docs.docker.com/install/); 
 2. Obtain a google maps api key by following the instructions [here](https://developers.google.com/maps/documentation/embed/get-api-key);
