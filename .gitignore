@@ -89,7 +89,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-.env.*
+.env.dev
+.env.prod
+.env.prod.db
 
 # Spyder project settings
 .spyderproject
