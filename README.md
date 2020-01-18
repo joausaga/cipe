@@ -21,7 +21,7 @@ academic research in universities, research centers, and companies abroad.
 6. Set the configuration parameters of the database in `env.prod.db`;
 7. Rename the file `env.prod.sample` as `env.prod`;
 8. Generate a random secret key to be used as part of the configuration of the tool. One way of 
-generating the key is running the following command `python -c 'import random; print("".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))'`;
+generating the key is by running the following command `python -c 'import random; print("".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))'`;
 8. Set the SECRET_KEY and GOOGLE_MAPS_API_KEY obtained before as well as the configuration parameters 
 of the database in `env.prod`;
 9. Build docker container `docker-compose -f docker-compose.prod.yml up --build -d`;
