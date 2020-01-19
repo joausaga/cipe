@@ -165,7 +165,6 @@ function addMarkers(scientists, isIndex) {
         for (j = 0; j < arr_pos.length; j++) {
             distance_km = distanceInK(arr_pos[j].lat, arr_pos[j].lng, pos.lat, pos.lng)
             if (distance_km < 1) {
-                console.log("Found locations close enough, position will be modified");
                 new_lat = pos.lat + (Math.random() -.5) / 1500;
                 new_lng = pos.lng + (Math.random() -.5) / 1500;
                 pos = {lat: new_lat, lng: new_lng};
