@@ -18,12 +18,12 @@ academic research in universities, research centers, and companies abroad.
 3. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
 4. Get into the directory `cipe`;
 4. Run `scripts/prepare-config-templates.sh`
-5. Set the configuration parameters of the database in `env.prod.db`;
+5. Set the configuration parameters of the database in `.env.prod.db`;
 6. Set the SECRET_KEY and GOOGLE_MAPS_API_KEY obtained before as well as the configuration parameters 
-of the database in `env.prod`;
+of the database in `.env.prod`;
 7. Build docker container `docker-compose -f docker-compose.prod.yml up --build -d` ,
 Once containers are fully created, you can watch the logs with `docker-compose -f docker-compose.prod.yml logs -f` , to see for the containers to be fully initialized;
-8. Load initial data `docker-compose exec app python manage.py loaddata data/initial_data.json`;
+8. Load initial data `docker-compose -f docker-compose.prod.yml exec app python manage.py loaddata data/initial_data.json`;
 9. Go to `http://localhost:1550` to access the tool
 
 ## Cleanup/reinitialize
