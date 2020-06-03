@@ -1,7 +1,8 @@
 import csv
 import googlemaps
 import logging
-
+import urllib.request
+import json
 from django.conf import settings
 
 
@@ -18,7 +19,7 @@ def load_countries_iso2():
     return iso_data
 
 
-def get_location_info_from_coordinates(latitude, longitude, language='es'):
+def get_location_info_from_coordinates_gmaps(latitude, longitude, language='es'):
     address, postal_code, city, region, country = '', '', '', '', ''
     logger.info(f"Going to look for information about the location with latitude {latitude} and "
                 f"longitude {longitude}")
@@ -41,8 +42,33 @@ def get_location_info_from_coordinates(latitude, longitude, language='es'):
         logger.error(f"Error when doing reverse geo-coding {e}")
         return False, address, postal_code, city, region, country
 
+#Debe retornar boolean, adress, postal_code, city, region, country a partir de los parametros
+def get_location_info_from_coordinates(latitude, longitude, language='es'):
+    address, postal_code, city, region, country = '', '', '', '', ''
+    logger.info(f"Going to look for information about the location with latitude {latitude} and "
+                f"longitude {longitude}")          
+    try:
+        content = urllib.request.urlopen("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + str(latitude) + "&lon="+str(longitude)).read() #consulto esta api de OSM 
+        jsonResult=json.loads(content.decode(), parse_float=float) #print jsonResult para ver el json completo
+        ''' print(jsonResult['address'])'''
+        address = jsonResult['address']['road']
+        postal_code = jsonResult['address']['postcode']
+        city = jsonResult['address']['city']
+        try:
+            region = jsonResult['address']['state']
+        except:
+            try:
+                region = jsonResult['address']['region']
+            except:
+                region=""
+        country = jsonResult['address']['country']
+        return True, address, postal_code, city, region, country
+    except Exception as e:
+        logger.error(f"Error when doing reverse geo-coding {e}")
+        return False, address, postal_code, city, region, country
 
-def get_location_info_from_name(location_name, language='es'):
+
+def get_location_info_from_name_gmaps(location_name, language='es'):
     address, postal_code, city, region, country = '', '', '', '', ''
     latitude, longitude = 0.0, 0.0
     logger.info(f"Going to look for information of location {location_name}")
@@ -63,6 +89,34 @@ def get_location_info_from_name(location_name, language='es'):
         coordinates = geocode_result[0]['geometry']['location']
         latitude, longitude = coordinates['lat'], coordinates['lng']
         logger.info(f"Information about the location was collected correctly!")
+        return True, address, postal_code, city, region, country, latitude, longitude
+    except Exception as e:
+        logger.error(f"Error when doing geo-coding {e}")
+        return False, address, postal_code, city, region, country, latitude, longitude
+
+#debe retornar adress,postal_code, city, region, country, latitude, longitude
+def get_location_info_from_name(location_name, language='es'):
+    address, postal_code, city, region, country = '', '', '', '', ''
+    latitude, longitude = 0.0, 0.0
+    logger.info(f"Going to look for information of location {location_name}")
+    queryFormat=locationName.replace(' ','+')   
+    try:
+        content = urllib.request.urlopen("https://nominatim.openstreetmap.org/search.php?q="+ queryFormat +"&format=json&limit=1&addressdetails=[1]").read() #consulto esta api de OSM 
+        jsonResult=json.loads(content) #print jsonResult para ver el json completo
+        ''' print(jsonResult[0]['address'])'''
+        address = jsonResult[0]['address']['road']
+        postal_code = jsonResult[0]['address']['postcode']
+        city = jsonResult[0]['address']['city']
+        try:
+            region = jsonResult[0]['address']['state']
+        except:
+            try:
+                region = jsonResult[0]['address']['region']
+            except:
+                region=""
+        country = jsonResult[0]['address']['country']
+        latitude = jsonResult[0]['lat']
+        longitude = jsonResult[0]['lon']
         return True, address, postal_code, city, region, country, latitude, longitude
     except Exception as e:
         logger.error(f"Error when doing geo-coding {e}")

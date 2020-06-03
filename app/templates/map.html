@@ -2,7 +2,24 @@
 
 <script>
 {% block javascript %}
-    addMarkers({{ scientists|safe }}, false);
+    //leaflet map
+    var leafletMap = L.map('leafletMap', {
+    fullscreenControl: true,
+    // OR
+    fullscreenControl: {
+        pseudoFullscreen: false // if true, fullscreen to page width and height
+    },
+    minZoom: 2
+    }).setView([0,0], 2);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(leafletMap);
+
+    var leafletMarkers = L.markerClusterGroup(); // para Cluster de Leaflet
+
+    addMarkers({{ scientists|safe }}, false, leafletMap, leafletMarkers);
+
     var exists_becal_scholar = { exists_becal_scholar };
     var becal_cb = document.getElementById("becal");
     if (exists_becal_scholar == true) {
@@ -19,9 +36,9 @@
                      csrfmiddlewaretoken: '{{ csrf_token }}' },
             // handle a successful response
             success : function(json) {
-                removeMarkers();
+                removeMarkers(leafletMarkers);
                 if (json["scientists"].length > 0) {
-                    addMarkers(json["scientists"], false);
+                    addMarkers(json["scientists"], false,leafletMap, leafletMarkers);
                 }
                 else {
                     $('.toast').toast({delay: 3000});
@@ -79,7 +96,7 @@
 <div class="container-fluid">
     <div class="row mb-3">
         <div class="col-12">
-            <div id="map"></div>
+            <div id="leafletMap"></div>
         </div>
     </div>
 </div>
