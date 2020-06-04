@@ -167,7 +167,7 @@ function addMarkers(scientists, isIndex, leafletMap, leafletMarkers) {
                 pos = {lat: new_lat, lng: new_lng};
             }
         }
-        //aca empezamos la parte de leaflet
+        
         var leafletMarker = L.marker([pos.lat,pos.lng]);
         if (!isIndex) {
             leafletMarker.bindPopup(generateInfoWindowContent(scientists[i])).openPopup();
