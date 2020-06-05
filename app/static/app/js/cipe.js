@@ -145,9 +145,12 @@ function distanceInK(lat1, lon1, lat2, lon2) {
 	}
 }
 
-//leafletMap: is the created map variable that is passed as a parameter to add the corresponding markers
-//leafletMarkers:is the cluster variable to group the markers
+
 function addMarkers(scientists, isIndex, leafletMap, leafletMarkers) {
+    
+    /*leafletMap: is the created map variable that is passed as a parameter to add the corresponding markers
+    leafletMarkers:is the cluster variable to group the markers*/
+    
     // Create markers
     let inst_lat, inst_lng; 
     let arr_pos = [];
