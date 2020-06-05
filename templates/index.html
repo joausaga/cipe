@@ -17,9 +17,8 @@
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(leafletMap);
 
-    var leafletMarkers = L.markerClusterGroup(); // para Cluster de Leaflet
+    var leafletMarkers = L.markerClusterGroup(); // Leaflet's cluster group
 
-    //esta es la parte de google maps donde se agregan los marcadores, pero tambien agregamos en la funcion para agregar en el mapa de Leaflet
     addMarkers({{ scientists|safe }}, true, leafletMap, leafletMarkers);    
     
 
