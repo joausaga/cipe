@@ -145,6 +145,8 @@ function distanceInK(lat1, lon1, lat2, lon2) {
 	}
 }
 
+//leafletMap: is the created map variable that is passed as a parameter to add the corresponding markers
+//leafletMarkers:is the cluster variable to group the markers
 function addMarkers(scientists, isIndex, leafletMap, leafletMarkers) {
     // Create markers
     let inst_lat, inst_lng; 
@@ -168,14 +170,14 @@ function addMarkers(scientists, isIndex, leafletMap, leafletMarkers) {
             }
         }
         
-        var leafletMarker = L.marker([pos.lat,pos.lng]);
+        let leafletMarker = L.marker([pos.lat,pos.lng]);
         if (!isIndex) {
             leafletMarker.bindPopup(generateInfoWindowContent(scientists[i])).openPopup();
         }
         leafletMarkers.addLayer(leafletMarker);
     }
 
-    //agregamos el cluster de leaflet al mapa
+    //leaflet cluster added to map
     leafletMap.addLayer(leafletMarkers);
 }
 
