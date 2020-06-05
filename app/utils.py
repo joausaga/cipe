@@ -42,15 +42,13 @@ def get_location_info_from_coordinates_gmaps(latitude, longitude, language='es')
         logger.error(f"Error when doing reverse geo-coding {e}")
         return False, address, postal_code, city, region, country
 
-#Debe retornar boolean, adress, postal_code, city, region, country a partir de los parametros
 def get_location_info_from_coordinates(latitude, longitude, language='es'):
     address, postal_code, city, region, country = '', '', '', '', ''
     logger.info(f"Going to look for information about the location with latitude {latitude} and "
                 f"longitude {longitude}")          
     try:
         content = urllib.request.urlopen("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + str(latitude) + "&lon="+str(longitude)).read() #consulto esta api de OSM 
-        jsonResult=json.loads(content.decode(), parse_float=float) #print jsonResult para ver el json completo
-        ''' print(jsonResult['address'])'''
+        jsonResult=json.loads(content.decode(), parse_float=float)
         address = jsonResult['address']['road']
         postal_code = jsonResult['address']['postcode']
         city = jsonResult['address']['city']
@@ -94,7 +92,6 @@ def get_location_info_from_name_gmaps(location_name, language='es'):
         logger.error(f"Error when doing geo-coding {e}")
         return False, address, postal_code, city, region, country, latitude, longitude
 
-#debe retornar adress,postal_code, city, region, country, latitude, longitude
 def get_location_info_from_name(location_name, language='es'):
     address, postal_code, city, region, country = '', '', '', '', ''
     latitude, longitude = 0.0, 0.0
@@ -102,7 +99,7 @@ def get_location_info_from_name(location_name, language='es'):
     queryFormat=locationName.replace(' ','+')   
     try:
         content = urllib.request.urlopen("https://nominatim.openstreetmap.org/search.php?q="+ queryFormat +"&format=json&limit=1&addressdetails=[1]").read() #consulto esta api de OSM 
-        jsonResult=json.loads(content) #print jsonResult para ver el json completo
+        jsonResult=json.loads(content)
         ''' print(jsonResult[0]['address'])'''
         address = jsonResult[0]['address']['road']
         postal_code = jsonResult[0]['address']['postcode']

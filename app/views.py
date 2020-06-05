@@ -190,7 +190,6 @@ def registration(request):
     registration_error = -1
     created = False
     form = RegistrationForm(request.POST or None)
-    
     if request.method == "POST":
         if form.is_valid() and form.cleaned_data['location_lat'] != '' and form.cleaned_data['location_lng'] != '' and \
            form.cleaned_data['location_name'] != '':
@@ -224,7 +223,6 @@ def registration(request):
                 form = RegistrationForm()
                 registration_error = 0
         else:
-            print(regForm.errors)
             if form.cleaned_data['location_name'] == '' or form.cleaned_data['location_lat'] == '' or \
                form.cleaned_data['location_lng'] == '':
                 msg = f"Datos de registro incompletos, favor indique una institución"
