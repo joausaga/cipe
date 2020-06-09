@@ -189,7 +189,7 @@ function removeMarkers(markers) {
 }
 function initMap(mapDivId) {
     /**
-     mapDivName: ID of the map's div in the html code
+     mapDivId: ID of the map's div in the html code
       **/
     var map = L.map(mapDivId, {
         fullscreenControl: true,
