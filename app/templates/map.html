@@ -3,22 +3,11 @@
 <script>
 {% block javascript %}
     //leaflet map
-    var leafletMap = L.map('leafletMap', {
-    fullscreenControl: true,
-    // OR
-    fullscreenControl: {
-        pseudoFullscreen: false // if true, fullscreen to page width and height
-    },
-    minZoom: 2
-    }).setView([0,0], 2);
+    var map = initMap('map');
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(leafletMap);
+    var markers = L.markerClusterGroup(); // Leaflet's cluster group
 
-    var leafletMarkers = L.markerClusterGroup(); // Leaflet's cluster group
-
-    addMarkers({{ scientists|safe }}, false, leafletMap, leafletMarkers);
+    addMarkers({{ scientists|safe }}, false, map, markers);
 
     var exists_becal_scholar = { exists_becal_scholar };
     var becal_cb = document.getElementById("becal");
@@ -36,9 +25,9 @@
                      csrfmiddlewaretoken: '{{ csrf_token }}' },
             // handle a successful response
             success : function(json) {
-                removeMarkers(leafletMarkers);
+                removeMarkers(markers);
                 if (json["scientists"].length > 0) {
-                    addMarkers(json["scientists"], false,leafletMap, leafletMarkers);
+                    addMarkers(json["scientists"], false,map, markers);
                 }
                 else {
                     $('.toast').toast({delay: 3000});
@@ -96,7 +85,7 @@
 <div class="container-fluid">
     <div class="row mb-3">
         <div class="col-12">
-            <div id="leafletMap"></div>
+            <div id="map"></div>
         </div>
     </div>
 </div>

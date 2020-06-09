@@ -2,24 +2,13 @@
 {% load static %}
 
 <script>
-{% block javascript %}
+    {% block javascript %}
     //leaflet map
-    var leafletMap = L.map('leafletMap', {
-    fullscreenControl: true,
-    // OR
-    fullscreenControl: {
-        pseudoFullscreen: false // if true, fullscreen to page width and height
-    },
-    minZoom: 2
-    }).setView([0,0], 2);
+    var map = initMap('map');
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(leafletMap);
+    var markers = L.markerClusterGroup(); // Leaflet's cluster group
 
-    var leafletMarkers = L.markerClusterGroup(); // Leaflet's cluster group
-
-    addMarkers({{ scientists|safe }}, true, leafletMap, leafletMarkers);    
+    addMarkers({{ scientists|safe }}, true, map, markers);    
     
 
 {% endblock %}
@@ -34,26 +23,8 @@
 </div>
 <!-- Masthead -->
 <header class="text-center">
-    {% comment %} <div class="container-fluid px-0" >
-        <div id="map">
-        </div>
-        <div class="container-fluid pl-5 pr-5" style="position:absolute;margin-top: -18rem">
-            <div class="jumbotron transparentBackground">
-                <h1 class="page-section-heading text-center text-uppercase text-secondary mb-0">Investigadores Paraguayos en el Mundo</h1><br>
-                <a class="btn btn-xl btn-primary" href="{% url 'registration' %}">
-                    <i class="fas fa-user-plus mr-2"></i>
-                    Registrate
-                </a>
-                <a class="btn btn-xl btn-primary" href="{% url 'map' %}">
-                    <i class="fas fa-map mr-2"></i>
-                    Ver Mapa
-                </a>
-            </div>
-        </div>
-    </div> {% endcomment %}
-    <!-- Agrego div de otro mapa que va ser el mapa con leaflet -->
     <div class="container-fluid px-0" >
-        <div id="leafletMap">
+        <div id="map">
         </div>
         <div class="container">
             <div class="jumbotron transparentBackground">

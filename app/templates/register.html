@@ -4,18 +4,7 @@
 {% block javascript %}
 
     //leaflet map
-    var leafletMap = L.map('leafletMap-registration', {
-    fullscreenControl: true,
-    // OR
-    fullscreenControl: {
-        pseudoFullscreen: false // if true, fullscreen to page width and height
-    },
-    minZoom: 2
-    }).setView([0,0], 2);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(leafletMap);
+    var map = initMap('map-registration');
 
      /* Create searchcontrols */
     var GeoSearchControl = window.GeoSearch.GeoSearchControl;
@@ -27,6 +16,7 @@
         provider: provider,
         style: 'bar',
         showMarker: true,
+        searchLabel: 'Buscar institución',
         marker: {
         draggable: false
     },
@@ -35,13 +25,14 @@
     });
     
     // Add searchbar to the map
-    leafletMap.addControl(searchControl);
+    map.addControl(searchControl);
 
-    leafletMap.on('geosearch/showlocation', function(e) {
+    //geosearch/showlocation is fired when location is chosen from the result list
+    map.on('geosearch/showlocation', function(e) {
         // Set the value of the hidden fields
         document.getElementById("id_location_name").value = e.location.label;
-        document.getElementById("id_location_lat").value = e.location.y; //latitud
-        document.getElementById("id_location_lng").value = e.location.x; //longitud
+        document.getElementById("id_location_lat").value = e.location.y;
+        document.getElementById("id_location_lng").value = e.location.x;
      });
     
     
@@ -55,7 +46,7 @@
         document.getElementById("form_title").innerHTML = 'Editar Registro de Investigador';
         var institution = {{ institution|safe }};
         if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
-            addMarker(leafletMap, institution['latitude'], institution['longitude'], institution['name']);
+            addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
         }
     }
     if (regResult >= 0) {
@@ -105,7 +96,7 @@
                         <div class="form-group floating-label-form-group controls mb-0 pb-2">
                             {{ form.as_p }}
                             <p style="font-size:1.5em;color:#6c757d;margin-top:2em">Institución * (busque en el mapa)</p>
-                            <div id="leafletMap-registration"></div>
+                            <div id="map-registration"></div>
                         </div>
                     </div>
                     <div>

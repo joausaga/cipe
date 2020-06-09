@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -63,22 +63,11 @@
 
     <style>
        /* Set the size of the div element that contains the map */
-      .map {
-        position: relative;
-        display:inline-block;
-      }
       .know-more-button {
         position:absolute;
         display:block;
       }
-      #map-registration {
-        height: 400px;  /* The height is 400 pixels */
-      }
       #map_header{
-        width: 100%;
-        height: 650px;
-      }
-      #map{
         width: 100%;
         height: 650px;
       }
@@ -122,16 +111,15 @@
         background-color: rgba(255,255,255, 0.5);
         color: inherit;
       }
-      {% comment %} Leaflet's map styles  {% endcomment %}
-      .leafletMap {
+      .map {
         position: relative;
         display:inline-block;
       }
-      #leafletMap{
+      #map{
         width: 100%;
         height: 650px;
       }
-      #leafletMap-registration {
+      #map-registration {
         height: 400px;  /* The height is 400 pixels */
       }
     </style>

@@ -4,7 +4,6 @@ var centerCords = {
     lat: 41.389633,
     lng: 2.116217
 };
-var markers = [];
 var markerCluster = null;
 var twitter_icon = '/static/app/img/icons/twitter.png';
 var gscholar_icon = '/static/app/img/icons/google-scholar.png';
@@ -146,18 +145,17 @@ function distanceInK(lat1, lon1, lat2, lon2) {
 }
 
 
-function addMarkers(scientists, isIndex, leafletMap, leafletMarkers) {
+function addMarkers(scientists, isIndex, map, markers) {
 
     /***
-    leafletMap: variable containing the map
-    leafletMarkers: variable containing the group of markers
+    map: variable containing the map
+    markers: variable containing the group of markers
     ***/
     
     // Create markers
     let inst_lat, inst_lng; 
     let arr_pos = [];
     let new_lat, new_lng;
-    markers = [];
 
     for (i=0; i < scientists.length; i++) {
         inst_lat = scientists[i].institution_latitude;
@@ -179,21 +177,33 @@ function addMarkers(scientists, isIndex, leafletMap, leafletMarkers) {
         if (!isIndex) {
             leafletMarker.bindPopup(generateInfoWindowContent(scientists[i])).openPopup();
         }
-        leafletMarkers.addLayer(leafletMarker);
+        markers.addLayer(leafletMarker);
     }
 
     //leaflet cluster added to map
-    leafletMap.addLayer(leafletMarkers);
+    map.addLayer(markers);
 }
 
-function removeMarkers(leafletMarkers) {
-    leafletMarkers.clearLayers();
+function removeMarkers(markers) {
+    markers.clearLayers();
 }
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 2,
-        center: centerCords
-    });
+function initMap(mapDivId) {
+    /**
+     mapDivName: ID of the map's div in the html code
+      **/
+    var map = L.map(mapDivId, {
+        fullscreenControl: true,
+        // OR
+        fullscreenControl: {
+            pseudoFullscreen: false // if true, fullscreen to page width and height
+        },
+        minZoom: 2
+    }).setView([0, 0], 2);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    return map;
 }
 
 function addMarker(map, latitude, longitude, place_name) {
