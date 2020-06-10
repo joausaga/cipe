@@ -6,7 +6,6 @@ import json
 from django.conf import settings
 from urllib.parse import urlencode
 
-DICTIONARY= {}
 gmaps = googlemaps.Client(key=f"{settings.GOOGLE_MAPS_API_KEY}")
 logger = logging.getLogger(__name__)
 
