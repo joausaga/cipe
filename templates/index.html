@@ -2,8 +2,15 @@
 {% load static %}
 
 <script>
-{% block javascript %}
-    addMarkers({{ scientists|safe }}, true);
+    {% block javascript %}
+    //leaflet map
+    var map = initMap('map');
+
+    var markers = L.markerClusterGroup(); // Leaflet's cluster group
+
+    addMarkers({{ scientists|safe }}, true, map, markers);    
+    
+
 {% endblock %}
 </script>
 
@@ -19,19 +26,20 @@
     <div class="container-fluid px-0" >
         <div id="map">
         </div>
-        <div class="container-fluid pl-5 pr-5" style="position:absolute;margin-top: -18rem">
+        <div class="container">
             <div class="jumbotron transparentBackground">
                 <h1 class="page-section-heading text-center text-uppercase text-secondary mb-0">Investigadores Paraguayos en el Mundo</h1><br>
                 <a class="btn btn-xl btn-primary" href="{% url 'registration' %}">
                     <i class="fas fa-user-plus mr-2"></i>
-                    Registrate
+                        Registrate
                 </a>
                 <a class="btn btn-xl btn-primary" href="{% url 'map' %}">
                     <i class="fas fa-map mr-2"></i>
-                    Ver Mapa
+                        Ver Mapa
                 </a>
             </div>
         </div>
+    </div>
     </div>
 </header>
 <!-- Seccion Sobre el Sitio -->

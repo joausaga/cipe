@@ -2,7 +2,41 @@
 
 <script>
 {% block javascript %}
-    map = initAutocomplete();
+
+    //leaflet map
+    var map = initMap('map-registration');
+
+     /* Create searchcontrols */
+    var GeoSearchControl = window.GeoSearch.GeoSearchControl;
+    var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider;
+    var provider = new OpenStreetMapProvider({});
+
+    //  Define search controls
+    var searchControl = new GeoSearchControl({
+        provider: provider,
+        style: 'bar',
+        showMarker: true,
+        searchLabel: 'Buscar institución',
+        marker: {
+        draggable: false
+    },
+        autoClose: true,
+        keepResult: true,
+    });
+    
+    // Add searchbar to the map
+    map.addControl(searchControl);
+
+    //geosearch/showlocation is fired when location is chosen from the result list
+    map.on('geosearch/showlocation', function(e) {
+        // Set the value of the hidden fields
+        document.getElementById("id_location_name").value = e.location.label;
+        document.getElementById("id_location_lat").value = e.location.y;
+        document.getElementById("id_location_lng").value = e.location.x;
+     });
+    
+    
+
     // hide label of data picker
     document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
     var regResult = parseInt("{{ registration_result }}");
@@ -73,7 +107,6 @@
                         <button type="submit" class="btn btn-primary btn-xl" id="submitButton">Registrarse</button>
                     </div>
                 </form>
-                <input id="pac-input" class="map-search-box" type="text" placeholder="Buscar institución">
             </div>
         </div>
     </div>

@@ -4,7 +4,6 @@ var centerCords = {
     lat: 41.389633,
     lng: 2.116217
 };
-var markers = [];
 var markerCluster = null;
 var twitter_icon = '/static/app/img/icons/twitter.png';
 var gscholar_icon = '/static/app/img/icons/google-scholar.png';
@@ -145,15 +144,18 @@ function distanceInK(lat1, lon1, lat2, lon2) {
 	}
 }
 
-function addMarkers(scientists, isIndex) {
+
+function addMarkers(scientists, isIndex, map, markers) {
+
+    /***
+    map: variable containing the map
+    markers: variable containing the group of markers
+    ***/
+    
     // Create markers
-    let inst_lat, inst_lng, str_info_window;
-    let infowindow = new google.maps.InfoWindow();
-    let marker;
+    let inst_lat, inst_lng; 
     let arr_pos = [];
     let new_lat, new_lng;
-    let distance;
-    markers = [];
 
     for (i=0; i < scientists.length; i++) {
         inst_lat = scientists[i].institution_latitude;
@@ -170,56 +172,44 @@ function addMarkers(scientists, isIndex) {
                 pos = {lat: new_lat, lng: new_lng};
             }
         }
-
-        marker = new google.maps.Marker({
-            position: pos,
-            map: map
-        });
-
+        
+        let leafletMarker = L.marker([pos.lat,pos.lng]);
         if (!isIndex) {
-            google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                return function() {
-                    //closeInfoWindow();
-                    infowindow.setContent(generateInfoWindowContent(scientists[i]));
-                    infowindow.open(map, marker);
-                }
-            })(marker, i));
+            leafletMarker.bindPopup(generateInfoWindowContent(scientists[i])).openPopup();
         }
-        markers.push(marker);
-        arr_pos.push(pos);
+        markers.addLayer(leafletMarker);
     }
-    // Add a marker clusterer to manage the markers.
-    markerCluster = new MarkerClusterer(map, markers, {imagePath: '/static/app/img/markercluster/m'});
+
+    //leaflet cluster added to map
+    map.addLayer(markers);
 }
 
-function removeMarkers() {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-    markers = [];
-    markerCluster.clearMarkers();
+function removeMarkers(markers) {
+    markers.clearLayers();
 }
+function initMap(mapDivId) {
+    /**
+     mapDivId: ID of the map's div in the html code
+      **/
+    var map = L.map(mapDivId, {
+        fullscreenControl: true,
+        // OR
+        fullscreenControl: {
+            pseudoFullscreen: false // if true, fullscreen to page width and height
+        },
+        minZoom: 2
+    }).setView([0, 0], 2);
 
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 2,
-        center: centerCords
-    });
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    return map;
 }
 
 function addMarker(map, latitude, longitude, place_name) {
     latitude = parseInt(latitude);
     longitude = parseInt(longitude);
-    var infowindow = new google.maps.InfoWindow({
-        content: place_name
-    });
-    var marker = new google.maps.Marker({
-        position: {lat: latitude, lng: longitude},
-        map: map
-    });
-    marker.addListener('click', function() {
-        infowindow.open(map, marker);
-    });
+    var leafletMarker = L.marker([latitude,longitude]).addTo(map).bindPopup(place_name).openPopup();
 }
 
 function showCommunicationField() {

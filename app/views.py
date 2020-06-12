@@ -161,6 +161,7 @@ def __get_institution_extra_information(inst_dict):
     inst_dict['region'] = region
     inst_dict['country'] = country
     inst_dict['postal_code'] = postal_code
+
     return geocode_result, inst_dict
 
 

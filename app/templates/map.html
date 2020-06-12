@@ -2,7 +2,13 @@
 
 <script>
 {% block javascript %}
-    addMarkers({{ scientists|safe }}, false);
+    //leaflet map
+    var map = initMap('map');
+
+    var markers = L.markerClusterGroup(); // Leaflet's cluster group
+
+    addMarkers({{ scientists|safe }}, false, map, markers);
+
     var exists_becal_scholar = { exists_becal_scholar };
     var becal_cb = document.getElementById("becal");
     if (exists_becal_scholar == true) {
@@ -19,9 +25,9 @@
                      csrfmiddlewaretoken: '{{ csrf_token }}' },
             // handle a successful response
             success : function(json) {
-                removeMarkers();
+                removeMarkers(markers);
                 if (json["scientists"].length > 0) {
-                    addMarkers(json["scientists"], false);
+                    addMarkers(json["scientists"], false,map, markers);
                 }
                 else {
                     $('.toast').toast({delay: 3000});
