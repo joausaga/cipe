@@ -4,6 +4,8 @@ abroad and working in academia. The website shows the name, field of expertise, 
 (i.e., PhD student, postdoc, professor), and location of Paraguayans who are residing and doing 
 academic research in universities, research centers, and companies abroad.
 
+A live version of CIPE can be accessed [here](https://investigadoresparaguayosenelmundo.com/).
+
 ## Screenshots
 
 ![Screenshot](screenshots/landing.png)
