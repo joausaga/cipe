@@ -14,11 +14,14 @@ A live version of CIPE can be accessed [here](https://investigadoresparaguayosen
 
 ## Installation
 
-0. For the impatient: The only key you need to get a **really quick start**, is a valid Google Map API KEY, all the others default credentials will be used. However your are encouraged to complete the setup process if your planning to use this proyect in the long run.
-1. Install docker and docker-compose in your local machine. Check the official installation [guidelines](https://docs.docker.com/install/); 
-2. Obtain a google maps api key by following the instructions [here](https://developers.google.com/maps/documentation/embed/get-api-key);
-3. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
-4. Get into the directory `cipe`;
+Install docker and docker-compose in your local machine. Check the official installation [guidelines](https://docs.docker.com/install/); 
+
+### Production
+
+For the impatient: The only key you need to get a **really quick start**, is a valid Google Map API KEY, all the others default credentials will be used. However your are encouraged to complete the setup process if your planning to use this proyect in the long run.
+1. Obtain a google maps api key by following the instructions [here](https://developers.google.com/maps/documentation/embed/get-api-key);
+2. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
+3. Get into the directory `cipe`;
 4. Run `scripts/prepare-config-templates.sh`
 5. Set the configuration parameters of the database in `.env.prod.db`;
 6. Set the SECRET_KEY and GOOGLE_MAPS_API_KEY obtained before as well as the configuration parameters 
@@ -27,6 +30,20 @@ of the database in `.env.prod`;
 Once containers are fully created, you can watch the logs with `docker-compose -f docker-compose.prod.yml logs -f` , to see for the containers to be fully initialized;
 8. Load initial data `docker-compose -f docker-compose.prod.yml exec app python manage.py loaddata data/initial_data.json`;
 9. Go to `http://localhost:1550` to access the tool
+
+### Development
+
+1. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
+2. Get into the directory `cipe`;
+3. Change to development branch `git checkout develop`;
+4. Pull last changes in the development branch `git pull origin develp`;
+5. Rename the file `cipe/settings.py.sample` as `cipe/settings.py`;
+6. Rename the file `.env.dev.sample` as `.env.dev`;
+7. Generate a random secret key to be used as part of the configuration of the tool. One way of generating the key is by running the following command `python -c 'import random; print("".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))'`;
+8. Set the SECRET_KEY and configuration parameters of the database in `env.dev`;
+9. Build docker container `docker-compose -f docker-compose.yml up --build -d`;
+10. Load initial data `docker-compose exec app python manage.py loaddata data/initial_data.json`;
+11. Go to `http://localhost:8000` to access the tool
 
 ## Cleanup/reinitialize
 
