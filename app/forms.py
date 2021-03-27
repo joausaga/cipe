@@ -1,6 +1,6 @@
 from django import forms
 from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS
-
+from app.tasks import send_new_registration_email_task
 SEX_EMPTY = [('','Indique su sexo')] + list(SEX)
 SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
@@ -144,7 +144,8 @@ class RegistrationForm(forms.Form):
     location_name = forms.CharField(widget=forms.HiddenInput(), required=False)
     location_lat = forms.CharField(widget=forms.HiddenInput(), required=False)
     location_lng = forms.CharField(widget=forms.HiddenInput(), required=False)
-
+    def send_email(self):
+        send_new_registration_email_task.delay(self.cleaned_data['first_name']+self.cleaned_data['last_name'],self.cleaned_data['ci'],self.cleaned_data['email'])
 
 class RegistrationEditForm(forms.Form):
     first_name = forms.CharField(label='Nombre *', widget=forms.TextInput(

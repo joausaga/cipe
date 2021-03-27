@@ -220,6 +220,13 @@ def registration(request):
                                                                                        'institution': inst_obj})
                 msg = f"Registro exitoso! Luego de su aprobación, los datos podrán ser " \
                       f"visualizados en el mapa de investigadores."
+                #Notify moderator of the new register
+                try:
+                    form.send_email()
+                    print("Succesfuly sent email new regitration")
+                except:
+                    print("Fail to sent email new registration")
+
                 form = RegistrationForm()
                 registration_error = 0
         else:

@@ -1,0 +1,9 @@
+Hello Moderator
+Just notify you {{name|safe}} join the community
+Here some info from the new user:
+Nombre completo : {{name|safe}}
+CI : {{ci|safe}}
+email : {{email|safe}}
+
+
+Thank you!
