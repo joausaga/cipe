@@ -11,11 +11,10 @@ ENV PYTHONUNBUFFERED 1
 # install SO dependencies
 RUN apk --no-cache add --virtual build-dependencies \
     build-base \
-    py-mysqldb \
     gcc \
     libc-dev \
     libffi-dev \
-    mariadb-dev
+    mariadb-dev 
 
 # install app dependencies
 RUN pip install --upgrade pip
