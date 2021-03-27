@@ -20,3 +20,20 @@ def send_new_email_registration(name, ci, email):
         settings.DEFAULT_FROM_EMAIL,settings.EMAILS_FROM_MODERATOR,
     )
     return email.send(fail_silently=False)
+
+def send_approved_email(name, ci, email):
+
+    context = {
+        'name': name,
+        'email': email,
+        'ci': ci,
+    }
+
+    email_subject = 'You have been Approved'
+    email_body = render_to_string('email/approved_email.txt', context)
+
+    email = EmailMessage(
+        email_subject, email_body,
+        settings.DEFAULT_FROM_EMAIL,[email,],
+    )
+    return email.send(fail_silently=False)
