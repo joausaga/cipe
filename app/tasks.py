@@ -5,10 +5,9 @@ from .email import send_new_email_registration,send_approved_email
 logger=get_task_logger(__name__)
 
 @task(name="send_new_registration_email_task")
-def send_new_registration_email_task(name,ci,email):
-    print("Sent new registration email")
-    logger.info("Sent new registration email")
-    return send_new_email_registration(name,ci,email)
+def send_new_registration_email_task(name,position,institution):
+    logger.info("Sending email to moderators ... ")
+    return send_new_email_registration(name,position,institution)
 
 
 @task(name="send_approved_email_task")

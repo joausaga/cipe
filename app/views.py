@@ -9,8 +9,7 @@ from django.db.models import Count
 from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse
-
-
+from app.tasks import send_new_registration_email_task
 logger = logging.getLogger(__name__)
 countries_iso2 = load_countries_iso2()
 
@@ -220,12 +219,10 @@ def registration(request):
                                                                                        'institution': inst_obj})
                 msg = f"Registro exitoso! Luego de su aprobación, los datos podrán ser " \
                       f"visualizados en el mapa de investigadores."
-                #Notify moderator of the new register
-                try:
-                    form.send_email()
-                    print("Succesfuly sent email new regitration")
-                except:
-                    print("Fail to sent email new registration")
+                      
+                #Send mail to notify new registration to moderator
+                send_new_registration_email_task.delay(scientist_obj.first_name+' '+scientist_obj.last_name,scientist_obj.position,inst_obj.name)
+
 
                 form = RegistrationForm()
                 registration_error = 0

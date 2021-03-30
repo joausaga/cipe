@@ -6,6 +6,7 @@ SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
 CHANNEL_EMPTY = [('','Indique un canal de comunicación')] + list(COMMUNICATION_CHANNELS)
 BECAL = [(False, 'Indique si es becario de BECAL'), (False, 'No'), (True, 'Si')]
+from .email import send_new_email_registration,send_approved_email
 
 
 class RegistrationForm(forms.Form):
@@ -144,9 +145,7 @@ class RegistrationForm(forms.Form):
     location_name = forms.CharField(widget=forms.HiddenInput(), required=False)
     location_lat = forms.CharField(widget=forms.HiddenInput(), required=False)
     location_lng = forms.CharField(widget=forms.HiddenInput(), required=False)
-    def send_email(self):
-        send_new_registration_email_task.delay(self.cleaned_data['first_name']+self.cleaned_data['last_name'],self.cleaned_data['ci'],self.cleaned_data['email'])
-
+    
 class RegistrationEditForm(forms.Form):
     first_name = forms.CharField(label='Nombre *', widget=forms.TextInput(
         attrs={
