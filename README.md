@@ -23,7 +23,7 @@ academic research in universities, research centers, and companies abroad.
 of the database in `env.prod`;
 7. Build docker container `docker-compose -f docker-compose.prod.yml up --build -d` ,
 Once containers are fully created, you can watch the logs with `docker-compose -f docker-compose.prod.yml logs -f` , to see for the containers to be fully initialized;
-8. Load initial data `docker-compose exec app python manage.py loaddata data/initial_data.json`;
+8. Load initial data `docker-compose exec  -f docker-compose.prod.yml up app python manage.py loaddata data/initial_data.json`;
 9. Go to `http://localhost:1550` to access the tool
 
 ### Development
@@ -54,6 +54,8 @@ for  accessing public information about the [BECAL](http://www.becal.gov.py/) fe
 2. [MySQL Community Server](https://www.mysql.com/downloads/)
 3. [Django 2.2](https://www.djangoproject.com)
 4. Google Maps
+5. [Rabbitmqctl](https://www.rabbitmq.com)
+6. [Celery](https://docs.celeryproject.org)
 
 ## Issues
 
