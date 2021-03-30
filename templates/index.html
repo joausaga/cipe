@@ -26,7 +26,13 @@
     <div class="container-fluid px-0" >
         <div id="map">
         </div>
-        <div class="container">
+        <div class="container" style="
+        position: absolute;
+        z-index: 400;
+        top: 46%;
+        left: 0;
+        right: 0;
+        margin: auto;">
             <div class="jumbotron transparentBackground">
                 <h1 class="page-section-heading text-center text-uppercase text-secondary mb-0">Investigadores Paraguayos en el Mundo</h1><br>
                 <a class="btn btn-xl btn-primary" href="{% url 'registration' %}">
