@@ -13,7 +13,7 @@ def send_new_email_registration(name,position, institution):
         'position':position,
         'institution':institution
     }
-    email_subject = 'New registration (cipe)'
+    email_subject = 'Nuevo Registro ingresado(cipe)'
     html_message = render_to_string('email/new_email_registration.html', context)
     plain_message = strip_tags(html_message)
     return send_mail(
@@ -21,19 +21,19 @@ def send_new_email_registration(name,position, institution):
         settings.DEFAULT_FROM_EMAIL,settings.EMAILS_FROM_MODERATOR,html_message=html_message, fail_silently=True
     )
 
-def send_approved_email(name, ci, email):
+def send_approved_email(name,slug,email):
 
     context = {
         'name': name,
-        'email': email,
-        'ci': ci,
+        'slug': slug,
     }
 
-    email_subject = 'You have been Approved'
-    email_body = render_to_string('email/approved_email.txt', context)
+    email_subject = 'Tu registro ha sido aprovado'
+    html_message = render_to_string('email/approved_email.html', context)
+    plain_message = strip_tags(html_message)
 
-    email = EmailMessage(
-        email_subject, email_body,
+    return send_mail(
+        email_subject, plain_message,
         settings.DEFAULT_FROM_EMAIL,[email,],
+        html_message=html_message, fail_silently=True
     )
-    return email.send(fail_silently=False)

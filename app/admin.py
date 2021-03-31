@@ -58,25 +58,23 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
     def save_model(self, request, obj, form, change):
         if(change):
             try:
-                old_scientist=Scientist.objects.get(id=obj.id)
-                self.notify_user_approved(obj,old_scientist)
-            except Scientist.DoesNotExist:
-                print("Changes aren form Scientist")
+                current_obj=Scientist.objects.get(id=obj.id)
+                self.notify_user_approved(obj,current_obj)
             except:
-                print("Error ocurred sending email of aproven user")
+                logger.info("Error ocurred sending email of aproven user")
+                
             super().save_model(request, obj, form, change)
 
     def notify_user_approved(self,new_scientist,old_scientist):
         if(new_scientist.approved and new_scientist.approved != old_scientist.approved):
-            print("user has been aproved")
-            send_approved_email_task.delay(old_scientist.first_name + " " +old_scientist.last_name,old_scientist.ci,old_scientist.email)
+            send_approved_email_task.delay(new_scientist.first_name ,new_scientist.slug,new_scientist.email)
 
 
     def approve_scientists(self, request, queryset):
         for scientist in queryset:
             scientist.approved = True
-            old_scientist=Scientist.objects.get(id=scientist.id)
-            self.notify_user_approved(scientist,old_scientist)
+            current_scientist=Scientist.objects.get(id=scientist.id)
+            self.notify_user_approved(scientist,current_scientist)
             scientist.save()
     approve_scientists.short_description = 'Approve scientists'
 

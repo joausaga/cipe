@@ -6,7 +6,7 @@ SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
 CHANNEL_EMPTY = [('','Indique un canal de comunicación')] + list(COMMUNICATION_CHANNELS)
 BECAL = [(False, 'Indique si es becario de BECAL'), (False, 'No'), (True, 'Si')]
-from .email import send_new_email_registration,send_approved_email
+from .email import send_new_email_registration
 
 
 class RegistrationForm(forms.Form):
