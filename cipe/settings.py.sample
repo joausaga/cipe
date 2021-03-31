@@ -172,7 +172,8 @@ LOGGING = {
 }
 
 
-CELERY_BROKER_URL = 'amqp://guest:guest@rabbit:5672/%2F'
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+
 
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
 EMAIL_HOST =  os.environ.get("EMAIL_HOST")

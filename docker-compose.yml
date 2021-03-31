@@ -5,8 +5,8 @@ services:
     hostname: rabbit
     image: rabbitmq:3-management
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     ports:
       - "5672:5672"  
       - "15672:15672"  
@@ -41,9 +41,9 @@ services:
     volumes:
       - .:/usr/src/app/ 
     environment:
-      - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-      - CELERY_BROKER=amqp://guest:guest@rabbit:5672/%2F
+      - DEBUG=${DEBUG}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - CELERY_BROKER=${CELERY_BROKER_URL}
     depends_on:
       - app
       - rabbit
