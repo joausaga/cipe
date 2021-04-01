@@ -4,6 +4,8 @@ abroad and working in academia. The website shows the name, field of expertise, 
 (i.e., PhD student, postdoc, professor), and location of Paraguayans who are residing and doing 
 academic research in universities, research centers, and companies abroad.
 
+A live version of CIPE can be accessed [here](https://investigadoresparaguayosenelmundo.com/).
+
 ## Screenshots
 
 ![Screenshot](screenshots/landing.png)
@@ -18,7 +20,7 @@ academic research in universities, research centers, and companies abroad.
 3. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
 4. Get into the directory `cipe`;
 4. Run `scripts/prepare-config-templates.sh`
-5. Set the configuration parameters of the database in `env.prod.db`;
+5. Set the configuration parameters of the database in `.env.prod.db`;
 6. Set the SECRET_KEY and GOOGLE_MAPS_API_KEY obtained before as well as the configuration parameters 
 of the database in `env.prod`;
 7. Build docker container `docker-compose -f docker-compose.prod.yml up --build -d` ,
