@@ -3,7 +3,7 @@ version: '3.7'
 services:
   rabbit:
     hostname: rabbit
-    image: rabbitmq:3-management
+    image: rabbitmq:3.8.14-management
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
