@@ -13,7 +13,7 @@ def send_new_email_registration(name,position, institution):
         'position':position,
         'institution':institution
     }
-    email_subject = 'Nuevo Registro ingresado(cipe)'
+    email_subject = 'Nuevo Registro ingresado'
     html_message = render_to_string('email/new_email_registration.html', context)
     plain_message = strip_tags(html_message)
     return send_mail(
@@ -28,7 +28,7 @@ def send_approved_email(name,slug,email):
         'slug': slug,
     }
 
-    email_subject = 'Tu registro ha sido aprovado'
+    email_subject = 'Tu registro en el sitio Investigadores Paraguayos en el Mundo ha sido aprobado'
     html_message = render_to_string('email/approved_email.html', context)
     plain_message = strip_tags(html_message)
 
