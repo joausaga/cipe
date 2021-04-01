@@ -65,9 +65,9 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
                 
             super().save_model(request, obj, form, change)
 
-    def notify_user_approved(self,new_scientist,old_scientist):
-        if(new_scientist.approved and new_scientist.approved != old_scientist.approved):
-            send_approved_email_task.delay(new_scientist.first_name ,new_scientist.slug,new_scientist.email)
+    def notify_user_approved(self,obj,current_obj):
+        if(obj.approved and obj.approved != current_obj.approved):
+            send_approved_email_task.delay(obj.first_name ,obj.slug,obj.email)
 
 
     def approve_scientists(self, request, queryset):
