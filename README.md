@@ -22,7 +22,7 @@ A live version of CIPE can be accessed [here](https://investigadoresparaguayosen
 4. Run `scripts/prepare-config-templates.sh`
 5. Set the configuration parameters of the database in `.env.prod.db`;
 6. Set the SECRET_KEY and GOOGLE_MAPS_API_KEY obtained before as well as the configuration parameters 
-of the database in `env.prod`;
+of the database in `.env.prod`;
 7. Build docker container `docker-compose -f docker-compose.prod.yml up --build -d` ,
 Once containers are fully created, you can watch the logs with `docker-compose -f docker-compose.prod.yml logs -f` , to see for the containers to be fully initialized;
 8. Load initial data `docker-compose exec  -f docker-compose.prod.yml app python manage.py loaddata data/initial_data.json`;
