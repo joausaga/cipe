@@ -1,6 +1,6 @@
 from django import forms
 from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS
-from app.tasks import send_new_registration_email_task
+
 SEX_EMPTY = [('','Indique su sexo')] + list(SEX)
 SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
