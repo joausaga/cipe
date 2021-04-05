@@ -18,7 +18,7 @@ def send_new_email_registration(name,position, institution):
     plain_message = strip_tags(html_message)
     return send_mail(
         email_subject, plain_message,
-        settings.ADMIN_EMAIL_ADDRESS,settings.EMAILS_FROM_MODERATOR,html_message=html_message, fail_silently=True
+        settings.ADMIN_EMAIL_ADDRESS,settings.MODERATOR_EMAIL_ADDRESSES,html_message=html_message, fail_silently=True
     )
 
 def send_approved_email(name,slug,email):
