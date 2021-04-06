@@ -22,7 +22,7 @@ def send_new_email_registration(name,position, institution):
     email.content_subtype = 'html' 
     return email.send()
 
-def send_approved_email(name,slug,email):
+def send_approved_email(name,slug,to_email):
 
     context = {
         'name': name,
@@ -34,7 +34,7 @@ def send_approved_email(name,slug,email):
         subject=email_subject,
         body=html_message,
         from_email= settings.DEFAULT_FROM_EMAIL,
-        to=[email],
+        to=[to_email],
         )
     email.content_subtype = 'html' 
     return email.send()
