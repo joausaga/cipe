@@ -43,9 +43,10 @@ services:
     environment:
       - DEBUG=${DEBUG}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
-      - CELERY_BROKER=${CELERY_BROKER_URL}
+      - CELERY_BROKER=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbit:5672/%2F
     depends_on:
       - app
       - rabbit
     env_file:
       - ./.env.dev
+      
