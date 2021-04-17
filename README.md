@@ -25,7 +25,7 @@ A live version of CIPE can be accessed [here](https://investigadoresparaguayosen
 of the database in `.env.prod`;
 7. Build docker container `docker-compose -f docker-compose.prod.yml up --build -d` ,
 Once containers are fully created, you can watch the logs with `docker-compose -f docker-compose.prod.yml logs -f` , to see for the containers to be fully initialized;
-8. Load initial data `docker-compose exec  -f docker-compose.prod.yml app python manage.py loaddata data/initial_data.json`;
+8. Load initial data `docker-compose -f docker-compose.prod.yml exec app python manage.py loaddata data/initial_data.json`;
 9. Go to `http://localhost:1550` to access the tool
 
 ### Development
