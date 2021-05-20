@@ -38,7 +38,7 @@
     
 
     // hide label of data picker
-    document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
+    document.querySelector('label[for=id_end_abroad_period]').style.display = 'none';
     var regResult = parseInt("{{ registration_result }}");
     var msg = "{{ msg }}";
     var is_edit_form = parseInt("{{ edit }}");
@@ -69,7 +69,7 @@
             });
         }, 4000);
     }
-    $("#id_end_becal_scholarship").datepicker({
+    $("#id_end_abroad_period").datepicker({
       format:'dd/mm/yyyy',
     });
     $("#id_birth_date").datepicker({

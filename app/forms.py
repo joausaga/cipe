@@ -6,7 +6,7 @@ SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
 CHANNEL_EMPTY = [('','Indique un canal de comunicación')] + list(COMMUNICATION_CHANNELS)
 BECAL = [(False, 'Indique si es becario de BECAL'), (False, 'No'), (True, 'Si')]
-
+PERMANENT_RESIDENT    = [(True, 'Indiquie si es residente permanente'), (False, 'No'), (True, 'Si')]
 
 class RegistrationForm(forms.Form):
     first_name = forms.CharField(label='Nombre *', widget=forms.TextInput(
@@ -55,9 +55,19 @@ class RegistrationForm(forms.Form):
                                                 attrs={
                                                     'class': 'form-control',
                                                     'onchange': "showBecalEndDate();"
+
                                                 })
                                               )
-    end_becal_scholarship = forms.DateField(
+    is_permanet_resident = forms.ChoiceField(label='Es un residente permanente?', choices=PERMANENT_RESIDENT, required=True,
+                                            widget=forms.Select(
+                                                attrs={
+                                                    'class': 'form-control',
+                                                    'onchange': "showResidenEndDate();"
+
+
+                                                })
+                                            )
+    end_abroad_period = forms.DateField(
         label='Fecha estimada de retorno',
         required=False,
         help_text='',
@@ -180,10 +190,17 @@ class RegistrationEditForm(forms.Form):
                                               widget=forms.Select(
                                                   attrs={
                                                       'class': 'form-control',
-                                                      'onchange': "showBecalEndDate();"
+                                                    'onchange': "showBecalEndDate();"
                                                   })
                                               )
-    end_becal_scholarship = forms.DateField(label='Fecha estimada de retorno', required=False, help_text='',
+    is_permanet_resident = forms.ChoiceField(label='Es un residente permanente?', choices=PERMANENT_RESIDENT, required=True,
+                                            widget=forms.Select(
+                                                attrs={
+                                                    'class': 'form-control',
+                                                    'onchange': "showResidenEndDate();"
+                                                })
+                                            )
+    end_abroad_period = forms.DateField(label='Fecha estimada de retorno', required=False, help_text='',
                                             input_formats=['%d/%m/%Y'],
                                             widget=forms.TextInput(
                                                 attrs={

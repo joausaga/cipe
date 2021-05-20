@@ -237,15 +237,24 @@ function showCommunicationField() {
 
 function showBecalEndDate() {
     if(document.getElementById('id_has_becal_scholarship').options[document.getElementById('id_has_becal_scholarship').selectedIndex].value == "True") {
-        document.getElementById('id_end_becal_scholarship').style.display = '';
-        document.querySelector('label[for=id_end_becal_scholarship]').style.display = '';
+        // document.getElementById('id_end_becal_scholarship').style.display = '';
+        // document.querySelector('label[for=id_end_becal_scholarship]').style.display = '';
     } else {
-        document.getElementById('id_end_becal_scholarship').style.display = 'none';
-        document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
+        // document.getElementById('id_end_becal_scholarship').style.display = 'none';
+        // document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
     }
 
 }
+function showResidenEndDate() {
+    if(document.getElementById('id_is_permanet_resident').options[document.getElementById('id_is_permanet_resident').selectedIndex].value == "False") {
+        document.getElementById('id_end_abroad_period').style.display = '';
+        document.querySelector('label[for=id_end_abroad_period]').style.display = '';
+    } else {
+        document.getElementById('id_end_abroad_period').style.display = 'none';
+        document.querySelector('label[for=id_end_abroad_period]').style.display = 'none';
+    }
 
+}
 function initAutocomplete() {
     var map = new google.maps.Map(document.getElementById('map-registration'), {
       center: {lat: 41.389633, lng: 40.116217},
