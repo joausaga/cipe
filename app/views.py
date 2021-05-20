@@ -209,6 +209,10 @@ def registration(request):
                 del form.cleaned_data['location_lat']
                 del form.cleaned_data['location_lng']
                 del form.cleaned_data['location_name']
+                
+                #Remove information no store 
+                del form.cleaned_data['is_permanet_resident']
+                
                 # Get/Create Scientist
                 scientist_obj = Scientist.objects.create(**form.cleaned_data)
                 scientist_obj.save()
