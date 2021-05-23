@@ -172,7 +172,7 @@ LOGGING = {
 }
 
 
-CELERY_BROKER_URL = "amqp://${}:${}@rabbit:5672/%2F".format(os.environ.get('RABBITMQ_DEFAULT_USER'),os.environ.get('RABBITMQ_DEFAULT_PASS'))
+CELERY_BROKER_URL = "amqp://{}:{}@rabbit:5672/%2F".format(os.environ.get('RABBITMQ_DEFAULT_USER'),os.environ.get('RABBITMQ_DEFAULT_PASS'))
 
 
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
