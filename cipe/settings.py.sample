@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -184,3 +185,14 @@ EMAIL_HOST_USER = os.environ.get('ADMIN_EMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL=os.environ.get('ADMIN_EMAIL_ADDRESS')
 MODERATOR_EMAIL_ADDRESSES= os.environ.get('MODERATOR_EMAIL_ADDRESSES').split(",")
+
+CELERY_BEAT_SCHEDULE = {
+    "Daily verification": {
+        "task": "app.tasks.daily_verification_of_registrants_whose_period_abroad_has_ended_task",
+        "schedule": crontab(hour=23, minute=2),
+    },    
+    "Disabled Registrant who have not update ther end_period_abroad": {
+        "task": "app.tasks.disabled_scientist_end_period_past_a_month",
+        "schedule": crontab(hour=23, minute='*/10'),
+    },
+}
