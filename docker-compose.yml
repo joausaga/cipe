@@ -49,4 +49,19 @@ services:
       - rabbit
     env_file:
       - ./.env.dev
-      
+
+  celery-beat:
+    build: .
+    command: celery -A cipe beat -l info
+    volumes:
+      - .:/usr/src/app/
+    environment:
+      - DEBUG=${DEBUG}
+      - SECRET_KEY=${SECRET_KEY}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - CELERY_BROKER=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbit:5672/%2F
+    depends_on:
+      - rabbit
+      - app
+    env_file:
+      - ./.env.dev
