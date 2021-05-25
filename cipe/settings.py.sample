@@ -170,3 +170,17 @@ LOGGING = {
         }
     }
 }
+
+
+CELERY_BROKER_URL = "amqp://{}:{}@rabbit:5672/%2F".format(os.environ.get('RABBITMQ_DEFAULT_USER'),os.environ.get('RABBITMQ_DEFAULT_PASS'))
+
+
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
+EMAIL_HOST =  os.environ.get("EMAIL_HOST")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = int(os.environ.get("EMAIL_PORT"))
+
+EMAIL_HOST_USER = os.environ.get('ADMIN_EMAIL_ADDRESS')
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL=os.environ.get('ADMIN_EMAIL_ADDRESS')
+MODERATOR_EMAIL_ADDRESSES= os.environ.get('MODERATOR_EMAIL_ADDRESSES').split(",")

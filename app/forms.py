@@ -144,8 +144,8 @@ class RegistrationForm(forms.Form):
     location_name = forms.CharField(widget=forms.HiddenInput(), required=False)
     location_lat = forms.CharField(widget=forms.HiddenInput(), required=False)
     location_lng = forms.CharField(widget=forms.HiddenInput(), required=False)
-
-
+ 
+    
 class RegistrationEditForm(forms.Form):
     first_name = forms.CharField(label='Nombre *', widget=forms.TextInput(
         attrs={
