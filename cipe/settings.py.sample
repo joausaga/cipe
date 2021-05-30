@@ -189,10 +189,9 @@ MODERATOR_EMAIL_ADDRESSES= os.environ.get('MODERATOR_EMAIL_ADDRESSES').split(","
 CELERY_BEAT_SCHEDULE = {
     "Daily verification": {
         "task": "app.tasks.daily_verification_of_registrants_whose_period_abroad_has_ended_task",
-        "schedule": crontab(hour=23, minute=2),
+        "schedule": crontab(hour=23, minute=10),
     },    
     "Disabled Registrant who have not update ther end_period_abroad": {
         "task": "app.tasks.disabled_scientist_end_period_past_a_month",
-        "schedule": crontab(hour=23, minute='*/10'),
-    },
+        "schedule": crontab(hour=23, minute=20),
 }
