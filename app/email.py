@@ -49,7 +49,7 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
             'name': scientist.first_name +" "+ scientist.last_name,
             'slug': scientist.slug,
         }
-        html_message = render_to_string('email/approved_email.html', context)
+        html_message = render_to_string('email/end_date_of_return.html', context)
         # message = (email_subject, html_message, settings.DEFAULT_FROM_EMAIL, [scientist.email])
         # emails.append(message)
         email = EmailMessage(
@@ -62,5 +62,20 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
         email.send()
 
     # return send_mass_mail(emails,fail_silently=True)
-    
-    
+def send_mail_to_update_expected_date_of_return():
+    scientists=Scientist.objects.filter(approved=True)
+    email_subject = 'Actualizar fecha de retorno'
+    for scientist in scientists:
+        context = {
+            'name': scientist.first_name +" "+ scientist.last_name,
+            'slug': scientist.slug,
+        }
+        html_message = render_to_string('email/update_expected_return_date.html', context)
+        email = EmailMessage(
+            subject=email_subject,
+            body=html_message,
+            from_email= settings.DEFAULT_FROM_EMAIL,
+            to=[scientist.email],
+            )
+        email.content_subtype = 'html' 
+        email.send()
