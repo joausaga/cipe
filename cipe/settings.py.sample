@@ -194,4 +194,5 @@ CELERY_BEAT_SCHEDULE = {
     "Disabled Registrant who have not update ther end_period_abroad": {
         "task": "app.tasks.disabled_scientist_end_period_past_a_month",
         "schedule": crontab(hour=23, minute=20),
+    }
 }
