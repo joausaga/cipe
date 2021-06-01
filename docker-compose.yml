@@ -52,7 +52,7 @@ services:
 
   celery-beat:
     build: .
-    command: celery -A cipe beat -l info
+    command: celery -A cipe beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
       - .:/usr/src/app/
     environment:
