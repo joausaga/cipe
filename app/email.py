@@ -38,7 +38,7 @@ def send_approved_email(name,slug,to_email):
         to=[to_email],
         )
     email.content_subtype = 'html' 
-    # return email.send()
+    return email.send()
     
 def daily_verification_of_registrants_whose_period_abroad_has_ended():
     scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period=date.today())

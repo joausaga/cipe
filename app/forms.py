@@ -6,7 +6,7 @@ SCI_AREA_EMPTY = [('','Seleccione un área')] + list(SCIENTIFIC_AREA)
 POSITION_EMPTY = [('','Seleccione su nivel académico')] + list(POSITION)
 CHANNEL_EMPTY = [('','Indique un canal de comunicación')] + list(COMMUNICATION_CHANNELS)
 BECAL = [(False, 'Indique si es becario de BECAL'), (False, 'No'), (True, 'Si')]
-PERMANENT_RESIDENT    = [(True, 'Indiquie si es residente permanente'), (False, 'No'), (True, 'Si')]
+PERMANENT_RESIDENT    = [(True, 'Indique si es residente permanente'), (False, 'No'), (True, 'Si')]
 
 class RegistrationForm(forms.Form):
     first_name = forms.CharField(label='Nombre *', widget=forms.TextInput(
