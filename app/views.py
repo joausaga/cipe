@@ -387,6 +387,7 @@ def edit_scientist(request, **kwargs):
         existing_data['location_name'] = institution['name']
         existing_data['location_lat'] = institution['latitude']
         existing_data['location_lng'] = institution['longitude']
+        existing_data['is_permanet_resident'] = False if scientist_obj.end_abroad_period  else True
         form = RegistrationEditForm(initial=existing_data)
     context = {
         'form': form,
