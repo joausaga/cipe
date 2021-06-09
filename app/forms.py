@@ -54,7 +54,7 @@ class RegistrationForm(forms.Form):
                                               widget=forms.Select(
                                                 attrs={
                                                     'class': 'form-control',
-
+                                                    'onchange': "AutoCompleteIsPermanetResident();"
                                                 })
                                               )
     is_permanet_resident = forms.ChoiceField(label='Es un residente permanente?', choices=PERMANENT_RESIDENT, required=True,
@@ -189,6 +189,7 @@ class RegistrationEditForm(forms.Form):
                                               widget=forms.Select(
                                                   attrs={
                                                       'class': 'form-control',
+                                                      'onchange': "AutoCompleteIsPermanetResident();"
                                                   })
                                               )
     is_permanet_resident = forms.ChoiceField(label='Es un residente permanente?', choices=PERMANENT_RESIDENT, required=True,
