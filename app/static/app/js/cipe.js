@@ -246,7 +246,7 @@ function showBecalEndDate() {
 
 }
 function showResidenEndDate() {
-    if(document.getElementById('id_is_permanet_resident').options[document.getElementById('id_is_permanet_resident').selectedIndex].value == "False") {
+    if(document.getElementById('id_is_permanet_resident').options[document.getElementById('id_is_permanet_resident').selectedIndex].value == "True") {
         document.getElementById('id_end_abroad_period').style.display = '';
         document.querySelector('label[for=id_end_abroad_period]').style.display = '';
     } else {
