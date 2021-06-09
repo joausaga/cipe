@@ -121,10 +121,8 @@ def __get_distribution_position():
 
 def index(request, *args, **kwargs):
     scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
-        max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
-    top_area_m, total_top_area_m = __get_top_scientific_areas({'sex':'masculino'})
-    top_area_f, total_top_area_f = __get_top_scientific_areas({'sex': 'femenino'})
-    dis_positions = __get_distribution_position()
+       max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
+
     context = {
         'scientists': json.dumps(scientists),
         'num_scientists': num_scientists,
@@ -133,25 +131,37 @@ def index(request, *args, **kwargs):
         'num_institutions': num_institutions,
         'num_countries': num_countries,
         'num_cities': num_cities,
-        # 'top_area_m': top_area_m,
-        # 'top_area_f': top_area_f,
-        # 'per_top_area_m': int(round((total_top_area_m[0]/num_male_scientists)*100,0)),
-        # 'per_top_area_f': int(round((total_top_area_f[0] / num_female_scientists) * 100, 0)),
-        # 'message': kwargs['msg'] if 'msg' in kwargs else '',
-        # 'max_age_male': max_age_male,
-        # 'max_age_female': max_age_female,
-        # 'min_age_male': min_age_male,
-        # 'min_age_female': min_age_female,
-        # 'total_most_common_position': dis_positions[0]['total'],
-        # 'name_most_common_position': dis_positions[0]['position'],
-        # 'total_second_common_position': dis_positions[1]['total'],
-        # 'name_second_most_common_position': dis_positions[1]['position'],
-        # 'total_third_most_common_position': dis_positions[2]['total'],
-        # 'name_third_most_common_position': dis_positions[2]['position'],
+
     }
+    # extra_context=generate_context( **kwargs)
+    # context.update(extra_context)
     return render(request, 'index.html', context)
 
-
+def generate_context( **kwargs):
+    scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
+       max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
+    top_area_m, total_top_area_m = __get_top_scientific_areas({'sex':'masculino'})
+    top_area_f, total_top_area_f = __get_top_scientific_areas({'sex': 'femenino'})
+    dis_positions = __get_distribution_position()
+    context = {
+        'top_area_m': top_area_m,
+        'top_area_f': top_area_f,
+        'per_top_area_m': int(round((total_top_area_m[0]/num_male_scientists)*100,0)),
+        'per_top_area_f': int(round((total_top_area_f[0] / num_female_scientists) * 100, 0)),
+        'message': kwargs['msg'] if 'msg' in kwargs else '',
+        'max_age_male': max_age_male,
+        'max_age_female': max_age_female,
+        'min_age_male': min_age_male,
+        'min_age_female': min_age_female,
+        'total_most_common_position': dis_positions[0]['total'],
+        'name_most_common_position': dis_positions[0]['position'],
+        'total_second_common_position': dis_positions[1]['total'],
+        'name_second_most_common_position': dis_positions[1]['position'],
+        'total_third_most_common_position': dis_positions[2]['total'],
+        'name_third_most_common_position': dis_positions[2]['position'],
+    }
+    return context
+    
 def __get_institution_extra_information(inst_dict):
     geocode_result, address, postal_code, city, region, country = get_location_info_from_coordinates(inst_dict['latitude'],
                                                                                                      inst_dict['longitude'])
