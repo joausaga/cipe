@@ -46,7 +46,6 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
     for scientist in scientists:
         context = {
             'name': scientist.first_name +" "+ scientist.last_name,
-            'slug': scientist.slug,
         }
         html_message = render_to_string('email/end_date_of_return.html', context)
         email = EmailMessage(
