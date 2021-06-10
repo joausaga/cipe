@@ -46,6 +46,7 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
     for scientist in scientists:
         context = {
             'name': scientist.first_name +" "+ scientist.last_name,
+            'slug': scientist.slug,
         }
         html_message = render_to_string('email/end_date_of_return.html', context)
         email = EmailMessage(
@@ -65,7 +66,7 @@ def send_mail_to_update_expected_date_of_return():
             'name': scientist.first_name +" "+ scientist.last_name,
             'slug': scientist.slug,
         }
-        html_message = render_to_string('email/update_expected_return_date.html', context)
+        html_message = render_to_string('email/end_date_of_return.html', context)
         email = EmailMessage(
             subject=email_subject,
             body=html_message,
