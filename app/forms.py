@@ -61,7 +61,7 @@ class RegistrationForm(forms.Form):
                                             widget=forms.Select(
                                                 attrs={
                                                     'class': 'form-control',
-                                                    'onchange': "showResidenEndDate();"
+                                                    'onchange': "showEndDateReturn();"
 
 
                                                 })
@@ -196,7 +196,7 @@ class RegistrationEditForm(forms.Form):
                                             widget=forms.Select(
                                                 attrs={
                                                     'class': 'form-control',
-                                                    'onchange': "showResidenEndDate();"
+                                                    'onchange': "showEndDateReturn();"
                                                 })
                                             )
     end_abroad_period = forms.DateField(label='Fecha estimada de retorno', required=False, help_text='',

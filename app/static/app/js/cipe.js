@@ -239,11 +239,11 @@ function autoCompleteIsPermanetResidentInput() {
     if(document.getElementById('id_has_becal_scholarship').options[document.getElementById('id_has_becal_scholarship').selectedIndex].value == "True") {
         document.getElementById('id_is_permanet_resident').value = 'False';
         document.getElementById('id_is_permanet_resident').selectedIndex = 1;
-        showResidenEndDate()
+        showEndDateReturn()
     }
 }
 
-function showResidenEndDate() {
+function showEndDateReturn() {
     if(document.getElementById('id_is_permanet_resident').options[document.getElementById('id_is_permanet_resident').selectedIndex].value == "False") {
         document.getElementById('id_end_abroad_period').style.display = '';
         document.querySelector('label[for=id_end_abroad_period]').style.display = '';

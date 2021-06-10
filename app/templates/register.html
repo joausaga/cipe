@@ -47,7 +47,7 @@
         var institution = {{ institution|safe }};
         if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
             addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
-            showResidenEndDate();
+            showEndDateReturn();
         }
     }
     if (regResult >= 0) {
