@@ -220,7 +220,7 @@ def registration(request):
                 del form.cleaned_data['location_lng']
                 del form.cleaned_data['location_name']
                 
-                #Remove information no store 
+                #Remove information to store 
                 del form.cleaned_data['is_permanet_resident']
                 
                 # Get/Create Scientist
