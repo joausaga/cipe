@@ -235,7 +235,7 @@ function showCommunicationField() {
     }
 }
 
-function AutoCompleteIsPermanetResident() {
+function autoCompleteIsPermanetResidentInput() {
     if(document.getElementById('id_has_becal_scholarship').options[document.getElementById('id_has_becal_scholarship').selectedIndex].value == "True") {
         document.getElementById('id_is_permanet_resident').value = 'False';
         document.getElementById('id_is_permanet_resident').selectedIndex = 1;
