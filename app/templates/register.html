@@ -47,8 +47,12 @@
         var institution = {{ institution|safe }};
         if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
             addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
-            showEndDateReturn();
         }
+        showEndDateReturn();
+        if(document.getElementById('id_is_permanet_resident').options[document.getElementById('id_is_permanet_resident').selectedIndex].value == "False") 
+        document.getElementById('id_is_permanet_resident').selectedIndex = 1;
+        else 
+        document.getElementById('id_is_permanet_resident').selectedIndex = 2;
     }
     if (regResult >= 0) {
         document.getElementById("msgReg").innerHTML = msg;
