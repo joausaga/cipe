@@ -352,6 +352,13 @@ def edit_scientist(request, **kwargs):
                 del data['location_lng']
                 del data['location_name']
                 data['approved'] = False
+
+                #Remove information to store 
+                del data['is_permanet_resident']
+
+                if scientist_obj.end_abroad_period < data['end_abroad_period']:
+                    data['notify_end_abroad_period_has_ended'] = False
+
                 # Update scientist
                 Scientist.objects.filter(ci=form.cleaned_data['ci'], email=form.cleaned_data['email']).\
                     update(**data)

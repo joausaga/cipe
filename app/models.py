@@ -46,6 +46,7 @@ class Scientist(models.Model):
     # audit fields
     created_at = models.DateTimeField(editable=False, default=timezone.now)
     edited_at = models.DateTimeField(editable=False, null=True, blank=True)
+    notify_end_abroad_period_has_ended=models.BooleanField(default=False,null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # On save, update timestamps

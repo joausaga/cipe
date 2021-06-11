@@ -41,7 +41,7 @@ def send_approved_email(name,slug,to_email):
     return email.send()
     
 def daily_verification_of_registrants_whose_period_abroad_has_ended():
-    scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period=date.today())
+    scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today()).filter(notify_end_abroad_period_has_ended=False)
     email_subject = "Tu estancia en el extranjero ha finalizado, si no es así, favor, actualiza tus datos"
     for scientist in scientists:
         context = {
@@ -56,7 +56,9 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
             to=[scientist.email],
             )
         email.content_subtype = 'html' 
-        email.send()
+        if(email.send()):
+            scientist.notify_end_abroad_period_has_ended=True
+            scientist.save()
 
 def send_mail_to_update_expected_date_of_return():
     scientists=Scientist.objects.filter(approved=True)
