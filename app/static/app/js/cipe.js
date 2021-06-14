@@ -236,6 +236,10 @@ function showCommunicationField() {
 }
 
 function autoCompleteIsPermanetResidentInput() {
+    /**
+     * Call when  input id_has_becal_scholarship change.
+     * if id_has_becal_scholarship = True autocomplete the input id_is_permanet_resident to False and diplay datepicker id_end_abroad_period
+     */
     if(document.getElementById('id_has_becal_scholarship').options[document.getElementById('id_has_becal_scholarship').selectedIndex].value == "True") {
         document.getElementById('id_is_permanet_resident').value = 'False';
         document.getElementById('id_is_permanet_resident').selectedIndex = 1;
