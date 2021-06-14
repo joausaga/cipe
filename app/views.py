@@ -121,8 +121,7 @@ def __get_distribution_position():
 
 def index(request, *args, **kwargs):
     scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
-       max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
-
+       _, _, _, _, num_cities = __get_data_map()
     context = {
         'scientists': json.dumps(scientists),
         'num_scientists': num_scientists,
@@ -138,8 +137,8 @@ def index(request, *args, **kwargs):
     return render(request, 'index.html', context)
 
 def generate_context( **kwargs):
-    scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
-       max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
+    _, _, _, _, num_male_scientists, num_female_scientists, \
+       max_age_male, max_age_female, min_age_male, min_age_female, _ = __get_data_map()
     top_area_m, total_top_area_m = __get_top_scientific_areas({'sex':'masculino'})
     top_area_f, total_top_area_f = __get_top_scientific_areas({'sex': 'femenino'})
     dis_positions = __get_distribution_position()
