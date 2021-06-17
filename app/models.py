@@ -46,7 +46,6 @@ class Scientist(models.Model):
     # audit fields
     created_at = models.DateTimeField(editable=False, default=timezone.now)
     edited_at = models.DateTimeField(editable=False, null=True, blank=True)
-    notify_end_abroad_period_has_ended=models.BooleanField(default=False,null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # On save, update timestamps
@@ -129,3 +128,14 @@ class Affiliation(models.Model):
 
     class Meta:
         unique_together = ('scientist', 'institution')
+
+class NotificationUpdateScientist(models.Model):
+    it_has_been_notified=models.BooleanField(default=False)
+    scientist=models.OneToOneField(Scientist,on_delete=models.CASCADE,
+        primary_key=True)
+    
+    def __unicode__(self):
+        return f"{self.scientist.first_name.title()} {self.scientist.last_name.title()}"
+
+    def __str__(self):
+        return f"{self.scientist.first_name.title()} {self.scientist.last_name.title()}"

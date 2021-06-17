@@ -1,9 +1,9 @@
 
 from django.template import Context
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage ,send_mass_mail
+from django.core.mail import EmailMessage 
 from django.conf import settings
-from .models import Scientist
+from .models import Scientist,NotificationUpdateScientist
 from datetime import date
 def send_new_email_registration(name,position, institution):
 
@@ -41,9 +41,13 @@ def send_approved_email(name,slug,to_email):
     return email.send()
     
 def daily_verification_of_registrants_whose_period_abroad_has_ended():
-    scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today()).filter(notify_end_abroad_period_has_ended=False)
+    scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today())
     email_subject = "Tu estancia en el extranjero ha finalizado, si no es así, favor, actualiza tus datos"
     for scientist in scientists:
+        notification=NotificationUpdateScientist.objects.get_or_create(scientist=scientist)[0]
+        if notification.it_has_been_notified:
+            continue
+
         context = {
             'name': scientist.first_name +" "+ scientist.last_name,
             'slug': scientist.slug,
@@ -57,8 +61,8 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
             )
         email.content_subtype = 'html' 
         if(email.send()):
-            scientist.notify_end_abroad_period_has_ended=True
-            scientist.save()
+            notification.it_has_been_notified=True
+            notification.save()
 
 def send_mail_to_update_expected_date_of_return():
     scientists=Scientist.objects.filter(approved=True)
