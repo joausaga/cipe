@@ -3,7 +3,7 @@ import json
 
 from app.constants import SCIENTIFIC_AREA, POSITION, FIRST_CAT_SCIENTIFIC_AREA
 from app.forms import RegistrationForm, RegistrationEditForm
-from app.models import Institution, Scientist, Affiliation, NotificationUpdateScientist
+from app.models import Institution, Scientist, Affiliation, NotificationScientist
 from app.utils import get_location_info_from_coordinates, load_countries_iso2
 from django.db.models import Count
 from django.forms.models import model_to_dict
@@ -356,7 +356,7 @@ def edit_scientist(request, **kwargs):
                 del data['is_permanet_resident']
 
                 if scientist_obj.end_abroad_period < data['end_abroad_period']:
-                    notification=NotificationUpdateScientist.objects.get_or_create(scientist=scientist_obj)[0]
+                    notification=NotificationScientist.objects.get_or_create(scientist=scientist_obj)[0]
                     notification.it_has_been_notified=False
                     notification.save()
                 # Update scientist

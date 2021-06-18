@@ -1,4 +1,4 @@
-from app.models import Scientist, Affiliation, Institution
+from app.models import Scientist, Affiliation, Institution ,NotificationScientist
 from app.constants import MAIN_SCIENTIFIC_AREA
 from django import forms
 from django.contrib import admin
@@ -17,6 +17,8 @@ from app.tasks import send_approved_email_task
 
 logger = logging.getLogger(__name__)
 
+
+admin.site.register(NotificationScientist)
 
 class CsvImportForm(forms.Form):
     csv_file = forms.FileField()

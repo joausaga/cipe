@@ -3,7 +3,7 @@ from django.template import Context
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage 
 from django.conf import settings
-from .models import Scientist,NotificationUpdateScientist
+from .models import Scientist,NotificationScientist
 from datetime import date
 def send_new_email_registration(name,position, institution):
 
@@ -44,7 +44,7 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
     scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today())
     email_subject = "Tu estancia en el extranjero ha finalizado, si no es así, favor, actualiza tus datos"
     for scientist in scientists:
-        notification=NotificationUpdateScientist.objects.get_or_create(scientist=scientist)[0]
+        notification=NotificationScientist.objects.get_or_create(scientist=scientist)[0]
         if notification.it_has_been_notified:
             continue
 
