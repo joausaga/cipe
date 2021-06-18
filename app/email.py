@@ -42,35 +42,25 @@ def send_approved_email(name,slug,to_email):
     
 def daily_verification_of_registrants_whose_period_abroad_has_ended():
     scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today())
-    email_subject = "Tu estancia en el extranjero ha finalizado, si no es así, favor, actualiza tus datos"
     for scientist in scientists:
-        notification=NotificationScientist.objects.get_or_create(scientist=scientist)[0]
-        if notification.it_has_been_notified:
+        #Look for a valid notification,
+        notification=NotificationScientist.objects.filter(scientist=scientist).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
+        if notification:
             continue
+        if(send_email_update_aborad_end_return(scientist)):
+            NotificationScientist.objects.create(scientist=scientist,type="ABROAD_PERIOD_EXPIRATION")
 
-        context = {
-            'name': scientist.first_name +" "+ scientist.last_name,
-            'slug': scientist.slug,
-        }
-        html_message = render_to_string('email/end_date_of_return.html', context)
-        email = EmailMessage(
-            subject=email_subject,
-            body=html_message,
-            from_email= settings.DEFAULT_FROM_EMAIL,
-            to=[scientist.email],
-            )
-        email.content_subtype = 'html' 
-        if(email.send()):
-            notification.it_has_been_notified=True
-            notification.save()
-
-def send_mail_to_update_expected_date_of_return():
+def send_email_to_all_active_scientitst():
     scientists=Scientist.objects.filter(approved=True)
-    email_subject = 'Actualizar fecha de retorno'
     for scientist in scientists:
+        send_email_update_aborad_end_return(scientist)
+
+
+def send_email_update_aborad_end_return(scientist):
+        email_subject = "Tu estancia en el extranjero ha finalizado, si no es así, favor, actualiza tus datos"
         context = {
-            'name': scientist.first_name +" "+ scientist.last_name,
-            'slug': scientist.slug,
+        'name': scientist.first_name +" "+ scientist.last_name,
+        'slug': scientist.slug,
         }
         html_message = render_to_string('email/end_date_of_return.html', context)
         email = EmailMessage(
@@ -80,4 +70,4 @@ def send_mail_to_update_expected_date_of_return():
             to=[scientist.email],
             )
         email.content_subtype = 'html' 
-        email.send()
+        return email.send()

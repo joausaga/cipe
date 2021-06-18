@@ -1,5 +1,5 @@
 from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS, FIRST_CAT_SCIENTIFIC_AREA, \
-    MAIN_SCIENTIFIC_AREA
+    MAIN_SCIENTIFIC_AREA ,NOTIFICATION_TYPE
 from django.db import models
 from django.utils import timezone
 from django.utils.crypto import get_random_string
@@ -129,10 +129,12 @@ class Affiliation(models.Model):
     class Meta:
         unique_together = ('scientist', 'institution')
 
-class NotificationUpdateScientist(models.Model):
-    it_has_been_notified=models.BooleanField(default=False)
-    scientist=models.OneToOneField(Scientist,on_delete=models.CASCADE,
-        primary_key=True)
+class NotificationScientist(models.Model):
+    is_valid=models.BooleanField(default=True)
+    scientist=models.ForeignKey(Scientist,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(editable=False, default=timezone.now)
+    type = models.CharField(max_length=100, choices=NOTIFICATION_TYPE, default='')
+    
     
     def __unicode__(self):
         return f"{self.scientist.first_name.title()} {self.scientist.last_name.title()}"

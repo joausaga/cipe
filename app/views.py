@@ -356,9 +356,10 @@ def edit_scientist(request, **kwargs):
                 del data['is_permanet_resident']
 
                 if scientist_obj.end_abroad_period < data['end_abroad_period']:
-                    notification=NotificationScientist.objects.get_or_create(scientist=scientist_obj)[0]
-                    notification.it_has_been_notified=False
-                    notification.save()
+                    notification=NotificationScientist.objects.filter(scientist=scientist_obj).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
+                    if notification :
+                        notification.is_valid=False
+                        notification.save()
                 # Update scientist
                 Scientist.objects.filter(ci=form.cleaned_data['ci'], email=form.cleaned_data['email']).\
                     update(**data)
