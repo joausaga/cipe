@@ -43,7 +43,10 @@ def send_approved_email(name,slug,to_email):
 def daily_verification_of_registrants_whose_period_abroad_has_ended():
     scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today())
     for scientist in scientists:
-        #Look for a valid notification,
+        """
+        Look for a valid notification type ABROAD_PERIOD_EXPIRATION of the users. If the result is a notification objects, it means the user
+        had been previously notified, else it means it had not been notified
+        """
         notification=NotificationScientist.objects.filter(scientist=scientist).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
         if notification:
             continue
