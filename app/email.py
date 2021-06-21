@@ -47,16 +47,16 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
         notification=NotificationScientist.objects.filter(scientist=scientist).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
         if notification:
             continue
-        if(send_email_update_aborad_end_return(scientist)):
+        if(send_email_update_abroad_end_return(scientist)):
             NotificationScientist.objects.create(scientist=scientist,type="ABROAD_PERIOD_EXPIRATION")
 
 def send_email_to_all_active_scientitst():
     scientists=Scientist.objects.filter(approved=True)
     for scientist in scientists:
-        send_email_update_aborad_end_return(scientist)
+        send_email_update_abroad_end_return(scientist)
 
 
-def send_email_update_aborad_end_return(scientist):
+def send_email_update_abroad_end_return(scientist):
         email_subject = "Tu estancia en el extranjero ha finalizado, si no es así, favor, actualiza tus datos"
         context = {
         'name': scientist.first_name +" "+ scientist.last_name,
