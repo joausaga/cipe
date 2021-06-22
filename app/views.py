@@ -355,11 +355,12 @@ def edit_scientist(request, **kwargs):
                 #Remove information to store 
                 del data['is_permanet_resident']
 
-                if scientist_obj.end_abroad_period < data['end_abroad_period']:
-                    notification=NotificationScientist.objects.filter(scientist=scientist_obj).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
-                    if notification :
-                        notification.is_valid=False
-                        notification.save()
+                if scientist_obj.end_abroad_period  and data['end_abroad_period']:
+                    if scientist_obj.end_abroad_period < data['end_abroad_period']:
+                        notification=NotificationScientist.objects.filter(scientist=scientist_obj).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
+                        if notification :
+                            notification.is_valid=False
+                            notification.save()
                 # Update scientist
                 Scientist.objects.filter(ci=form.cleaned_data['ci'], email=form.cleaned_data['email']).\
                     update(**data)
@@ -396,6 +397,10 @@ def edit_scientist(request, **kwargs):
         existing_data['location_lat'] = institution['latitude']
         existing_data['location_lng'] = institution['longitude']
         existing_data['is_permanet_resident'] = False if scientist_obj.end_abroad_period  else True
+        #Reformat Date
+        existing_data['birth_date']=scientist_obj.birth_date.strftime("%d/%m/%Y")
+        if existing_data['end_abroad_period']:
+            existing_data['end_abroad_period']=scientist_obj.birth_date.strftime("%d/%m/%Y")
         form = RegistrationEditForm(initial=existing_data)
     context = {
         'form': form,
