@@ -47,7 +47,7 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended():
         Look for a valid notification type ABROAD_PERIOD_EXPIRATION of the users. If the result is a notification objects, it means the user
         had been previously notified, else it means it had not been notified
         """
-        notification=NotificationScientist.objects.filter(scientist=scientist).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
+        notification=NotificationScientist.objects.filter(scientist=scientist).filter(created_at__gte=scientist.end_abroad_period).filter(type="ABROAD_PERIOD_EXPIRATION").first()
         if notification:
             continue
         if(send_email_update_abroad_end_return(scientist)):

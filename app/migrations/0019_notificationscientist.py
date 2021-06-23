@@ -16,7 +16,6 @@ class Migration(migrations.Migration):
             name='NotificationScientist',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_valid', models.BooleanField(default=True)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
                 ('type', models.CharField(choices=[('ABROAD_PERIOD_EXPIRATION', 'FECHA DE RETORNO EXPIRADA'), ('otro', '')], default='', max_length=100)),
                 ('scientist', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.Scientist')),

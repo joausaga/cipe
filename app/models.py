@@ -130,7 +130,6 @@ class Affiliation(models.Model):
         unique_together = ('scientist', 'institution')
 
 class NotificationScientist(models.Model):
-    is_valid=models.BooleanField(default=True)
     scientist=models.ForeignKey(Scientist,on_delete=models.CASCADE)
     created_at = models.DateTimeField(editable=False, default=timezone.now)
     type = models.CharField(max_length=100, choices=NOTIFICATION_TYPE, default='')

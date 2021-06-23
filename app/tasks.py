@@ -28,7 +28,7 @@ def daily_verification_of_registrants_whose_period_abroad_has_ended_task():
 def disabled_scientist_end_period_past_a_month():
     scientists=Scientist.objects.filter(approved=True).filter(end_abroad_period__lte=date.today()-datetime.timedelta(days=30))
     for scientist in scientists:
-        notification=NotificationScientist.objects.filter(scientist=scientist).filter(is_valid=True).filter(type="ABROAD_PERIOD_EXPIRATION").first()
+        notification=NotificationScientist.objects.filter(scientist=scientist).filter(created_at__gte=scientist.end_abroad_period).filter(type="ABROAD_PERIOD_EXPIRATION").first()
         if notification:
             scientist.approved=False
             scientist.save()
