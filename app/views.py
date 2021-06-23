@@ -400,7 +400,7 @@ def edit_scientist(request, **kwargs):
         #Reformat Date
         existing_data['birth_date']=scientist_obj.birth_date.strftime("%d/%m/%Y")
         if existing_data['end_abroad_period']:
-            existing_data['end_abroad_period']=scientist_obj.birth_date.strftime("%d/%m/%Y")
+            existing_data['end_abroad_period']=scientist_obj.end_abroad_period.strftime("%d/%m/%Y")
         form = RegistrationEditForm(initial=existing_data)
     context = {
         'form': form,
