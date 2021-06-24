@@ -38,7 +38,7 @@
     
 
     // hide label of data picker
-    document.querySelector('label[for=id_end_becal_scholarship]').style.display = 'none';
+    document.querySelector('label[for=id_end_abroad_period]').style.display = 'none';
     var regResult = parseInt("{{ registration_result }}");
     var msg = "{{ msg }}";
     var is_edit_form = parseInt("{{ edit }}");
@@ -48,6 +48,11 @@
         if ('latitude' in institution && 'longitude' in institution && 'name' in institution) {
             addMarker(map, institution['latitude'], institution['longitude'], institution['name']);
         }
+        showEndDateReturn();
+        if(document.getElementById('id_is_permanet_resident').options[document.getElementById('id_is_permanet_resident').selectedIndex].value == "False") 
+        document.getElementById('id_is_permanet_resident').selectedIndex = 1;
+        else 
+        document.getElementById('id_is_permanet_resident').selectedIndex = 2;
     }
     if (regResult >= 0) {
         document.getElementById("msgReg").innerHTML = msg;
@@ -69,7 +74,7 @@
             });
         }, 4000);
     }
-    $("#id_end_becal_scholarship").datepicker({
+    $("#id_end_abroad_period").datepicker({
       format:'dd/mm/yyyy',
     });
     $("#id_birth_date").datepicker({

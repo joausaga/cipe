@@ -14,7 +14,7 @@ RUN apk --no-cache add --virtual build-dependencies \
     gcc \
     libc-dev \
     libffi-dev \
-    mariadb-dev
+    mariadb-dev 
 
 # install app dependencies
 RUN pip install --upgrade pip

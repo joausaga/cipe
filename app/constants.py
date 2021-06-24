@@ -122,3 +122,7 @@ COMMUNICATION_CHANNELS = (
     ('facebook', 'Grupo de Facebook'),
     ('otro', '')
 )
+NOTIFICATION_TYPE = (
+    ('ABROAD_PERIOD_EXPIRATION', 'FECHA DE RETORNO EXPIRADA'),
+    ('otro', '')
+)

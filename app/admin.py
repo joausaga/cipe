@@ -1,4 +1,4 @@
-from app.models import Scientist, Affiliation, Institution
+from app.models import Scientist, Affiliation, Institution ,NotificationScientist
 from app.constants import MAIN_SCIENTIFIC_AREA
 from django import forms
 from django.contrib import admin
@@ -13,9 +13,12 @@ import datetime
 import logging
 import re
 
+from app.tasks import send_approved_email_task
 
 logger = logging.getLogger(__name__)
 
+
+admin.site.register(NotificationScientist)
 
 class CsvImportForm(forms.Form):
     csv_file = forms.FileField()
@@ -54,10 +57,26 @@ class ScientistAdmin(admin.ModelAdmin, ExportCsvMixin):
         except:
             return ''
     affiliation.short_description = 'Affiliation'
+    def save_model(self, request, obj, form, change):
+        if(change):
+            try:
+                current_obj=Scientist.objects.get(id=obj.id)
+                self.notify_user_approved(obj,current_obj)
+            except:
+                logger.info("Error ocurred sending email of aproven user")
+                
+            super().save_model(request, obj, form, change)
+
+    def notify_user_approved(self,obj,current_obj):
+        if(obj.approved and obj.approved != current_obj.approved):
+            send_approved_email_task.delay(obj.first_name ,obj.slug,obj.email)
+
 
     def approve_scientists(self, request, queryset):
         for scientist in queryset:
             scientist.approved = True
+            current_scientist=Scientist.objects.get(id=scientist.id)
+            self.notify_user_approved(scientist,current_scientist)
             scientist.save()
     approve_scientists.short_description = 'Approve scientists'
 

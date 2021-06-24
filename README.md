@@ -14,14 +14,11 @@ A live version of CIPE can be accessed [here](https://investigadoresparaguayosen
 
 ## Installation
 
-Install docker and docker-compose in your local machine. Check the official installation [guidelines](https://docs.docker.com/install/); 
-
-### Production
-
-For the impatient: The only key you need to get a **really quick start**, is a valid Google Map API KEY, all the others default credentials will be used. However your are encouraged to complete the setup process if your planning to use this proyect in the long run.
-1. Obtain a google maps api key by following the instructions [here](https://developers.google.com/maps/documentation/embed/get-api-key);
-2. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
-3. Get into the directory `cipe`;
+0. For the impatient: The only key you need to get a **really quick start**, is a valid Google Map API KEY, all the others default credentials will be used. However your are encouraged to complete the setup process if your planning to use this proyect in the long run.
+1. Install docker and docker-compose in your local machine. Check the official installation [guidelines](https://docs.docker.com/install/); 
+2. Obtain a google maps api key by following the instructions [here](https://developers.google.com/maps/documentation/embed/get-api-key);
+3. Clone the repository `git clone https://github.com/joausaga/cipe.git`;
+4. Get into the directory `cipe`;
 4. Run `scripts/prepare-config-templates.sh`
 5. Set the configuration parameters of the database in `.env.prod.db`;
 6. Set the SECRET_KEY and GOOGLE_MAPS_API_KEY obtained before as well as the configuration parameters 
@@ -59,6 +56,8 @@ for  accessing public information about the [BECAL](http://www.becal.gov.py/) fe
 2. [MySQL Community Server](https://www.mysql.com/downloads/)
 3. [Django 2.2](https://www.djangoproject.com)
 4. Google Maps
+5. [Rabbitmqctl](https://www.rabbitmq.com)
+6. [Celery](https://docs.celeryproject.org)
 
 ## Issues
 

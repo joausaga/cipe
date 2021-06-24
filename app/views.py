@@ -9,8 +9,7 @@ from django.db.models import Count
 from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse
-
-
+from app.tasks import send_new_registration_email_task
 logger = logging.getLogger(__name__)
 countries_iso2 = load_countries_iso2()
 
@@ -122,10 +121,7 @@ def __get_distribution_position():
 
 def index(request, *args, **kwargs):
     scientists, num_scientists, num_institutions, num_countries, num_male_scientists, num_female_scientists, \
-        max_age_male, max_age_female, min_age_male, min_age_female, num_cities = __get_data_map()
-    top_area_m, total_top_area_m = __get_top_scientific_areas({'sex':'masculino'})
-    top_area_f, total_top_area_f = __get_top_scientific_areas({'sex': 'femenino'})
-    dis_positions = __get_distribution_position()
+       _, _, _, _, num_cities = __get_data_map()
     context = {
         'scientists': json.dumps(scientists),
         'num_scientists': num_scientists,
@@ -134,6 +130,19 @@ def index(request, *args, **kwargs):
         'num_institutions': num_institutions,
         'num_countries': num_countries,
         'num_cities': num_cities,
+
+    }
+    # extra_context=generate_context( **kwargs)
+    # context.update(extra_context)
+    return render(request, 'index.html', context)
+
+def generate_context( **kwargs):
+    _, _, _, _, num_male_scientists, num_female_scientists, \
+       max_age_male, max_age_female, min_age_male, min_age_female, _ = __get_data_map()
+    top_area_m, total_top_area_m = __get_top_scientific_areas({'sex':'masculino'})
+    top_area_f, total_top_area_f = __get_top_scientific_areas({'sex': 'femenino'})
+    dis_positions = __get_distribution_position()
+    context = {
         'top_area_m': top_area_m,
         'top_area_f': top_area_f,
         'per_top_area_m': int(round((total_top_area_m[0]/num_male_scientists)*100,0)),
@@ -150,9 +159,8 @@ def index(request, *args, **kwargs):
         'total_third_most_common_position': dis_positions[2]['total'],
         'name_third_most_common_position': dis_positions[2]['position'],
     }
-    return render(request, 'index.html', context)
-
-
+    return context
+    
 def __get_institution_extra_information(inst_dict):
     geocode_result, address, postal_code, city, region, country = get_location_info_from_coordinates(inst_dict['latitude'],
                                                                                                      inst_dict['longitude'])
@@ -210,6 +218,10 @@ def registration(request):
                 del form.cleaned_data['location_lat']
                 del form.cleaned_data['location_lng']
                 del form.cleaned_data['location_name']
+                
+                #Remove information to store 
+                del form.cleaned_data['is_permanet_resident']
+                
                 # Get/Create Scientist
                 scientist_obj = Scientist.objects.create(**form.cleaned_data)
                 scientist_obj.save()
@@ -220,6 +232,11 @@ def registration(request):
                                                                                        'institution': inst_obj})
                 msg = f"Registro exitoso! Luego de su aprobación, los datos podrán ser " \
                       f"visualizados en el mapa de investigadores."
+                      
+                #Send mail to notify new registration to moderator
+                send_new_registration_email_task.delay(scientist_obj.first_name+' '+scientist_obj.last_name,scientist_obj.position,inst_obj.name)
+
+
                 form = RegistrationForm()
                 registration_error = 0
         else:
@@ -334,6 +351,9 @@ def edit_scientist(request, **kwargs):
                 del data['location_lng']
                 del data['location_name']
                 data['approved'] = False
+
+                #Remove information to store 
+                del data['is_permanet_resident']
                 # Update scientist
                 Scientist.objects.filter(ci=form.cleaned_data['ci'], email=form.cleaned_data['email']).\
                     update(**data)
@@ -369,6 +389,11 @@ def edit_scientist(request, **kwargs):
         existing_data['location_name'] = institution['name']
         existing_data['location_lat'] = institution['latitude']
         existing_data['location_lng'] = institution['longitude']
+        existing_data['is_permanet_resident'] = False if scientist_obj.end_abroad_period  else True
+        #Reformat Date
+        existing_data['birth_date']=scientist_obj.birth_date.strftime("%d/%m/%Y")
+        if existing_data['end_abroad_period']:
+            existing_data['end_abroad_period']=scientist_obj.end_abroad_period.strftime("%d/%m/%Y")
         form = RegistrationEditForm(initial=existing_data)
     context = {
         'form': form,

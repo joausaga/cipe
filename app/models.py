@@ -1,5 +1,5 @@
 from app.constants import SEX, SCIENTIFIC_AREA, POSITION, COMMUNICATION_CHANNELS, FIRST_CAT_SCIENTIFIC_AREA, \
-    MAIN_SCIENTIFIC_AREA
+    MAIN_SCIENTIFIC_AREA ,NOTIFICATION_TYPE
 from django.db import models
 from django.utils import timezone
 from django.utils.crypto import get_random_string
@@ -40,7 +40,7 @@ class Scientist(models.Model):
     personal_website = models.URLField(null=True, blank=True, default=None)
     orcid_profile = models.URLField(null=True, blank=True, default=None)
     has_becal_scholarship = models.BooleanField(default=False)
-    end_becal_scholarship = models.DateField(blank=True, null=True)
+    end_abroad_period = models.DateField(blank=True, null=True)
     communication_channel = models.CharField(max_length=100, choices=COMMUNICATION_CHANNELS, default='')
     approved = models.BooleanField(default=False)
     # audit fields
@@ -128,3 +128,15 @@ class Affiliation(models.Model):
 
     class Meta:
         unique_together = ('scientist', 'institution')
+
+class NotificationScientist(models.Model):
+    scientist=models.ForeignKey(Scientist,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(editable=False, default=timezone.now)
+    type = models.CharField(max_length=100, choices=NOTIFICATION_TYPE, default='')
+    
+    
+    def __unicode__(self):
+        return f"{self.scientist.first_name.title()} {self.scientist.last_name.title()}"
+
+    def __str__(self):
+        return f"{self.scientist.first_name.title()} {self.scientist.last_name.title()}"

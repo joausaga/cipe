@@ -1,6 +1,15 @@
 version: '3.7'
 
 services:
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3.8.14-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - "5672:5672"  
+      - "15672:15672"  
   app:
     restart: always
     build: .
@@ -26,3 +35,35 @@ services:
       - MYSQL_DATABASE=${SQL_DATABASE}
       - MYSQL_USER=${SQL_USER}
       - MYSQL_PASSWORD=${SQL_PASSWORD}
+  celery_worker:
+    build: .
+    command: celery -A cipe  worker --loglevel=info
+    volumes:
+      - .:/usr/src/app/ 
+    environment:
+      - DEBUG=${DEBUG}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - CELERY_BROKER=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbit:5672/%2F
+    depends_on:
+      - app
+      - rabbit
+    env_file:
+      - ./.env.dev
+
+  celery-beat:
+    build: .
+    restart: always
+    command: celery -A cipe beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/usr/src/app/
+    environment:
+      - DEBUG=${DEBUG}
+      - SECRET_KEY=${SECRET_KEY}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+      - CELERY_BROKER=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbit:5672/%2F
+    depends_on:
+      - rabbit
+      - app
+      - celery_worker
+    env_file:
+      - ./.env.dev
